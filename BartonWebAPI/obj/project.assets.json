@@ -13683,11 +13683,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Telahun\\Documents\\School\\CECS596\\Barton1792\\BartonApp\\BartonWebAPI\\BartonWebAPI.csproj",
+      "projectUniqueName": "C:\\Users\\Telahun\\Documents\\School\\CECS596\\BartonApp\\BartonApp\\BartonWebAPI\\BartonWebAPI.csproj",
       "projectName": "BartonWebAPI",
-      "projectPath": "C:\\Users\\Telahun\\Documents\\School\\CECS596\\Barton1792\\BartonApp\\BartonWebAPI\\BartonWebAPI.csproj",
+      "projectPath": "C:\\Users\\Telahun\\Documents\\School\\CECS596\\BartonApp\\BartonApp\\BartonWebAPI\\BartonWebAPI.csproj",
       "packagesPath": "C:\\Users\\Telahun\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Telahun\\Documents\\School\\CECS596\\Barton1792\\BartonApp\\BartonWebAPI\\obj\\",
+      "outputPath": "C:\\Users\\Telahun\\Documents\\School\\CECS596\\BartonApp\\BartonApp\\BartonWebAPI\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -13706,8 +13706,8 @@
       "frameworks": {
         "netcoreapp2.2": {
           "projectReferences": {
-            "C:\\Users\\Telahun\\Documents\\School\\CECS596\\Barton1792\\BartonApp\\Barton1792DB\\Barton1792DB.csproj": {
-              "projectPath": "C:\\Users\\Telahun\\Documents\\School\\CECS596\\Barton1792\\BartonApp\\Barton1792DB\\Barton1792DB.csproj"
+            "C:\\Users\\Telahun\\Documents\\School\\CECS596\\BartonApp\\BartonApp\\Barton1792DB\\Barton1792DB.csproj": {
+              "projectPath": "C:\\Users\\Telahun\\Documents\\School\\CECS596\\BartonApp\\BartonApp\\Barton1792DB\\Barton1792DB.csproj"
             }
           }
         }

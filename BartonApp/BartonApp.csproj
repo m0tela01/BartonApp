@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="BartonApp\src\app\core\models\Employee.ts" />
+    <None Remove="BartonApp\src\app\core\models\EmployeeObject.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,7 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="BartonApp\src\app\core\models\Employee.ts" />
+    <TypeScriptCompile Include="BartonApp\src\app\core\models\EmployeeObject.ts" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
