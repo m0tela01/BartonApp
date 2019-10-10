@@ -1,0 +1,54 @@
+/* menuItems is the styling class for the menu tabs */
+.menuItems {
+  border: none;
+  background: none;
+  color: #e5d082;
+  padding: 1% 4%;
+  text-align: center;
+  font-size: 29px;
+  margin: 7px 2px;
+  opacity: 0.8;
+  transition: 0.3s;
+  display: inline-block;
+  text-decoration: none;
+  cursor: pointer;
+  z-index: 1;
+  vertical-align: text-bottom;
+  margin-top: 15px;
+}
+
+.menuItems:hover {
+  opacity: 1;
+  z-index: 1;
+}
+
+.menuItems.selected {
+  opacity: 1;
+}
+
+#currentPage {
+  opacity: 1;
+}
+
+/*messing around with trying to get the line between menu items like mock up*/
+.vl {
+  border-left: 2px solid #e5d082;
+  height: 20px;
+}
+
+/*class for logo*/
+img.logo {
+  size: 40%;
+  width: auto;
+  height: 60px;
+  padding-bottom: 6px;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+/*class for header line that sits between menu tabs and content*/
+hr.headerline {
+  color: #e5d082;
+  margin: 1.2% 4%;
+  border-top: 1px;
+}

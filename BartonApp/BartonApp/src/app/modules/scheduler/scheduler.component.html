@@ -1,0 +1,23 @@
+<div>
+    <p-table id="previousSchedules" [value]="scheds">
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="color:#E5D082;background: black; font-size: 20px" *ngFor="let col of cols">
+            {{ col.header }}
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-sched>
+        <tr>
+          <td style="color: #E5D082; background:darkslategrey; font-size: 18px;" *ngFor="let col of cols">
+            {{ sched[col.field] }}
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+</div>
+<div>
+  <button class="button" id="runScheduler" (click)="runScheduler()">
+    <span>Run Scheduler </span>
+  </button>
+</div>
