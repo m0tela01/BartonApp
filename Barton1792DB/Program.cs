@@ -15,7 +15,7 @@ namespace Barton1792DB
         {
             //CreateDB.ConnectToDB();
             CreateDB.CleanAndCreateTables();
-            Console.ReadKey();
+            //Console.ReadKey();
 
 
             Readers reader = new Readers();
@@ -27,6 +27,12 @@ namespace Barton1792DB
             List<Schedule> CurrentScheduled = reader.GetSchedules(new List<Schedule>());
 
             Context sch = Context.from_generic(CurrentScheduled);
+
+            Dictionary<string, Context> scheds = new Dictionary<string, Context>();
+            scheds["CurrentScheduled"] = sch;
+            Context.to_jsons("CurrentScheduled.json", scheds);
+
+
             util.print(sch);
             util.print("HI");
             Console.ReadKey();
