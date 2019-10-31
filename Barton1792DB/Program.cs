@@ -13,29 +13,32 @@ namespace Barton1792DB
         //Test for data layer and api.
         public static void Main(string[] args)
         {
-            //CreateDB.ConnectToDB();
-            CreateDB.CleanAndCreateTables();
-            //Console.ReadKey();
-
-
             Readers reader = new Readers();
-            //List<Employee> EmployeeData = reader.GetStuff(new List<Employee>());
-            List<Employee> CurrentEmployeeData = reader.GetEmployees(new List<Employee>());
-            List<Template> CurrentSchedulingTemplate = reader.GetTemplate(new List<Template>());
+            //List<Employee> CurrentEmployeeData = reader.GetEmployees(new List<Employee>());
+            
 
-            BartonSchedulerWeekday.GenerateSchedule(CurrentEmployeeData, CurrentSchedulingTemplate);
-            List<Schedule> CurrentScheduled = reader.GetSchedules(new List<Schedule>());
-
-            Context sch = Context.from_generic(CurrentScheduled);
-
-            Dictionary<string, Context> scheds = new Dictionary<string, Context>();
-            scheds["CurrentScheduled"] = sch;
-            Context.to_jsons("CurrentScheduled.json", scheds);
+            //CreateDB.ConnectToDB();
+            //CreateDB.CleanAndCreateTables();
+            ////Console.ReadKey();
 
 
-            util.print(sch);
-            util.print("HI");
-            Console.ReadKey();
+            ////List<Employee> EmployeeData = reader.GetStuff(new List<Employee>());
+            //List<Employee> CurrentEmployeeData = reader.GetEmployees(new List<Employee>());
+            //List<Template> CurrentSchedulingTemplate = reader.GetTemplate(new List<Template>());
+
+            //BartonSchedulerWeekday.GenerateSchedule(CurrentEmployeeData, CurrentSchedulingTemplate);
+            //List<Schedule> CurrentScheduled = reader.GetSchedules(new List<Schedule>());
+
+            //Context sch = Context.from_generic(CurrentScheduled);
+
+            //Dictionary<string, Context> scheds = new Dictionary<string, Context>();
+            //scheds["CurrentScheduled"] = sch;
+            //Context.to_jsons("CurrentScheduled.json", scheds);
+
+
+            //util.print(sch);
+            //util.print("HI");
+            //Console.ReadKey();
         }
     }
 }

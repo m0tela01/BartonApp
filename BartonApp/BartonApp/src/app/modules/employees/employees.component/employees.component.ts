@@ -11,6 +11,7 @@ import { Observable } from 'rxjs';
     templateUrl: './employees.component.html',
     styleUrls: ['./employees.component.css']
 })
+
 export class EmployeesComponent implements OnInit {
     cols: any[];
     employees: Array<EmployeeObject>;
@@ -19,11 +20,11 @@ export class EmployeesComponent implements OnInit {
 
     ngOnInit() {
         this.getAllEmployees();
-        this.intializeTable();
+        this.intializeEmployeeTable();
         console.log('employees has been loaded');
-  }
+    }
 
-    intializeTable() {
+    intializeEmployeeTable() {
         this.cols = [
             { field: 'seniorityNumber', header: 'SeniorityNumber' },
             { field: 'clockNumber', header: 'ClockNumber' },
@@ -41,9 +42,8 @@ export class EmployeesComponent implements OnInit {
     getAllEmployees() {
         this.httpService.get('https://localhost:44392/api/BartonData/GetEmployeeData').subscribe(
           data => {
-              console.log(data);
               this.employees = data as Array<EmployeeObject>;
-              console.log(this.employees[0].departmentName);
+              console.log(this.employees[0].departmentName);    //debugging - sanity check: remove
             });
     }
 }

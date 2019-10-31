@@ -14,22 +14,33 @@ namespace Barton1792DB.BO
         public static Readers readers = new Readers();
         public static Writers writers = new Writers();
 
-        public static List<Schedule> GenerateSchedule(List<Employee> employees, List<Template> templates)
+        public static List<Schedule> GenerateWeekdaySchedule()
         {
+            //Get data to generate schedule
+            List<Employee> employees = readers.GetEmployees(new List<Employee>());
+            List<Template> templates = readers.GetTemplate(new List<Template>());
+            //Insert the data from the previous scheduling run to the history table
+            writers.InsertPreviousScheduleToScheduleHistory();
+            //Clear the previous schedule for the contents of the schedule table
+            writers.ClearScheduleBeforeInsert();
+
             DateTime today = DateTime.Today;
+            // The (... + 7) % 7 ensures we end up with a value in the range [0, 6]
             int daysUntilTuesday = ((int)DayOfWeek.Monday - (int)today.DayOfWeek + 7) % 7;
             DateTime nextMonday = today.AddDays(daysUntilTuesday);
 
             List<Schedule> schedules = new List<Schedule>();    // For insert
+            Schedule schedule;
             // this data is ordered by senority number, job, and shiftpreference
             // put business logic here for scheduling
+            //jobid - 17 jobname - LABOR   deptid - 6
             //
 
             for (int i = 0; i < employees.Count; i++)
             {
                 for (int j = 0; j < templates.Count; j++)
                 {
-                    Schedule schedule = new Schedule();
+                    schedule = new Schedule();
                     //Need Some kind of field for absent talk about this
                     //if (employees[i].AbsentFlag == 1)
                     if (employees[i].SeniorityNumber == -99)
@@ -151,7 +162,6 @@ namespace Barton1792DB.BO
                 }
             }
 
-            //read current schedule
             //write current schedule to history
             writers.InsertCurrentSchedule(schedules);
             return schedules;

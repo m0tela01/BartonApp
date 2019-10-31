@@ -26,6 +26,8 @@
 
   <ItemGroup>
     <None Remove="BartonApp\src\app\core\models\EmployeeObject.ts" />
+    <None Remove="BartonApp\src\app\core\models\HistoryObject.ts" />
+    <None Remove="BartonApp\src\app\core\models\TemplateObject.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,6 +37,8 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="BartonApp\src\app\core\models\EmployeeObject.ts" />
+    <TypeScriptCompile Include="BartonApp\src\app\core\models\HistoryObject.ts" />
+    <TypeScriptCompile Include="BartonApp\src\app\core\models\TemplateObject.ts" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

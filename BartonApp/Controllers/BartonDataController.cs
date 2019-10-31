@@ -9,28 +9,46 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BartonApp.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/")]
     public class BartonDataController : Controller
     {
         Readers readers = new Readers();
 
-        [HttpGet("{employees}")]
-        public ActionResult<List<Employee>> GetEmployeeData()
+        [HttpGet("GetEmployeeData")]
+        public ActionResult<List<Employee>> GetEmployees()
         {
             List<Employee> CurrentEmployeeData = readers.GetEmployees(new List<Employee>());
             return CurrentEmployeeData;
         }
 
-        [HttpGet("[action]")]
-        public ActionResult<List<Schedule>> GetSchedule()
+        [HttpGet("GetCurrentSchedule")]
+        public ActionResult<List<Schedule>> GetCurrentSchedule()
         {
-            List<Schedule> CurrentSchedule = new List<Schedule>();
-            List<Employee> CurrentEmployeeData = readers.GetEmployees(new List<Employee>());
-            List<Template> CurrentSchedulingTemplate = readers.GetTemplate(new List<Template>());
-
-            BartonSchedulerWeekday.GenerateSchedule(CurrentEmployeeData, CurrentSchedulingTemplate);
-            CurrentSchedule = readers.GetSchedules(CurrentSchedule);
+            BartonSchedulerWeekday.GenerateWeekdaySchedule();
+            List<Schedule> CurrentSchedule = readers.GetSchedules(new List<Schedule>());
             return CurrentSchedule;
+        }
+
+        [HttpGet("GetCurrentTemplate")]
+        public ActionResult<List<Template>> GetCurrentTemplate()
+        {
+            List<Template> CurrentTemplate = readers.GetTemplate(new List<Template>());
+            return CurrentTemplate;
+        }
+
+        //[HttpGet("GetScheduleHistory")]
+        //public ActionResult<List<Schedule>> GetSchedulesFromHistory()
+        //{
+        //    List<Schedule> SchedulesFromHistory = readers.GetSchedules(new List<Schedule>());
+        //    return SchedulesFromHistory;
+        //}
+
+        [HttpGet("GetScheduleHistory")]
+        public ActionResult<List<DateTime>> GetScheduleHistory()
+        {
+            List<DateTime> HistoryOfSchedules = new List<DateTime>();
+            HistoryOfSchedules.Add(DateTime.Now);
+            return HistoryOfSchedules;
         }
     }
 }

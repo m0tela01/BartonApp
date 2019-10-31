@@ -21,17 +21,5 @@ namespace BartonApp.Controllers
             List<Employee> CurrentEmployeeData = readers.GetEmployees(new List<Employee>());
             return CurrentEmployeeData;
         }
-
-        [HttpGet("[action]")]
-        public ActionResult<List<Schedule>> GetSchedule()
-        {
-            List<Schedule> CurrentSchedule = new List<Schedule>();
-            List<Employee> CurrentEmployeeData = readers.GetEmployees(new List<Employee>());
-            List<Template> CurrentSchedulingTemplate = readers.GetTemplate(new List<Template>());
-
-            BartonSchedulerWeekday.GenerateSchedule(CurrentEmployeeData, CurrentSchedulingTemplate);
-            CurrentSchedule = readers.GetSchedules(CurrentSchedule);
-            return CurrentSchedule;
-        }
     }
 }

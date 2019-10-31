@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { Router, RouterLink } from '@angular/router';
+import { HistoryObject } from '../../../core/models/HistoryObject';
+import { HttpClient } from '@angular/common/http';
 
 export interface previousSchedule {
   weekday;
@@ -15,15 +17,16 @@ export interface previousSchedule {
 })
 export class HomeComponent implements OnInit {
   title = 'BartonApp';
-
   scheds: previousSchedule[];
-  cols: any[];
 
-  constructor(public router: Router) {}
+  colsHistory: any[];
+  history: Array<HistoryObject>;
+
+  constructor(public router: Router, private httpService: HttpClient) {}
 
   ngOnInit() {
-    this.getPreviousSchedules();
-    this.intializeTable();
+    this.getScheduleHistory();
+    this.intializeScheduleHistoryTable();
 
     console.log('home has been loaded');
   }
@@ -32,19 +35,19 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/history', 12]);
   }
 
-  intializeTable() {
-    this.cols = [
-      { field: 'weekday', header: 'Weekday' },
-      { field: 'weekend', header: 'Weekend' }
+  intializeScheduleHistoryTable() {
+    this.colsHistory = [
+      { field: 'weekDay', header: 'Weekday Schedules' },
+      { field: 'weekEnd', header: 'Weekend Schedules' }
     ];
   }
 
-  //TODO: turn into service call
-  getPreviousSchedules() {
-    this.scheds = [
-      { weekday: '9/1/19-9/7/19', weekend: '9/8/19-9/10/19' },
-      { weekday: '9/10/19-9/17/19', weekend: '9/18/19-9/20/19' },
-      { weekday: '9/20/19-9/27/19', weekend: '9/28/19-9/30/19' }
-    ];
+
+  getScheduleHistory() {
+    this.httpService.get('https://localhost:44392/api/BartonData/GetScheduleHistory').subscribe(
+      data => {
+        this.history = data as Array<HistoryObject>;
+        console.log(this.history[0].weekDay);    //debugging - sanity check: remove
+      });
   }
 }
