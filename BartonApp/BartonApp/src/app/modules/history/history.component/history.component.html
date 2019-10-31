@@ -1,3 +1,87 @@
-<p style="color: aliceblue">history works!</p>
+<hr class="headerline" color="#E5D082" noshade="noshade" />
+
+<p-table [columns]="colsSchedule" [value]="schedules">
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th *ngFor="let col of columns">
+        {{col.header}}
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowData let-columns="columns">
+    <tr>
+      <td *ngFor="let col of columns">
+        {{rowData[col.field]}}
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+
+
+<!-- Make this work -->
+
+
+
+
+<!--<h1 style="color: white;">Table 2</h1>
+<p-table [value]="schedules" sortField="job" sortMode="single" (onSort)="onSort()">
+  <ng-template pTemplate="header">
+    <tr>
+      <th rowspan="2">Job</th>
+      <th colspan="3">Employee</th>
+    </tr>
+    <tr>
+      <th>Shift 1</th>
+      <th>Shift 2</th>
+      <th>Shift 3</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+    <tr>
+      <td *ngIf="rowGroupMetadata[rowData.job].index === rowIndex" [attr.rowspan]="rowGroupMetadata[rowData.job].size">
+        {{rowData.job}}
+      </td>
+      <td>{{rowData.employeeName}}</td>
+      <td>{{rowData.employeeName}}</td>
+      <td>{{rowData.employeeName}}</td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<hr class="headerline" color="#E5D082" noshade="noshade" />
+
+
+<h1 style="color: white;">Table 3</h1>
+<p-table #dt [columns]="schedules" [value]="schedules" sortField="job" sortMode="single" (onSort)="onSort()">
+  <ng-template pTemplate="caption">
+    <div class="ui-helper-clearfix">
+      <button type="button" pButton label="All Data" (click)="exportExcel()" style="float:left"></button>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="header">
+    <tr>
+      <th rowspan="2">Job</th>
+      <th colspan="3">Employee</th>
+    </tr>
+    <tr>
+      <th>Shift 1</th>
+      <th>Shift 2</th>
+      <th>Shift 3</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+    <tr>
+      <td *ngIf="rowGroupMetadata[rowData.job].index === rowIndex" [attr.rowspan]="rowGroupMetadata[rowData.job].size">
+        {{rowData.job}}
+      </td>
+      <td>{{rowData.employeeName}}</td>
+      <td>{{rowData.employeeName}}</td>
+      <td>{{rowData.employeeName}}</td>
+    </tr>
+  </ng-template>
+</p-table>
+
+
 <button (click)='onTestClick()'>testyTest</button>
-<button (click)='onTestyTest()'>get Url shit</button>
+<button (click)='onTestyTest()'>get Url shit</button>-->

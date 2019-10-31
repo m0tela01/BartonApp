@@ -1,5 +1,33 @@
 <div>
-    <p-table id="previousSchedules" [value]="scheds">
+  <p-table [columns]="colsTemplate" [value]="templates">
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th *ngFor="let col of columns">
+          {{col.header}}
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+      <tr>
+        <td *ngFor="let col of columns">
+          {{rowData[col.field]}}
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+<div>
+  <button class="button" id="runScheduler" (click)="runScheduler()">
+    <span>Run Scheduler </span>
+  </button>
+</div>
+
+
+<!-- Dont know what this is here for-->
+
+
+<!--<div>
+    <p-table id="previousSchedules" [value]="templates">
       <ng-template pTemplate="header">
         <tr>
           <th style="color:#E5D082;background: black; font-size: 20px" *ngFor="let col of cols">
@@ -15,9 +43,74 @@
         </tr>
       </ng-template>
     </p-table>
+</div>-->
+
+
+<!-- Make this work -->
+
+
+<!--<div>
+  <p-table [value]="templates" dataKey="jobName" editMode="row" id="previousSchedules">
+    <ng-template pTemplate="header">
+      <tr style="color:#E5D082;background: black; font-size: 20px">
+        <th>Rated Job</th>
+        <th>Deptartment Name</th>
+        <th>Shift 1 Count</th>
+        <th>Shift 2 Count</th>
+        <th>Shift 3 Count</th>
+        <th style="width:8em"></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" style="color: #E5D082; background:darkslategrey; font-size: 18px;">
+      <tr [pEditableRow]="rowData">
+        <td>
+          {{rowData.jobName}}
+        </td>
+        <td>
+          {{rowData.departmentName}}
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="text" [(ngModel)]="rowData.shift1" required>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.shift1}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="text" [(ngModel)]="rowData.shift2" required>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.shift2}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="text" [(ngModel)]="rowData.shift3">
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.shift3}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td style="text-align:center">
+          <button *ngIf="!editing" pButton type="button" pInitEditableRow icon="pi pi-pencil" class="ui-button-info" (click)="onRowEditInit(rowData)"></button>
+          <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="pi pi-check" class="ui-button-success" style="margin-right: .5em" (click)="onRowEditSave(rowData)"></button>
+          <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="pi pi-times" class="ui-button-danger" (click)="onRowEditCancel(rowData, ri)"></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
 </div>
 <div>
   <button class="button" id="runScheduler" (click)="runScheduler()">
     <span>Run Scheduler </span>
   </button>
-</div>
+</div>-->
+

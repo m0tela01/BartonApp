@@ -2,7 +2,7 @@
   <button class="button" id="runScheduler" (click)='onRunScheduler()'>
     <span>Run Scheduler </span>
   </button>
-  <p-table id="previousSchedules" [value]="scheds">
+  <p-table id="previousSchedules" [value]="scheds"> <!-- change to history-->
     <ng-template pTemplate="header">
       <tr>
         <th style="color:#E5D082;background: black; font-size: 20px" *ngFor="let col of cols">

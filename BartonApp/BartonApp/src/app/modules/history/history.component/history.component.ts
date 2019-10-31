@@ -3,8 +3,15 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { TableModule } from 'primeng/table';
+
 import { HttpClient } from '@angular/common/http'
 import { ScheduleObject } from '../../../core/models/ScheduleObject';
+
+export class HistoryObj {
+  jobName: string;
+  employeeName: string;
+  shift: number;
+}
 
 @Component({
   selector: 'app-history',
@@ -52,7 +59,47 @@ export class HistoryComponent implements OnInit {
         this.schedules = data as Array<ScheduleObject>;
         console.log(this.schedules[0].departmentName);    //debugging - sanity check: remove
       });
+
+    this.updateRowGroupMetaData();
+    //this.jaketest();
   }
+
+  ///////////////////////////
+  rowGroupMetadata: any;
+  //jakeschedules: HistoryObj[];
+
+  //jaketest() {
+  //  this.schedules.map(thing => {
+  //    this.jakeschedules.add({thing.job, thing.name})
+  //  })
+  //}
+
+  onSort() {
+    this.updateRowGroupMetaData();
+  }
+
+  updateRowGroupMetaData() {
+    this.rowGroupMetadata = {};
+
+    //verify object is filled
+    if (this.schedules) {
+      for (let i = 0; i < this.schedules.length; i++) {
+        let rowData = this.schedules[i];
+
+        //start indexing by job for row group
+        let job = rowData.jobName;
+        if (i == 0) {
+          this.rowGroupMetadata[job] = { index: 0, size: 1 };
+        } else {
+          let previousRowData = this.schedules[i - 1];
+          let previousRowGroup = previousRowData.jobName;
+          if (job === previousRowGroup) this.rowGroupMetadata[job].size++;
+          else this.rowGroupMetadata[job] = { index: i, size: 1 };
+        }
+      }
+    }
+  }
+
 
   onTestClick() {
     console.log(this.test);

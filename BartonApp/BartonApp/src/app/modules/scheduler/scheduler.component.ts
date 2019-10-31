@@ -7,6 +7,15 @@ import { ScheduleObject } from '../../core/models/ScheduleObject';
 import { TemplateObject } from '../../core/models/TemplateObject';
 
 
+export interface scheduleCreate {
+  job: string;
+  departmentName: string;
+  s1: number;
+  s2: number;
+  s3: number;
+}
+
+
 @Component({
     selector: 'app-scheduler',
     templateUrl: './scheduler.component.html',
@@ -14,10 +23,12 @@ import { TemplateObject } from '../../core/models/TemplateObject';
 })
 
 export class SchedulerComponent implements OnInit {
-    colsTemplate: any[];
-    templates: Array<TemplateObject>;
+  colsTemplate: any[];
+  templates: Array<TemplateObject>;
+  clonedScheds: { [s: string]: TemplateObject; } = {};
 
-    constructor(public router: Router, private httpService: HttpClient) { }
+  //, private messageService: MessageService
+  constructor(public router: Router, private httpService: HttpClient) { }
 
     ngOnInit() {
         this.getPreviousSchedules();  //?? Why is this in the schedule? should be in history ??
@@ -54,5 +65,19 @@ export class SchedulerComponent implements OnInit {
     //  { job: 'Testy Test', s1: 6, s2: 1, s3: 9 },
     //  { job: 'Money Mikes', s1: 8, s2: 4, s3: 8 }
     //];
+  }
+
+  onRowEditInit(car: TemplateObject) {
+    //this.clonedScheds[car.job] = { ...car };
+  }
+
+  onRowEditSave(car: TemplateObject) {
+    //delete this.clonedScheds[car.job];
+    //this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Car is updated' });
+  }
+
+  onRowEditCancel(car: TemplateObject, index: number) {
+    //this.templates[index] = this.clonedScheds[car.job];
+    //delete this.clonedScheds[car.job];
   }
 }

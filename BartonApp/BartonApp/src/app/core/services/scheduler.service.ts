@@ -2,21 +2,17 @@ import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { ServiceBase } from '../../shared/baseClasses/service-base'
 import { Observable } from 'rxjs';
-import { EmployeeObject } from '../models/EmployeeObject';
-import { Component, Inject } from '@angular/core';
-
-//@Component({
-//  selector: 'app-fetch-data',
-//  templateUrl: './fetch-data.component.html'
-//})
-
 
 @Injectable({
   providedIn: 'root'
 })
 
 
-export class Service extends ServiceBase {
+export class SchedulerService extends ServiceBase {
+
+  constructor(private _httpClient: HttpClient) {
+    super(_httpClient);
+  }
 
   //public employee: EmployeeObject[];
 
@@ -31,6 +27,6 @@ export class Service extends ServiceBase {
   //put api calls here 
   getScheduleByDate(date: number): Observable<any> {
     //TODO: Mike here is the api call
-    return this.get('put the rest of the API here');
+    return this.get('/api/BartonData/GetScheduleByDate');
   }
 }
