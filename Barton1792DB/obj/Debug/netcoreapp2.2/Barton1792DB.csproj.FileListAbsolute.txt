@@ -72,7 +72,6 @@ C:\Users\Telahun\Documents\School\CECS596\BartonApp\BartonApp\Barton1792DB\bin\D
 C:\Users\Telahun\Documents\School\CECS596\BartonApp\BartonApp\Barton1792DB\bin\Debug\netcoreapp2.2\Barton1792DB.dll
 C:\Users\Telahun\Documents\School\CECS596\BartonApp\BartonApp\Barton1792DB\bin\Debug\netcoreapp2.2\Barton1792DB.pdb
 C:\Users\Telahun\Documents\School\CECS596\BartonApp\BartonApp\Barton1792DB\bin\Debug\netcoreapp2.2\DVAC.dll
-C:\Users\Telahun\Documents\School\CECS596\BartonApp\BartonApp\Barton1792DB\bin\Debug\netcoreapp2.2\DVAC.pdb
 C:\Users\Telahun\Documents\School\CECS596\BartonApp\BartonApp\Barton1792DB\obj\Debug\netcoreapp2.2\Barton1792DB.csprojAssemblyReference.cache
 C:\Users\Telahun\Documents\School\CECS596\BartonApp\BartonApp\Barton1792DB\obj\Debug\netcoreapp2.2\Barton1792DB.csproj.CoreCompileInputs.cache
 C:\Users\Telahun\Documents\School\CECS596\BartonApp\BartonApp\Barton1792DB\obj\Debug\netcoreapp2.2\Barton1792DB.AssemblyInfoInputs.cache
