@@ -15,22 +15,22 @@ namespace Barton1792DB.DAO
         private string InsertCurrentScheduleSql => "InsertCurrentSchedule";
         private string InsertPreviousScheduleToScheduleHistorySql => "InsertPreviousScheduleToScheduleHistory";
         private string InsertCurrentScheduleTemplateSql => "InsertCurrentScheduleTemplate";
-        private string InsertOldScheduleToHistorySql => "InsertOldScheduleToHistory";
+        private string InsertOldScheduleToHistorySql => "InsertOldScheduleToHistory"; // should delete?
         private string UpdateEmployeeByIdSql = "UpdateEmployeeById";
 
 
         #region Clear
         /// <summary>
-        /// Clear the current schedule before inserting the new schedule.
+        /// Clear the schedule history if history is to big.
         /// </summary>
-        public void ClearScheduleBeforeInsert()
+        public void ClearScheduleHistory()
         {
             using (MySqlConnection conn = new MySqlConnection(BSConnectionString))
             {
                 try
                 {
                     conn.Open();
-                    using (MySqlCommand cmd = new MySqlCommand(ClearScheduleBeforeInsertCurrentScheduleSql, conn))
+                    using (MySqlCommand cmd = new MySqlCommand(ClearScheduleHistorySql, conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.ExecuteNonQuery();
@@ -43,16 +43,16 @@ namespace Barton1792DB.DAO
             }
         }
         /// <summary>
-        /// Clear the schedule history if history is to big.
+        /// Clear the current schedule before inserting the new schedule.
         /// </summary>
-        public void ClearScheduleHistory()
+        public void ClearScheduleBeforeInsert()
         {
             using (MySqlConnection conn = new MySqlConnection(BSConnectionString))
             {
                 try
                 {
                     conn.Open();
-                    using (MySqlCommand cmd = new MySqlCommand(ClearScheduleHistorySql, conn))
+                    using (MySqlCommand cmd = new MySqlCommand(ClearScheduleBeforeInsertCurrentScheduleSql, conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.ExecuteNonQuery();
@@ -151,16 +151,17 @@ namespace Barton1792DB.DAO
         /// <summary>
         /// Insert the new current template.
         /// </summary>
-        /// <param name="Templates"></param>
-        public void InsertCurrentScheduleTemplate(List<Template> Templates)
+        /// <param name="NewTemplates"></param>
+        public void InsertCurrentScheduleTemplate(List<Template> NewTemplates, List<string> postTemplates)
         {
+            Template.TryParse(postTemplates, NewTemplates);
             using (MySqlConnection conn = new MySqlConnection(BSConnectionString))
             {
                 try
                 {
                     conn.Open();
                     //MySqlTransaction trans = conn.BeginTransaction();
-                    foreach (var item in Templates)
+                    foreach (var item in NewTemplates)
                     {
                         using (MySqlCommand cmd = new MySqlCommand(InsertCurrentScheduleTemplateSql, conn))
                         {
@@ -186,6 +187,7 @@ namespace Barton1792DB.DAO
         /// Insert the last schedule to the history table before inserting new schedule.
         /// </summary>
         /// <param name="Schedules"></param>
+        // should delete?
         public void InsertOldScheduleToHistory(List<Schedule> Schedules)
         {
             using (MySqlConnection conn = new MySqlConnection(BSConnectionString))

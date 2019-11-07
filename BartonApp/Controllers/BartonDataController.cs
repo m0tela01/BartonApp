@@ -38,25 +38,45 @@ namespace BartonApp.Controllers
             return CurrentTemplate;
         }
 
-        //[HttpGet("GetScheduleHistory")]
-        //public ActionResult<List<Schedule>> GetSchedulesFromHistory()
-        //{
-        //    List<Schedule> SchedulesFromHistory = readers.GetSchedules(new List<Schedule>());
-        //    return SchedulesFromHistory;
-        //}
-
-        [HttpGet("GetScheduleHistory")]
-        public ActionResult<List<DateTime>> GetScheduleHistory()
+        [HttpGet("GetScheduleHistoryByScheduleDate")]// need to fix database to be timestamps not datetime
+        public ActionResult<List<Schedule>> GetScheduleHistoryByScheduleDate()
         {
-            List<DateTime> HistoryOfSchedules = new List<DateTime>();
-            HistoryOfSchedules.Add(DateTime.Now);
+            List<Schedule> SchedulesFromHistory = readers.GetScheduleHistoryByScheduleDate(new List<Schedule>(), DateTime.Now.ToString());
+            return SchedulesFromHistory;
+        }
+
+        [HttpGet("GetScheduleHistoryDates")]
+        public ActionResult<List<HistoryDate>> GetScheduleHistoryDates()
+        {
+            List<HistoryDate> HistoryOfSchedules = readers.GetScheduleHistoryDates(new List<HistoryDate>());
             return HistoryOfSchedules;
         }
+
+        [HttpGet("GenerateWeekdaySchedule")]
+        public ActionResult<List<Schedule>> GenerateWeekdaySchedule()
+        {
+            List<Schedule> GeneratedSchedule = BartonSchedulerWeekday.GenerateWeekdaySchedule();
+            return GeneratedSchedule;
+        }
         #endregion Get
+
 
         #region Post
 
         #region Insert
+        [HttpPost("InsertNewTemplates")]
+        public bool InsertNewTemplates(List<string> postTemplates)
+        {
+            try
+            {
+                return BartonSchedulerWeekday.InsertNewTemplates(postTemplates);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return false;
+        }
         #endregion Insert
 
         #region Update
