@@ -13,6 +13,8 @@ namespace BartonApp.Controllers
     public class BartonDataController : Controller
     {
         Readers readers = new Readers();
+        Writers writers = new Writers();
+        #region Get
 
         [HttpGet("GetEmployeeData")]
         public ActionResult<List<Employee>> GetEmployees()
@@ -32,7 +34,7 @@ namespace BartonApp.Controllers
         [HttpGet("GetCurrentTemplate")]
         public ActionResult<List<Template>> GetCurrentTemplate()
         {
-            List<Template> CurrentTemplate = readers.GetTemplate(new List<Template>());
+            List<Template> CurrentTemplate = readers.GetTemplates(new List<Template>());
             return CurrentTemplate;
         }
 
@@ -50,5 +52,43 @@ namespace BartonApp.Controllers
             HistoryOfSchedules.Add(DateTime.Now);
             return HistoryOfSchedules;
         }
+        #endregion Get
+
+        #region Post
+
+        #region Insert
+        #endregion Insert
+
+        #region Update
+        [HttpPost("UpdateEmployeeById")]
+        public bool UpdateEmployeById(string postEmployee)
+        {
+            try
+            {
+                return writers.UpdateEmployeeById(new Employee(), postEmployee);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return false;
+        }
+
+        [HttpPost("UpdateTemplateByJobId")]
+        public bool UpdateTemplateByJobId(string postTemplate)
+        {
+            try
+            {
+                return writers.UpdateTemplateByJobId(new Template(), postTemplate);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return false;
+        }
+        #endregion Update
+
+        #endregion Post
     }
 }
