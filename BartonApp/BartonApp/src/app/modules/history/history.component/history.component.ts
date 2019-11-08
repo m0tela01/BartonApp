@@ -57,22 +57,23 @@ export class HistoryComponent implements OnInit {
     this.httpService.get('https://localhost:44392/api/BartonData/GetCurrentSchedule').subscribe(
       data => {
         this.schedules = data as Array<ScheduleObject>;
-        console.log(this.schedules[0].departmentName);    //debugging - sanity check: remove
+            console.log(this.schedules[0].departmentName);    //debugging - sanity check: remove
+
+            //sorting for looks
+            this.schedules.sort(function (a, b) { return a.shift - b.shift });
+
+            //console.log(this.schedules);    //testing : remove
+            //this.separateSchedules();
+            //console.log(this.scheduleShift1);
+            //this.updateRowGroupMetaData();
+            //this.updateRowGroupMetaData_TEST()
       });
 
-    this.updateRowGroupMetaData();
     //this.jaketest();
   }
 
   ///////////////////////////
   rowGroupMetadata: any;
-  //jakeschedules: HistoryObj[];
-
-  //jaketest() {
-  //  this.schedules.map(thing => {
-  //    this.jakeschedules.add({thing.job, thing.name})
-  //  })
-  //}
 
   onSort() {
     this.updateRowGroupMetaData();
@@ -99,6 +100,48 @@ export class HistoryComponent implements OnInit {
       }
     }
   }
+
+    //////////////////////////////////////////////////////////////////////////////////////////
+    //              TODO: split schedules into three separate objects                       //
+    //////////////////////////////////////////////////////////////////////////////////////////
+
+
+    //rowGroupMetadata_TEST: any;
+    //scheduleShift1: Array<ScheduleObject> = [];
+    //separateSchedules() {
+    //    this.schedules.forEach(s => {
+    //        //since the test data only has shift 1 i'm using the shift preference
+    //        if (s.shift == 1) {
+    //            this.scheduleShift1.push(s)
+    //        }
+    //    });
+    //}
+
+    //onSort_TEST() {
+    //    this.updateRowGroupMetaData_TEST();
+    //}
+
+    //updateRowGroupMetaData_TEST() {
+    //    this.rowGroupMetadata_TEST = {};
+
+    //    //verify object is filled
+    //    if (this.scheduleShift1) {
+    //        for (let i = 0; i < this.scheduleShift1.length; i++) {
+    //            let rowData = this.scheduleShift1[i];
+
+    //            //start indexing by job for row group
+    //            let job = rowData.jobName;
+    //            if (i == 0) {
+    //                this.rowGroupMetadata_TEST[job] = { index: 0, size: 1 };
+    //            } else {
+    //                let previousRowData = this.scheduleShift1[i - 1];
+    //                let previousRowGroup = previousRowData.jobName;
+    //                if (job === previousRowGroup) this.rowGroupMetadata_TEST[job].size++;
+    //                else this.rowGroupMetadata_TEST[job] = { index: i, size: 1 };
+    //            }
+    //        }
+    //    }
+    //}
 
 
   onTestClick() {
