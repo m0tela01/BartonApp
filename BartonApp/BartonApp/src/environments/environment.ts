@@ -3,10 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
+  production: true,
 
   //TODO: Mike, you can use environments by using this
-  Url: 'string'
+  Url: 'http://BartonScheduler.com/'
 };
 
 /*

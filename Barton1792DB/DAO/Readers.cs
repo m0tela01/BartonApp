@@ -45,7 +45,7 @@ namespace Barton1792DB.DAO
                 WeekendOTHours = int.Parse(rdr["weekendothours"].ToString()),
                 TotalHours = int.Parse(rdr["totalhours"].ToString()),
                 JobName = rdr["jobname"].ToString(),
-                JobId = int.Parse(rdr["jobid"].ToString()),
+                //JobId = int.Parse(rdr["jobid"].ToString()),
                 DepartmentName = rdr["departmentname"].ToString()
             };
             return emp;
@@ -232,7 +232,7 @@ namespace Barton1792DB.DAO
                     conn.Open();
                     using (MySqlCommand cmd = new MySqlCommand(GetScheduleHistoryByScheduleDateSql, conn))
                     {// ToString("yyyy-MM-dd HH:mm:ss")
-                        cmd.Parameters.Add(new MySqlParameter("@scheduleDate", ScheduleDate));
+                        cmd.Parameters.Add(new MySqlParameter("@wscheduleDate", ScheduleDate));
                         cmd.CommandType = CommandType.StoredProcedure;
                         MySqlDataReader rdr = cmd.ExecuteReader();
                         while (rdr.Read())

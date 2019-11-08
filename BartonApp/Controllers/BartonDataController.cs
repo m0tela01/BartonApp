@@ -26,7 +26,7 @@ namespace BartonApp.Controllers
         [HttpGet("GetCurrentSchedule")]
         public ActionResult<List<Schedule>> GetCurrentSchedule()
         {
-            BartonSchedulerWeekday.GenerateWeekdaySchedule();
+            //BartonSchedulerWeekday.GenerateWeekdaySchedule();
             List<Schedule> CurrentSchedule = readers.GetSchedules(new List<Schedule>());
             return CurrentSchedule;
         }
@@ -38,10 +38,10 @@ namespace BartonApp.Controllers
             return CurrentTemplate;
         }
 
-        [HttpGet("GetScheduleHistoryByScheduleDate")]// need to fix database to be timestamps not datetime
-        public ActionResult<List<Schedule>> GetScheduleHistoryByScheduleDate()
+        [HttpGet("GetScheduleHistoryByScheduleDate")]
+        public ActionResult<List<Schedule>> GetScheduleHistoryByScheduleDate(string getDate)
         {
-            List<Schedule> SchedulesFromHistory = readers.GetScheduleHistoryByScheduleDate(new List<Schedule>(), DateTime.Now.ToString());
+            List<Schedule> SchedulesFromHistory = readers.GetScheduleHistoryByScheduleDate(new List<Schedule>(), getDate);
             return SchedulesFromHistory;
         }
 
@@ -52,7 +52,7 @@ namespace BartonApp.Controllers
             return HistoryOfSchedules;
         }
 
-        [HttpGet("GenerateWeekdaySchedule")]
+        [HttpGet("GenerateWeekdaySchedule")] // could be void
         public ActionResult<List<Schedule>> GenerateWeekdaySchedule()
         {
             List<Schedule> GeneratedSchedule = BartonSchedulerWeekday.GenerateWeekdaySchedule();
