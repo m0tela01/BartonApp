@@ -26,16 +26,16 @@ export class EmployeesComponent implements OnInit {
 
     intializeEmployeeTable() {
         this.cols = [
-            { field: 'seniorityNumber', header: 'SeniorityNumber' },
-            { field: 'clockNumber', header: 'ClockNumber' },
-            { field: 'seniorityDate', header: 'SeniorityDate' },
-            { field: 'employeeName', header: 'EmployeeName' },
-            { field: 'shiftPreference', header: 'ShiftPreference' },
-            { field: 'jobName', header: 'JobName' },
-            { field: 'departmentName', header: 'DepartmentName' },
-            { field: 'prebuiltHours', header: 'PrebuiltHours' },
-            { field: 'weekendOTHours', header: 'WeekendOTHours' },
-            { field: 'totalHours', header: 'TotalHours' }
+            { field: 'seniorityNumber', header: 'Seniority Number' },
+            { field: 'clockNumber', header: 'Clock Number' },
+            { field: 'seniorityDate', header: 'Seniority Date' },
+            { field: 'employeeName', header: 'Employee Name' },
+            { field: 'shiftPreference', header: 'Shift Preference' },
+            { field: 'jobName', header: 'Job Name' },
+            { field: 'departmentName', header: 'Department Name' },
+            //{ field: 'prebuiltHours', header: 'PrebuiltHours' },
+            //{ field: 'weekendOTHours', header: 'WeekendOTHours' },
+            //{ field: 'totalHours', header: 'TotalHours' }
         ];
     }
 

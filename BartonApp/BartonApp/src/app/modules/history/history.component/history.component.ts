@@ -41,14 +41,14 @@ export class HistoryComponent implements OnInit {
 
   initalizeScheduleTable() {
     this.colsSchedule = [
-      { field: 'seniorityNumber', header: 'Seniority Number' },
-      { field: 'clockNumber', header: 'Clock Number' },
+      //{ field: 'seniorityNumber', header: 'Seniority Number' },
+      //{ field: 'clockNumber', header: 'Clock Number' },
       { field: 'employeeName', header: 'Employee Name' },
       { field: 'jobName', header: 'Job Name' },
-      { field: 'departmentName', header: 'Department Name' },
+      //{ field: 'departmentName', header: 'Department Name' },
       { field: 'shift', header: 'Scheduled Shift' },
-      { field: 'shiftPreference', header: 'Prefered Shift' },
-      { field: 'scheduleDate', header: 'Schedule Date' }
+      //{ field: 'shiftPreference', header: 'Prefered Shift' },
+      //{ field: 'scheduleDate', header: 'Schedule Date' }
     ];
   }
 
@@ -57,7 +57,7 @@ export class HistoryComponent implements OnInit {
     this.httpService.get('https://localhost:44392/api/BartonData/GetCurrentSchedule').subscribe(
       data => {
         this.schedules = data as Array<ScheduleObject>;
-            console.log(this.schedules[0].departmentName);    //debugging - sanity check: remove
+            console.log(this.schedules[0].jobName);    //debugging - sanity check: remove
 
             //sorting for looks
             this.schedules.sort(function (a, b) { return a.shift - b.shift });

@@ -1,9 +1,11 @@
 export class HistoryObject {
-  weekDay: Date;
-  weekEnd: Date;
+  scheduleDate: Date;
+  //weekEnd: Date;
+  isWeekend: Boolean;
 
   constructor() {
-    this.weekDay = this.weekDay ? this.weekDay : null;
-    this.weekEnd = this.weekEnd ? this.weekEnd : null;
+    this.scheduleDate = this.scheduleDate ? this.scheduleDate : null;
+    this.isWeekend = this.isWeekend ? this.isWeekend : null;
+    //this.weekEnd = this.weekEnd ? this.weekEnd : null;
   }
 }

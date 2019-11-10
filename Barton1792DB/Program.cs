@@ -15,7 +15,14 @@ namespace Barton1792DB
         {
             Readers reader = new Readers();
             //List<Employee> CurrentEmployeeData = reader.GetEmployees(new List<Employee>());
-            
+
+            List<Schedule> saturdaySchedule = BartonSchedulerWeekday.GenerateWeekdaySchedule();
+
+            //List<HistoryDate> dates = reader.GetScheduleHistoryDates(new List<HistoryDate>());
+            //List<Schedule> schedulesFromDate = reader.GetScheduleHistoryByScheduleDate(new List<Schedule>(), "2019-10-14");
+            util.print("hi");
+            //util.print(schedulesFromDate[0]);
+
 
             //CreateDB.ConnectToDB();
             //CreateDB.CleanAndCreateTables();
@@ -38,7 +45,7 @@ namespace Barton1792DB
 
             //util.print(sch);
             //util.print("HI");
-            //Console.ReadKey();
+            Console.ReadKey();
         }
     }
 }

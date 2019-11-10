@@ -13,9 +13,10 @@ namespace Barton1792DB.DBO
         public void SetWeekendStatus()
         {
             int daysUntilSaturday = ((int)DayOfWeek.Saturday - (int)ScheduleDate.DayOfWeek + 7) % 7;
-            
+            int daysUntilSunDay = ((int)DayOfWeek.Sunday - (int)ScheduleDate.DayOfWeek + 7) % 7;
+
             IsWeekend = false;
-            if (daysUntilSaturday == 0)
+            if (daysUntilSaturday == 0 || daysUntilSunDay == 0)
             {
                 IsWeekend = true;
             }

@@ -40,12 +40,11 @@ namespace Barton1792DB.DAO
                 SeniorityNumber = int.Parse(rdr["senioritynumber"].ToString()),
                 ShiftPreference = int.Parse(rdr["shiftpref"].ToString()),
                 EmployeeName = rdr["empname"].ToString(),
-                SeniorityDate = DateTime.Parse(rdr["senioritydate"].ToString()),      //NEED fix date format
-                PrebuiltHours = int.Parse(rdr["prebuilthours"].ToString()),
-                WeekendOTHours = int.Parse(rdr["weekendothours"].ToString()),
-                TotalHours = int.Parse(rdr["totalhours"].ToString()),
+                SeniorityDate = DateTime.Parse(rdr["senioritydate"].ToString()),
+                //PrebuiltHours = int.Parse(rdr["prebuilthours"].ToString()),
+                //WeekendOTHours = int.Parse(rdr["weekendothours"].ToString()),
+                //TotalHours = int.Parse(rdr["totalhours"].ToString()),
                 JobName = rdr["jobname"].ToString(),
-                //JobId = int.Parse(rdr["jobid"].ToString()),
                 DepartmentName = rdr["departmentname"].ToString()
             };
             return emp;
@@ -54,14 +53,14 @@ namespace Barton1792DB.DAO
         {
             Schedule sch = new Schedule()
             {
-                SeniorityNumber = int.Parse(rdr["senioritynumber"].ToString()),
-                ClockNumber = int.Parse(rdr["clocknumber"].ToString()),
+                //SeniorityNumber = int.Parse(rdr["senioritynumber"].ToString()),
+                //ClockNumber = int.Parse(rdr["clocknumber"].ToString()),
                 EmployeeName = rdr["empname"].ToString(),
                 JobName = rdr["jobname"].ToString(),
-                DepartmentName = rdr["departmentname"].ToString(),
+                //DepartmentName = rdr["departmentname"].ToString(),
                 Shift = int.Parse(rdr["shift"].ToString()),
-                ShiftPreference = int.Parse(rdr["shiftpref"].ToString()),
-                ScheduleDate = DateTime.Parse(rdr["scheduledate"].ToString())
+                //ShiftPreference = int.Parse(rdr["shiftpref"].ToString()),
+                //ScheduleDate = DateTime.Parse(rdr["scheduledate"].ToString())
             };
             return sch;
         }

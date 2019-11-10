@@ -28,10 +28,10 @@ export class HomeComponent implements OnInit {
   constructor(public router: Router, private httpService: HttpClient, public schedulerService: SchedulerService) { }
 
   ngOnInit() {
-    this.getPreviousSchedules();
+    //this.getPreviousSchedules();
 
 
-    //this.getScheduleHistory();
+    this.getScheduleHistory();
     this.intializeScheduleHistoryTable();
 
     console.log('home has been loaded');
@@ -50,26 +50,26 @@ export class HomeComponent implements OnInit {
 
   intializeScheduleHistoryTable() {
     this.colsHistory = [
-      { field: 'weekDay', header: 'Weekday Schedules' },
-      { field: 'weekEnd', header: 'Weekend Schedules' }
+      { field: 'scheduleDate', header: 'Weekday Schedules' },
+      { field: 'isWeekend', header: 'Weekend Schedules' }
     ];
   }
 
 
-  //getScheduleHistory() {
-  //  this.httpService.get('https://localhost:44392/api/BartonData/GetScheduleHistory').subscribe(
-  //    data => {
-  //      this.history = data as Array<HistoryObject>;
-  //      console.log(this.history[0].weekDay);    //debugging - sanity check: remove
-  //    });
-  //}
+  getScheduleHistory() {
+    this.httpService.get('https://localhost:44392/api/BartonData/GetScheduleHistoryDates').subscribe(
+      data => {
+        this.history = data as Array<HistoryObject>;
+        console.log(this.history[0].isWeekend);    //debugging - sanity check: remove
+      });
+  }
 
   //TODO: turn into service call
-  getPreviousSchedules() {
-    this.scheds = [
-      { weekDay: '9/1/19-9/7/19', weekEnd: '9/8/19-9/10/19' },
-      { weekDay: '9/10/19-9/17/19', weekEnd: '9/18/19-9/20/19' },
-      { weekDay: '9/20/19-9/27/19', weekEnd: '9/28/19-9/30/19' }
-    ];
-  }
+  //getPreviousSchedules() {
+  //  this.scheds = [
+  //    { weekDay: '9/1/19-9/7/19', weekEnd: '9/8/19-9/10/19' },
+  //    { weekDay: '9/10/19-9/17/19', weekEnd: '9/18/19-9/20/19' },
+  //    { weekDay: '9/20/19-9/27/19', weekEnd: '9/28/19-9/30/19' }
+  //  ];
+  //}
 }
