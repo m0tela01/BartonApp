@@ -14,6 +14,7 @@ namespace Barton1792DB.DBO
         public int Shift { get; set; }
         public int ShiftPreference { get; set; }
         public DateTime ScheduleDate { get; set; }
+        public string Restrictions { get; set; }
 
         #region Parser
         public static bool TryParse(string s, out Schedule result)

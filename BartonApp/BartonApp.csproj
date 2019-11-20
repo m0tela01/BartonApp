@@ -5,7 +5,7 @@
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <IsPackable>false</IsPackable>
-    <SpaRoot>BartonApp\</SpaRoot>
+    <SpaRoot>ClientApp\</SpaRoot>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
 
     <!-- Set this to true if you enable server-side prerendering -->
@@ -25,20 +25,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="BartonApp\src\app\core\models\EmployeeObject.ts" />
-    <None Remove="BartonApp\src\app\core\models\HistoryObject.ts" />
-    <None Remove="BartonApp\src\app\core\models\TemplateObject.ts" />
+    <None Remove="ClientApp\src\app\core\models\ScheduleHistoryObject.ts" />
+    <None Remove="ClientApp\src\app\core\services\employee.service.ts" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Barton1792DB\Barton1792DB.csproj" />
-    <ProjectReference Include="..\BartonWebAPI\BartonWebAPI.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="BartonApp\src\app\core\models\EmployeeObject.ts" />
-    <TypeScriptCompile Include="BartonApp\src\app\core\models\HistoryObject.ts" />
-    <TypeScriptCompile Include="BartonApp\src\app\core\models\TemplateObject.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\core\models\ScheduleHistoryObject.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\core\services\employee.service.ts" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
@@ -67,5 +64,21 @@
       </ResolvedFileToPublish>
     </ItemGroup>
   </Target>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptJSXEmit>React</TypeScriptJSXEmit>
+    <TypeScriptModuleKind />
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
+    <TypeScriptOutFile />
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptSourceMap>True</TypeScriptSourceMap>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
+  </PropertyGroup>
 
 </Project>

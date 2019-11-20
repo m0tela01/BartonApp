@@ -10,6 +10,7 @@ namespace BartonApp
 {
     public class Startup
     {
+        readonly string bartonpolicy = "bartonpolicy";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -20,15 +21,27 @@ namespace BartonApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
-                configuration.RootPath = "BartonApp/dist";
+                configuration.RootPath = "ClientApp/dist";
+            });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(bartonpolicy,
+                builder =>
+                {
+                    builder.WithOrigins("http://localhost:8888",
+                                        "http://192.168.1.36:8888");
+                });
             });
         }
 
+        
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
@@ -59,13 +72,15 @@ namespace BartonApp
                 // To learn more about options for serving an Angular SPA from ASP.NET Core,
                 // see https://go.microsoft.com/fwlink/?linkid=864501
 
-                spa.Options.SourcePath = "BartonApp";
+                spa.Options.SourcePath = "ClientApp";
 
                 if (env.IsDevelopment())
                 {
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
+
+            app.UseCors(bartonpolicy);
         }
     }
 }

@@ -43,22 +43,24 @@ namespace Barton1792DB.BO
                 {
                     for (int j = 0; j < templates.Count; j++)
                     {
+                        bool employeeCanWork = string.IsNullOrEmpty(employees[i].Absence.Trim());   //if there is no absence they can work
                         schedule = new Schedule();
                         //Need Some kind of field for absent talk about this
                         //if (employees[i].AbsentFlag == 1)
-                        if (employees[i].SeniorityNumber == -99)
-                        {
-                            //Employee has some kind of absent status - NOTELIGIIBLETOSCHEDULE
-                            schedule.ScheduleDate = nextMonday;
-                            schedule.SeniorityNumber = employees[i].SeniorityNumber;
-                            schedule.ClockNumber = employees[i].ClockNumber;
-                            schedule.EmployeeName = employees[i].EmployeeName;
-                            schedule.DepartmentName = employees[i].DepartmentName;
-                            schedule.ShiftPreference = employees[i].ShiftPreference;
-                            schedule.Shift = NOTELIGIIBLETOSCHEDULE;
-                            schedule.JobName = employees[i].JobName;
-                        }
-                        else
+                        //if (employees[i].SeniorityNumber == -99)
+                        //{
+                        //    //Employee has some kind of absent status - NOTELIGIIBLETOSCHEDULE
+                        //    schedule.ScheduleDate = nextMonday;
+                        //    schedule.SeniorityNumber = employees[i].SeniorityNumber;
+                        //    schedule.ClockNumber = employees[i].ClockNumber;
+                        //    schedule.EmployeeName = employees[i].EmployeeName;
+                        //    schedule.DepartmentName = employees[i].DepartmentName;
+                        //    schedule.ShiftPreference = employees[i].ShiftPreference;
+                        //    schedule.Shift = NOTELIGIIBLETOSCHEDULE;
+                        //    schedule.JobName = employees[i].JobName;
+                        //}
+                        //else
+                        if (employeeCanWork)
                         {
                             if (employees[i].JobName == templates[j].JobName)
                             {
@@ -156,7 +158,7 @@ namespace Barton1792DB.BO
                                 }
                             }
                         }
-                        if (!string.IsNullOrEmpty(schedule.JobName))
+                        if (!string.IsNullOrEmpty(schedule.JobName) && employeeCanWork == true)
                         {
                             break;
                         }

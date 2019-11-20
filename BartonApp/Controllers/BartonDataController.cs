@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -71,7 +71,7 @@ namespace BartonApp.Controllers
             {
                 return BartonSchedulerWeekday.InsertNewTemplates(postTemplates);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex);
             }
@@ -87,7 +87,7 @@ namespace BartonApp.Controllers
             {
                 return writers.UpdateEmployeeById(new Employee(), postEmployee);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex);
             }

@@ -25,10 +25,7 @@ namespace Barton1792DB.DAO
         private string GetScheduleHistoryDatesSql => "GetScheduleHistoryDates";
         private string GetScheduleHistoryByScheduleDateSql => "GetScheduleHistoryByScheduleDate";
 
-        #region Scalars
         private string GetEmployeeByIdSql => "GetEmployeeById";
-
-        #endregion Scalars
 
 
         #region Create Objects
@@ -45,7 +42,9 @@ namespace Barton1792DB.DAO
                 //WeekendOTHours = int.Parse(rdr["weekendothours"].ToString()),
                 //TotalHours = int.Parse(rdr["totalhours"].ToString()),
                 JobName = rdr["jobname"].ToString(),
-                DepartmentName = rdr["departmentname"].ToString()
+                Absence = rdr["absence"].ToString(),
+                Restrictions = rdr["restrictions"].ToString(),
+                //DepartmentName = rdr["departmentname"].ToString()
             };
             return emp;
         }
@@ -59,6 +58,7 @@ namespace Barton1792DB.DAO
                 JobName = rdr["jobname"].ToString(),
                 //DepartmentName = rdr["departmentname"].ToString(),
                 Shift = int.Parse(rdr["shift"].ToString()),
+                Restrictions = rdr["restrictions"].ToString(),
                 //ShiftPreference = int.Parse(rdr["shiftpref"].ToString()),
                 //ScheduleDate = DateTime.Parse(rdr["scheduledate"].ToString())
             };

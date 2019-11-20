@@ -1,0 +1,77 @@
+<button type="button" pButton icon="pi pi-file-excel" iconPos="left" label="Export All Shifts Into One Excel" (click)="exportExcel(0)" style="margin-right: 0.5em;" class="ui-button-success"></button>
+
+<h1 style="color: white;">Shift 1</h1>
+
+<p-table #dt [columns]="scheduleShift1" [value]="scheduleShift1" sortField="jobName" sortMode="single" (onSort)="onSort(1)">
+  <ng-template pTemplate="caption">
+    <div class="ui-helper-clearfix">
+      <button type="button" pButton icon="pi pi-file-excel" iconPos="left" label="Export Shift to Excel" (click)="exportExcel(1)" style="margin-right: 0.5em;" class="ui-button-success"></button>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Job</th>
+      <th>Employee</th>
+      <th>Restrictions</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+    <tr>
+      <td *ngIf="rowGroupMetadata1[rowData.jobName].index === rowIndex" [attr.rowspan]="rowGroupMetadata1[rowData.jobName].size">
+        {{rowData.jobName}}
+      </td>
+      <td>{{rowData.employeeName}}</td>
+      <td>{{rowData.restrictions}}</td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<h1 style="color: white;">Shift 2 </h1>
+<p-table #dt1 [columns]="scheduleShift2" [value]="scheduleShift2" sortField="jobName" sortMode="single" (onSort)="onSort(2)">
+  <ng-template pTemplate="caption">
+    <div class="ui-helper-clearfix">
+      <button type="button" pButton icon="pi pi-file-excel" iconPos="left" label="Export Shift to Excel" (click)="exportExcel(2)" style="margin-right: 0.5em;" class="ui-button-success"></button>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Job</th>
+      <th>Employee</th>
+      <th>Restrictions</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+    <tr>
+      <td *ngIf="rowGroupMetadata2[rowData.jobName].index === rowIndex" [attr.rowspan]="rowGroupMetadata2[rowData.jobName].size">
+        {{rowData.jobName}}
+      </td>
+      <td>{{rowData.employeeName}}</td>
+      <td>{{rowData.restrictions}}</td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<h1 style="color: white;">Shift 3 </h1>
+<p-table #dt3 [columns]="scheduleShift3" [value]="scheduleShift3" sortField="jobName" sortMode="single" (onSort)="onSort(3)">
+  <ng-template pTemplate="caption">
+    <div class="ui-helper-clearfix">
+      <button type="button" pButton icon="pi pi-file-excel" iconPos="left" label="Export Shift to Excel" (click)="exportExcel(3)" style="margin-right: 0.5em;" class="ui-button-success"></button>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Job</th>
+      <th>Employee</th>
+      <th>Restrictions</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+    <tr>
+      <td *ngIf="rowGroupMetadata3[rowData.jobName].index === rowIndex" [attr.rowspan]="rowGroupMetadata3[rowData.jobName].size">
+        {{rowData.jobName}}
+      </td>
+      <td>{{rowData.employeeName}}</td>
+      <td>{{rowData.restrictions}}</td>
+    </tr>
+  </ng-template>
+</p-table>

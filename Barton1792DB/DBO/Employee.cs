@@ -16,6 +16,8 @@ namespace Barton1792DB.DBO
         public int PrebuiltHours { get; set; }
         public int WeekendOTHours { get; set; }
         public int TotalHours { get; set; }
+        public string Absence { get; set; }
+        public string Restrictions { get; set; }
         public int JobId { get; set; }
 
         #region Parser

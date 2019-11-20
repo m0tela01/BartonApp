@@ -13,8 +13,9 @@ namespace Barton1792DB.DAO
         private string ClearScheduleHistorySql => "ClearScheduleHistory";
         private string ClearScheduleTemplateBeforeInsertCurrentTemplateSql => "ClearScheduleTemplateBeforeInsertCurrentTemplate";
         private string InsertCurrentScheduleSql => "InsertCurrentSchedule";
+        private string InsertCurrentScheduleTemplateSql => "InsertCurrentScheduleTemplate"; //vector
+        private string InsertCurrentTemplateSql => "InsertCurrentTemplate"; //scalar
         private string InsertPreviousScheduleToScheduleHistorySql => "InsertPreviousScheduleToScheduleHistory";
-        private string InsertCurrentScheduleTemplateSql => "InsertCurrentScheduleTemplate";
         private string InsertOldScheduleToHistorySql => "InsertOldScheduleToHistory"; // should delete?
         private string UpdateEmployeeByIdSql = "UpdateEmployeeById";
 
@@ -137,6 +138,7 @@ namespace Barton1792DB.DAO
                             cmd.Parameters.Add(new MySqlParameter("@shift", item.Shift));
                             cmd.Parameters.Add(new MySqlParameter("@shiftpref", item.ShiftPreference));
                             cmd.Parameters.Add(new MySqlParameter("@scheduledate", item.ScheduleDate));
+                            cmd.Parameters.Add(new MySqlParameter("@restrictions", item.Restrictions));
                             cmd.ExecuteNonQuery();
                         }
                     }
@@ -210,6 +212,7 @@ namespace Barton1792DB.DAO
                             cmd.Parameters.Add(new MySqlParameter("@shift", item.Shift));
                             cmd.Parameters.Add(new MySqlParameter("@shiftpref", item.ShiftPreference));
                             cmd.Parameters.Add(new MySqlParameter("@scheduledate", item.ScheduleDate));
+                            cmd.Parameters.Add(new MySqlParameter("@restrictions", item.Restrictions));
                             cmd.ExecuteNonQuery();
                         }
                     }
@@ -245,6 +248,8 @@ namespace Barton1792DB.DAO
                         cmd.Parameters.Add(new MySqlParameter("@prebuiltHours", employee.PrebuiltHours));
                         cmd.Parameters.Add(new MySqlParameter("@weekendOtHours", employee.WeekendOTHours));
                         cmd.Parameters.Add(new MySqlParameter("@totalHours", employee.TotalHours));
+                        cmd.Parameters.Add(new MySqlParameter("@absent", employee.Absence));
+                        cmd.Parameters.Add(new MySqlParameter("@restricted", employee.Restrictions));
                         cmd.Parameters.Add(new MySqlParameter("@jobId", employee.JobId));
                         cmd.ExecuteNonQuery();
                     }

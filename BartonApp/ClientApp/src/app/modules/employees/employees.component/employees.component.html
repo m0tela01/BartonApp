@@ -1,0 +1,174 @@
+<div style="text-align:center">
+  <button type="button" pButton icon="fa fa-plus" (click)="onAddNewEmployee()" label="Add New Employee"></button>
+</div>
+<div>
+  <p-table [value]="employees" dataKey="seniorityNumber" editMode="row" id="employees">
+    <ng-template pTemplate="header">
+      <tr style="color:#E5D082;background: black; font-size: 20px">
+        <th>SeniorityNumber</th>
+        <th>ClockNumber</th>
+        <th>SeniorityDate</th>
+        <th>EmployeeName</th>
+        <th>ShiftPreference</th>
+        <th>JobName</th>
+        <th>Absences</th>
+        <th>Restrictions</th>
+        <th style="width:8em">Edit</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" style="color: #E5D082; background:darkslategrey; font-size: 18px;">
+      <tr [pEditableRow]="rowData">
+        <td>
+          {{rowData.seniorityNumber}}
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="text" [(ngModel)]="rowData.clockNumber" required>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.clockNumber}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="text" [(ngModel)]="rowData.seniorityDate" required>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.seniorityDate}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="text" [(ngModel)]="rowData.employeeName">
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.employeeName}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="text" [(ngModel)]="rowData.shiftPreference">
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.shiftPreference}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="text" [(ngModel)]="rowData.jobName">
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.jobName}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="text" [(ngModel)]="rowData.absence">
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.absence}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="text" [(ngModel)]="rowData.restrictions">
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.restrictions}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td style="text-align:center">
+          <button *ngIf="!editing" pButton type="button" pInitEditableRow icon="pi pi-pencil" class="ui-button-info" (click)="onRowEditInit(rowData)"></button>
+          <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="pi pi-check" class="ui-button-success" style="margin-right: .5em" (click)="onRowEditSave(rowData)"></button>
+          <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="pi pi-times" class="ui-button-danger" (click)="onRowEditCancel(rowData, ri)"></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<p-dialog header="Add New Employee" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '60%'}">
+  <div class="ui-g ui-fluid" *ngIf="newEmployee" style="overflow: visible;">
+    <div class="ui-g-12">
+      <div class="ui-g-4">
+        <label for="seniorityNumber">seniorityNumber</label>
+      </div>
+      <div class="ui-g-8">
+        <input pInputText id="seniorityNumber" [(ngModel)]="newEmployee.seniorityNumber" />
+      </div>
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-4">
+        <label for="clockNumber">ClockNumber</label>
+      </div>
+      <div class="ui-g-8">
+        <input pInputText id="clockNumber" [(ngModel)]="newEmployee.clockNumber" />
+      </div>
+    </div>
+    <!--TODO: Should this one exist?-->
+    <!--TODO: if so then this needs to be a calendar-->
+    <div class="ui-g-12">
+      <div class="ui-g-4">
+        <label for="seniorityDate">SeniorityDate</label>
+      </div>
+      <div class="ui-g-8">
+        <input pInputText id="seniorityDate" [(ngModel)]="newEmployee.seniorityDate" />
+      </div>
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-4">
+        <label for="employeeName">employeeName</label>
+      </div>
+      <div class="ui-g-8">
+        <input pInputText id="employeeName" [(ngModel)]="newEmployee.employeeName" />
+      </div>
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-4">
+        <label for="shiftPreference">shiftPreference</label>
+      </div>
+      <div class="ui-g-8">
+        <!--TODO: Should this be a drop down?-->
+        <input pInputText id="shiftPreference" [(ngModel)]="newEmployee.shiftPreference" />
+      </div>
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-4">
+        <label for="jobName">jobName</label>
+      </div>
+      <div class="ui-g-8">
+        <!--TODO: Should this be a drop down?-->
+        <input pInputText id="jobName" [(ngModel)]="newEmployee.jobName" />
+      </div>
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-4">
+        <label for="departmentName">DepartmentName</label>
+      </div>
+      <div class="ui-g-8">
+        <!--TODO: Should this be a drop down?-->
+        <input pInputText id="departmentName" [(ngModel)]="newEmployee.departmentName" />
+      </div>
+    </div>
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <button type="button" pButton icon="fa fa-close" (click)="exit()" label="Exit"></button>
+      <button type="button" pButton icon="fa fa-check" (click)="save()" label="Save"></button>
+    </div>
+  </p-footer>
+</p-dialog>
