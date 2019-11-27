@@ -9,8 +9,6 @@ import { TemplateObject } from '../models/TemplateObject';
 @Injectable({
   providedIn: 'root'
 })
-
-
 export class SchedulerService extends ServiceBase {
   //will be the scheduleData returned when the schedule is created
   private scheduleData = 1;
@@ -28,10 +26,9 @@ export class SchedulerService extends ServiceBase {
     return this.scheduleData;
   }
 
-  getCurrentTemplate(): Observable<TemplateObject> {
+  getCurrentTemplate(): Observable<TemplateObject[]> {
     return this.get('GetCurrentTemplate');
   }
-
 
   //Get Current Schedule when history page opens
   getCurrentSchedule(): Observable<ScheduleObject[]> {

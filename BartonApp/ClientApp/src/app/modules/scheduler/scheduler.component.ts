@@ -7,11 +7,13 @@ import { ScheduleObject } from '../../core/models/ScheduleObject';
 import { TemplateObject } from '../../core/models/TemplateObject';
 import { MessageService } from 'primeng/api';
 import { EmployeeObject } from '../../core/models/EmployeeObject';
+import { SchedulerService } from '../../core/services/scheduler.service';
 
 export class EmployeeNote {
-  employeeId: number;
+  clockNumber: number;
   reason: string;
   dateRanges: Date[];
+  dateRangeString: string;
   note: string;
 }
 
@@ -33,7 +35,7 @@ export class SchedulerComponent implements OnInit {
   displayDialog: boolean = false;
 
 
-  constructor(public router: Router, private httpService: HttpClient, private messageService: MessageService) { }
+  constructor(public router: Router, private httpService: HttpClient, private messageService: MessageService, private schedulerService: SchedulerService) { }
 
   ngOnInit() {
     this.getCurrentTemplate();
@@ -53,13 +55,16 @@ export class SchedulerComponent implements OnInit {
   }
 
   getCurrentTemplate() {
-    this.httpService.get('http://localhost:8888/api/BartonData/GetCurrentTemplate').subscribe(
-      data => {
-        this.templates = data as Array<TemplateObject>;
-        console.log(this.templates[0].departmentName);    //debugging - sanity check: remove
+    this.schedulerService.getCurrentTemplate().subscribe(
+      res => {
+        if (res) {
+          this.templates = res as Array<TemplateObject>;
+        } else {
+          //TODO: add toast for no info found
+          console.log("no data found");
+        }
       });
   }
-
 
   onRowEditInit(template: TemplateObject) {
     this.clonedTemplates[template.jobName] = { ...template };
@@ -82,12 +87,45 @@ export class SchedulerComponent implements OnInit {
 
   save() {
     if (this.employee) {
-      this.restrictions.push(this.employee);
-      this.employee = null;
-      this.displayDialog = false;
+      if (this.checkFields()) {
+        //need a string version to show in footer
+        let tmpStr: string = this.employee.dateRanges[0] ? this.employee.dateRanges[0].toLocaleDateString() : '';
+        if (this.employee.dateRanges[1]) {
+          this.employee.dateRangeString = tmpStr.concat(' ', this.employee.dateRanges[1].toLocaleDateString());
+        } else {
+          this.employee.dateRangeString = tmpStr;
+        }
+
+        this.restrictions.push(this.employee);
+        this.employee = null;
+        this.displayDialog = false;
+      }
     } else {
-      this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Please fill out the the dialog' })
+      this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Please fill out the dialog' });
     }
+  }
+
+  checkFields() {
+    let isValid: boolean = true;
+
+    if (!this.employee.clockNumber) {
+      isValid = false;
+      this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Please fill out the Clock Number' });
+    }
+    if (!this.employee.reason) {
+      isValid = false;
+      this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Please fill out the Reason' });
+    }
+    if (!this.employee.dateRanges) {
+      isValid = false;
+      this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Please fill out the Date Range' });
+    }
+    if (!this.employee.note) {
+      isValid = false;
+      this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Please fill out the Note' });
+    }
+
+    return isValid;
   }
 
   exitDialog() {

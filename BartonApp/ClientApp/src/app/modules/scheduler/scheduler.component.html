@@ -1,60 +1,3 @@
-<div>
-  <p-table [value]="templates" dataKey="jobName" editMode="row" id="previousSchedules">
-    <ng-template pTemplate="header">
-      <tr style="color:#E5D082;background: black; font-size: 20px">
-        <th>Job</th>
-        <th>Shift 1</th>
-        <th>Shift 2</th>
-        <th>Shift 3</th>
-        <th style="width:8em"></th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" style="color: #E5D082; background:darkslategrey; font-size: 18px;">
-      <tr [pEditableRow]="rowData">
-        <td>
-          {{rowData.jobName}}
-        </td>
-        <td>
-          <p-cellEditor>
-            <ng-template pTemplate="input">
-              <input pInputText type="text" [(ngModel)]="rowData.shift1" required>
-            </ng-template>
-            <ng-template pTemplate="output">
-              {{rowData.shift1}}
-            </ng-template>
-          </p-cellEditor>
-        </td>
-        <td>
-          <p-cellEditor>
-            <ng-template pTemplate="input">
-              <input pInputText type="text" [(ngModel)]="rowData.shift2" required>
-            </ng-template>
-            <ng-template pTemplate="output">
-              {{rowData.shift2}}
-            </ng-template>
-          </p-cellEditor>
-        </td>
-        <td>
-          <p-cellEditor>
-            <ng-template pTemplate="input">
-              <input pInputText type="text" [(ngModel)]="rowData.shift3">
-            </ng-template>
-            <ng-template pTemplate="output">
-              {{rowData.shift3}}
-            </ng-template>
-          </p-cellEditor>
-        </td>
-        <td style="text-align:center">
-          <button *ngIf="!editing" pButton type="button" pInitEditableRow icon="pi pi-pencil" class="ui-button-info" (click)="onRowEditInit(rowData)"></button>
-          <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="pi pi-check" class="ui-button-success" style="margin-right: .5em" (click)="onRowEditSave(rowData)"></button>
-          <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="pi pi-times" class="ui-button-danger" (click)="onRowEditCancel(rowData, ri)"></button>
-        </td>
-      </tr>
-    </ng-template>
-  </p-table>
-</div>
-
-<!--TODO: Pick table-->
 <!--This table seems more ideal-->
 <p-table [value]="templates">
   <ng-template pTemplate="header">
@@ -105,8 +48,9 @@
   <ng-template pTemplate="summary" let-rowData>
     <div *ngIf="restrictions && restrictions.length > 0">
       <div *ngFor="let employee of restrictions">
-        EmployeeId: {{employee.employeeId}}
+        Clock Number: {{employee.clockNumber}}
         Reason: {{employee.reason}}
+        Date Range: {{employee.dateRangeString}}
         Note: {{employee.note}}
       </div>
     </div>
@@ -116,15 +60,14 @@
   </ng-template>
 </p-table>
 
-<!--TODO: get calendar window to show; struggled to set oveflow value to overwrite the modules-->
-<p-dialog header="Add Vacation/Restriction" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '300px'}">
-  <div class="ui-g ui-fluid" *ngIf="employee" style="overflow: visible;">
+<p-dialog header="Add Vacation/Restriction" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '300px'}" [contentStyle]="{'overflow':'visible'}" [closable]="true">
+  <div class="ui-g ui-fluid" *ngIf="employee">
     <div class="ui-g-12">
       <div class="ui-g-4">
-        <label for="employeeId">EmployeeId</label>
+        <label for="clockNumber">Clock Number</label>
       </div>
       <div class="ui-g-8">
-        <input pInputText id="employeeId" [(ngModel)]="employee.employeeId" />
+        <input pInputText id="clockNumber" [(ngModel)]="employee.clockNumber" />
       </div>
     </div>
     <div class="ui-g-12">
@@ -138,7 +81,7 @@
     </div>
     <div class="ui-g-12">
       <div class="ui-g-4">
-        <label for="dateRanges">Range Dates</label>
+        <label for="dateRanges">Date Range</label>
       </div>
       <div class="ui-g-8">
         <p-calendar id="dateRanges" [(ngModel)]="employee.dateRanges" selectionMode="range" [readonlyInput]="true"></p-calendar>
@@ -155,7 +98,7 @@
   </div>
   <p-footer>
     <div class="ui-dialog-buttonpane ui-helper-clearfix">
-      <button type="button" pButton icon="fa fa-close" (click)="exit()" label="Exit"></button>
+      <button type="button" pButton icon="fa fa-close" (click)="exitDialog()" label="Exit"></button>
       <button type="button" pButton icon="fa fa-check" (click)="save()" label="Save"></button>
     </div>
   </p-footer>
