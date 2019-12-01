@@ -1,9 +1,10 @@
 <div>
   <p-table [value]="employees" dataKey="clockNumber" editMode="row" id="employees" [scrollable]="true">
     <ng-template pTemplate="caption">
-      <div style="text-align:center">
-        <button type="button" pButton icon="fa fa-plus" (click)="onAddNewEmployee()" label="Add New Employee"></button>
-        <button type="button" pButton icon="fa fa-plus" (click)="onShowDeleteDialog()" label="Delete Employee"></button>
+      <div>
+        <!--TODO: how to get button on left and right-->
+        <button type="button" pButton icon="fa fa-plus" (click)="onShowAddDialog()" label="Add New Employee" style=""></button>
+        <button type="button" pButton icon="fa fa-plus" (click)="onShowDeleteDialog()" label="Delete Employee" style=""></button>
       </div>
     </ng-template>
     <ng-template pTemplate="header">
@@ -104,7 +105,7 @@
   </p-table>
 </div>
 
-<p-dialog header="Add New Employee" [(visible)]="displayDialog" (onHide)="onHideDialog()" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '60%'}">
+<p-dialog header="Add New Employee" [(visible)]="displayDialog" (onHide)="onHideDialog()" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '40%'}">
   <div class="ui-g ui-fluid" *ngIf="newEmployee" style="text-align: center">
     <div class="ui-g-12">
       <div class="ui-g-4">
@@ -170,14 +171,14 @@
   </div>
   <p-footer>
     <div class="ui-dialog-buttonpane ui-helper-clearfix" style="text-align: center">
-      <button type="button" pButton icon="fa fa-check" (click)="save()" label="Save"></button>
+      <button type="button" pButton icon="fa fa-check" (click)="onAddNewEmployee()" label="Add New Employee"></button>
     </div>
   </p-footer>
 </p-dialog>
 
 <!--delete employee dialog and confirmation table-->
-<p-dialog header="Delete Employee" [(visible)]="deletionDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '60%'}">
-  <div class="ui-g ui-fluid" *ngIf="newEmployee" style="text-align: center">
+<p-dialog header="Delete Employee" [(visible)]="deletionDialog" [closable]="false" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '40%'}">
+  <div class="ui-g ui-fluid" *ngIf="!confirmDeletion" style="text-align: center">
     <div class="ui-g-12">
       <div class="ui-g-4">
         <label for="clockNumber">Clock Number of employee to be deleted: </label>
@@ -185,11 +186,20 @@
       <div class="ui-g-8">
         <input pInputText id="clockNumber" [(ngModel)]="deleteClockNumber" />
       </div>
+      <div class="ui-g-8">
+        <button type="button" pButton icon="ui-button-danger" (click)="onConfirmDeletion()" label="Find"></button>
+      </div>
     </div>
   </div>
+  <div class="ui-g ui-fluid" *ngIf="confirmDeletion" style="text-align: center">
+    testtt
+  </div>
   <p-footer>
-    <div class="ui-dialog-buttonpane ui-helper-clearfix" style="text-align: center">
-      <button type="button" pButton icon="ui-button-danger" (click)="onDeleteEmployee()" label="Save"></button>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix" style="display: inline-block; text-align: center">
+      <button type="button" pButton icon="ui-button-warning" (click)="onCancelDelete()" label="Cancel"></button>
+    </div>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix" style="display: inline-block; text-align: center">
+      <button type="button" pButton icon="ui-button-danger" (click)="onDeleteEmployee()" label="Delete" [disabled]="!confirmDeletion"></button>
     </div>
   </p-footer>
 </p-dialog>

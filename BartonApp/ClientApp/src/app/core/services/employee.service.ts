@@ -17,4 +17,10 @@ export class EmployeeService extends ServiceBase {
   getAllEmployees(): Observable<EmployeeObject[]> {
     return this.get('GetEmployeeData');
   }
+
+  updateEmployeeById(employee: EmployeeObject): Observable<any> {
+    console.log('we have lift off');
+    console.log(employee);
+    return this.post('UpdateEmployeeById', employee);
+  } 
 }

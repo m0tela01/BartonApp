@@ -33,25 +33,7 @@ export class EmployeesComponent implements OnInit {
 
   ngOnInit() {
     this.getAllEmployees();
-    //this.intializeEmployeeTable();
     console.log('employees has been loaded');
-  }
-
-  intializeEmployeeTable() {
-    this.cols = [
-      { field: 'seniorityNumber', header: 'Seniority Number' },
-      { field: 'clockNumber', header: 'Clock Number' },
-      { field: 'seniorityDate', header: 'Seniority Date' },
-      { field: 'employeeName', header: 'Employee Name' },
-      { field: 'shiftPreference', header: 'Shift Preference' },
-      { field: 'jobName', header: 'Job Name' },
-      { field: 'absence', header: 'Absence' },
-      { field: 'restrictions', header: 'Restrictions' },
-      //{ field: 'departmentName', header: 'Department Name' },
-      //{ field: 'prebuiltHours', header: 'PrebuiltHours' },
-      //{ field: 'weekendOTHours', header: 'WeekendOTHours' },
-      //{ field: 'totalHours', header: 'TotalHours' }
-    ];
   }
 
   getAllEmployees() {
@@ -61,8 +43,7 @@ export class EmployeesComponent implements OnInit {
           this.employees = res as Array<EmployeeObject>;
           console.log(this.employees[0].jobName);    //debugging - sanity check: remove
         } else {
-          //TODO: add toast for no info found
-          console.log("no data");
+          this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'No employee data found.' });
         }
       });
   }
@@ -75,6 +56,11 @@ export class EmployeesComponent implements OnInit {
   // invoked after edit is confirmed
   onRowEditSave(employee: EmployeeObject) {
     //TODO: Post a save to db
+    this.employeeService.updateEmployeeById(employee)
+      .subscribe(data =>
+        console.log("Succeeded, result = " + data),
+        (err) => console.error("Failed! " + err)
+      );
     delete this.clonedEmployees[employee.clockNumber];
     this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Employee is updated' });
   }
@@ -85,19 +71,19 @@ export class EmployeesComponent implements OnInit {
   }
 
   //TODO: Create post for new employee
-  onAddNewEmployee() {
+  onShowAddDialog() {
     this.newEmployee = new EmployeeObject();
     this.displayDialog = true;
   }
 
-  save() {
+  onAddNewEmployee() {
     if (this.newEmployee && this.employeeObjectCheck()) {
       //TODO: Create post to add new employee
-      //this.employeeService.addNewEmployee(this.newEmployee)
+      this.employeeService.addNewEmployee(this.newEmployee)
       this.newEmployee = null;
       this.displayDialog = false;
     } else {
-      this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Please fill out the the dialog' })
+      this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Please fill out the the dialog' });
     }
   }
 
@@ -116,28 +102,33 @@ export class EmployeesComponent implements OnInit {
     this.deletionDialog = true;
   }
 
-  onConfirmDeletion(clockNumber: number) {
+  onConfirmDeletion() {
     this.deleteEmployee = new EmployeeObject();
-    if (this.employees.filter(emp => emp.clockNumber === clockNumber).length > 0) {
+    if (this.employees.filter(emp => emp.clockNumber === this.deleteClockNumber).length > 0) {
       // then the employee exist and show employee on screen
+      this.deleteEmployee = this.employees.filter(emp => emp.clockNumber === this.deleteClockNumber)[0];
+      this.confirmDeletion = true;
     } else {
       // give user a notice that user does not exist
+      console.log('not found');
+      this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'The Clock Number was not found' });
     }
-
-    this.confirmDeletion = true;
   }
 
+  //cancel button invokes this method to clean up and dismiss dialog
+  onCancelDelete() {
+    this.deleteClockNumber = null;
+    this.deleteEmployee = new EmployeeObject();
+    this.deletionDialog = false;
+  }
+
+  //delete button inside the deletion dialog to remove employee from table
   onDeleteEmployee() {
     //TODO: SEND POST TO DELETE EMPLOYEE
     //TODO: Get reload table
     this.deleteClockNumber = null;
-  }
-
-  //TODO: 1. Create dialog "Are you sure you want to delete" 2. Post a save to db
-  //when an employee row is deleted
-  onDeleteRow(employee: EmployeeObject) {
-    delete this.clonedEmployees[employee.clockNumber];
-    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Employee is updated' });
+    this.deleteEmployee = new EmployeeObject();
+    this.deletionDialog = false;
   }
 }
 

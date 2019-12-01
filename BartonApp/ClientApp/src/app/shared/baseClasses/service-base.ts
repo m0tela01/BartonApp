@@ -30,7 +30,6 @@ export class ServiceBase {
     );
   }
 
-
   public get<T>(url: string): Observable<any> {
     return this._http.get(this.apiUrl + url
       ,{
