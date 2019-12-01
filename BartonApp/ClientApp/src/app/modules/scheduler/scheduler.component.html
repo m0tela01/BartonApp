@@ -54,13 +54,14 @@
         Note: {{employee.note}}
       </div>
     </div>
-    <div style="text-align:left">
+    <div style="text-align:center">
+      <button type="button" pButton icon="fa fa-plus" (click)="onAddJob()" label="Add/Remove Job"></button>
       <button type="button" pButton icon="fa fa-plus" (click)="showDialogToAdd()" label="Add Vacation/Restriction"></button>
     </div>
   </ng-template>
 </p-table>
 
-<p-dialog header="Add Vacation/Restriction" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '300px'}" [contentStyle]="{'overflow':'visible'}" [closable]="true">
+<p-dialog header="Add Vacation/Restriction" [(visible)]="displayDialog" (onHide)="onExitDialog()" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '300px'}" [contentStyle]="{'overflow':'visible'}" [closable]="true">
   <div class="ui-g ui-fluid" *ngIf="employee">
     <div class="ui-g-12">
       <div class="ui-g-4">
@@ -98,8 +99,26 @@
   </div>
   <p-footer>
     <div class="ui-dialog-buttonpane ui-helper-clearfix">
-      <button type="button" pButton icon="fa fa-close" (click)="exitDialog()" label="Exit"></button>
       <button type="button" pButton icon="fa fa-check" (click)="save()" label="Save"></button>
+    </div>
+  </p-footer>
+</p-dialog>
+
+<p-dialog header="Add/Remove Job" [(visible)]="displayJobDialog" (onHide)="onHideAddJob()" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '300px'}" [contentStyle]="{'overflow':'visible'}" [closable]="true">
+  <div class="ui-g ui-fluid" *ngIf="employee">
+    <div class="ui-g-12">
+      <div class="ui-g-4">
+        <label for="job">Job</label>
+      </div>
+      <div class="ui-g-8">
+        <input pInputText id="job" [(ngModel)]="jobAdd" />
+      </div>
+    </div>
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <button type="button" pButton icon="fa fa-check" (click)="onSaveJob()" label="Save"></button>
+      <button type="button" pButton icon="fa fa-check" (click)="onRemoveJob()" label="Remove"></button>
     </div>
   </p-footer>
 </p-dialog>

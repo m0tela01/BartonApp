@@ -1,10 +1,13 @@
-<div style="text-align:center">
-  <button type="button" pButton icon="fa fa-plus" (click)="onAddNewEmployee()" label="Add New Employee"></button>
-</div>
 <div>
-  <p-table [value]="employees" dataKey="seniorityNumber" editMode="row" id="employees">
+  <p-table [value]="employees" dataKey="clockNumber" editMode="row" id="employees" [scrollable]="true">
+    <ng-template pTemplate="caption">
+      <div style="text-align:center">
+        <button type="button" pButton icon="fa fa-plus" (click)="onAddNewEmployee()" label="Add New Employee"></button>
+        <button type="button" pButton icon="fa fa-plus" (click)="onShowDeleteDialog()" label="Delete Employee"></button>
+      </div>
+    </ng-template>
     <ng-template pTemplate="header">
-      <tr style="color:#E5D082;background: black; font-size: 20px">
+      <tr style="color:#E5D082;background: black; font-size: 16px">
         <th>SeniorityNumber</th>
         <th>ClockNumber</th>
         <th>SeniorityDate</th>
@@ -16,20 +19,20 @@
         <th style="width:8em">Edit</th>
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" style="color: #E5D082; background:darkslategrey; font-size: 18px;">
-      <tr [pEditableRow]="rowData">
-        <td>
-          {{rowData.seniorityNumber}}
-        </td>
+    <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" style="color: #E5D082; background:darkslategrey; font-size: 16px">
+      <tr [pEditableRow]="rowData" style="text-align: center">
         <td>
           <p-cellEditor>
             <ng-template pTemplate="input">
-              <input pInputText type="text" [(ngModel)]="rowData.clockNumber" required>
+              <input pInputText type="text" [(ngModel)]="rowData.seniorityNumber" required>
             </ng-template>
             <ng-template pTemplate="output">
-              {{rowData.clockNumber}}
+              {{rowData.seniorityNumber}}
             </ng-template>
           </p-cellEditor>
+        </td>
+        <td>
+          {{rowData.clockNumber}}
         </td>
         <td>
           <p-cellEditor>
@@ -101,8 +104,8 @@
   </p-table>
 </div>
 
-<p-dialog header="Add New Employee" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '60%'}">
-  <div class="ui-g ui-fluid" *ngIf="newEmployee" style="overflow: visible;">
+<p-dialog header="Add New Employee" [(visible)]="displayDialog" (onHide)="onHideDialog()" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '60%'}">
+  <div class="ui-g ui-fluid" *ngIf="newEmployee" style="text-align: center">
     <div class="ui-g-12">
       <div class="ui-g-4">
         <label for="seniorityNumber">seniorityNumber</label>
@@ -166,9 +169,27 @@
     </div>
   </div>
   <p-footer>
-    <div class="ui-dialog-buttonpane ui-helper-clearfix">
-      <button type="button" pButton icon="fa fa-close" (click)="exit()" label="Exit"></button>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix" style="text-align: center">
       <button type="button" pButton icon="fa fa-check" (click)="save()" label="Save"></button>
+    </div>
+  </p-footer>
+</p-dialog>
+
+<!--delete employee dialog and confirmation table-->
+<p-dialog header="Delete Employee" [(visible)]="deletionDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '60%'}">
+  <div class="ui-g ui-fluid" *ngIf="newEmployee" style="text-align: center">
+    <div class="ui-g-12">
+      <div class="ui-g-4">
+        <label for="clockNumber">Clock Number of employee to be deleted: </label>
+      </div>
+      <div class="ui-g-8">
+        <input pInputText id="clockNumber" [(ngModel)]="deleteClockNumber" />
+      </div>
+    </div>
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix" style="text-align: center">
+      <button type="button" pButton icon="ui-button-danger" (click)="onDeleteEmployee()" label="Save"></button>
     </div>
   </p-footer>
 </p-dialog>

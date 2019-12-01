@@ -34,6 +34,9 @@ export class SchedulerComponent implements OnInit {
   restrictions: EmployeeNote[] = [];
   displayDialog: boolean = false;
 
+  displayJobDialog: boolean = false;
+  jobAdd: string = '';
+
 
   constructor(public router: Router, private httpService: HttpClient, private messageService: MessageService, private schedulerService: SchedulerService) { }
 
@@ -64,6 +67,43 @@ export class SchedulerComponent implements OnInit {
           console.log("no data found");
         }
       });
+  }
+
+  onAddJob() {
+    this.displayJobDialog = true;
+  }
+
+  onHideAddJob() {
+    this.jobAdd = '';
+  }
+
+  onSaveJob() {
+    let newJob: TemplateObject = new TemplateObject;
+
+    if (this.jobAdd && this.jobAdd !== '') {
+      newJob.jobName = this.jobAdd;
+      newJob.shift1 = 0;
+      newJob.shift2 = 0;
+      newJob.shift3 = 0;
+
+      this.templates.push(newJob);
+
+      newJob = null;
+      this.displayJobDialog = false;
+    } else {
+      //TODO: implement message service stating no job name
+    }
+  }
+
+  onRemoveJob() {
+    if (this.jobAdd && this.jobAdd !== '') {
+      //TODO: implement remove job
+
+      this.jobAdd = '';
+      this.displayJobDialog = false;
+    } else {
+      //TODO: implement message service stating no job name
+    }
   }
 
   onRowEditInit(template: TemplateObject) {
@@ -128,7 +168,7 @@ export class SchedulerComponent implements OnInit {
     return isValid;
   }
 
-  exitDialog() {
+  onExitDialog() {
     this.employee = null;
     this.displayDialog = false;
   }
