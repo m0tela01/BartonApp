@@ -5,8 +5,10 @@ import { Observable } from 'rxjs';
 import { TableModule } from 'primeng/table';
 
 import { HttpClient } from '@angular/common/http'
+import { HistoryObject } from '../../../core/models/HistoryObject';
 import { ScheduleObject } from '../../../core/models/ScheduleObject';
 import { SchedulerService } from '../../../core/services/scheduler.service';
+import { MessageService } from 'primeng/api';
 
 
 export class HistoryObj {
@@ -18,10 +20,12 @@ export class HistoryObj {
 @Component({
   selector: 'app-history',
   templateUrl: './history.component.html',
-  styleUrls: ['./history.component.css']
+  styleUrls: ['./history.component.css'],
+  providers: [MessageService]
 })
 export class HistoryComponent implements OnInit {
   schedules: Array<ScheduleObject>;
+  previousSchedules: Array<HistoryObject>;
 
   scheduleShift1: Array<ScheduleObject> = [];
   rowGroupMetadata1: any = {};
@@ -32,13 +36,14 @@ export class HistoryComponent implements OnInit {
 
   colsSchedule: any[];
 
-  constructor(private httpService: HttpClient, private schedulerService: SchedulerService) { }
+  constructor(private messageService: MessageService, private schedulerService: SchedulerService) { }
 
   // do we want to by default display the most recent schedule ?
   ngOnInit() {
     this.getCurrentSchedules();
+    this.getScheduleHistoryDates();
     console.log('history has been loaded');
-    console.log(this.schedulerService.getData());
+    console.log(this.schedulerService.getIsFromScheduler());
   }
 
   initalizeScheduleTable() {
@@ -50,16 +55,18 @@ export class HistoryComponent implements OnInit {
     ];
   }
 
-  //getCurrentSchedules() {
-  //  this.httpService.get('http://localhost:8888/api/BartonData/GetCurrentSchedule').subscribe(
-  //    data => {
-  //      this.schedules = data as Array<ScheduleObject>;
-  //          console.log(this.schedules[0].jobName);    //debugging - sanity check: remove
-  //          //sorting for looks
-  //          this.schedules.sort(function (a, b) { return a.shift - b.shift });
-  //    });
-  //}
-
+  private async getScheduleHistoryDates() {
+    this.schedulerService.getScheduleHistoryDates().subscribe(
+      res => {
+        if (res) {
+          this.previousSchedules = res as Array<HistoryObject>;
+          console.log(this.previousSchedules);
+        } else {
+          this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Could not retreive previous schedules.' });
+        }
+      }
+    )
+  }
 
   private async getCurrentSchedules() {
     this.schedulerService.getCurrentSchedule().subscribe(
@@ -157,24 +164,24 @@ export class HistoryComponent implements OnInit {
       //set up each workbook by which selection the user makes
       //TODO: trim down object to what's only necessary
       switch (shift) {
-        case 1: {
-          fileName = "Shift1_Schedule_";
-          const worksheet1 = xlsx.utils.json_to_sheet(this.scheduleShift1);
-          workbook = { Sheets: { 'Shift 1': worksheet1 }, SheetNames: ['Shift 1'] };
-          break;
-        }
-        case 2: {
-          fileName = "Shift2_Schedule_";
-          const worksheet2 = xlsx.utils.json_to_sheet(this.scheduleShift2);
-          workbook = { Sheets: { 'Shift 2': worksheet2 }, SheetNames: ['Shift 2'] };
-          break;
-        }
-        case 3: {
-          fileName = "Shift3_Schedule_";
-          const worksheet3 = xlsx.utils.json_to_sheet(this.scheduleShift3);
-          workbook = { Sheets: { 'Shift 3': worksheet3 }, SheetNames: ['Shift 3'] };
-          break;
-        }
+        //case 1: {
+        //  fileName = "Shift1_Schedule_";
+        //  const worksheet1 = xlsx.utils.json_to_sheet(this.scheduleShift1);
+        //  workbook = { Sheets: { 'Shift 1': worksheet1 }, SheetNames: ['Shift 1'] };
+        //  break;
+        //}
+        //case 2: {
+        //  fileName = "Shift2_Schedule_";
+        //  const worksheet2 = xlsx.utils.json_to_sheet(this.scheduleShift2);
+        //  workbook = { Sheets: { 'Shift 2': worksheet2 }, SheetNames: ['Shift 2'] };
+        //  break;
+        //}
+        //case 3: {
+        //  fileName = "Shift3_Schedule_";
+        //  const worksheet3 = xlsx.utils.json_to_sheet(this.scheduleShift3);
+        //  workbook = { Sheets: { 'Shift 3': worksheet3 }, SheetNames: ['Shift 3'] };
+        //  break;
+        //}
         case 0: {
           fileName = "FullSchedule_";
           const worksheet1 = xlsx.utils.json_to_sheet(this.scheduleShift1);

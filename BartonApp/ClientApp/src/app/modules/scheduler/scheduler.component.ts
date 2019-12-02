@@ -1,13 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { TableModule } from 'primeng/table';
 import { Router, RouterLink } from '@angular/router';
 import { registerLocaleData } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+
+import { TableModule } from 'primeng/table';
+import { MessageService } from 'primeng/api';
+
 import { ScheduleObject } from '../../core/models/ScheduleObject';
 import { TemplateObject } from '../../core/models/TemplateObject';
-import { MessageService } from 'primeng/api';
 import { EmployeeObject } from '../../core/models/EmployeeObject';
+import { JobObject } from '../../core/models/JobObject';
+
 import { SchedulerService } from '../../core/services/scheduler.service';
+import { EmployeeService } from '../../core/services/employee.service';
 
 export class EmployeeNote {
   clockNumber: number;
@@ -27,7 +32,7 @@ export class EmployeeNote {
 export class SchedulerComponent implements OnInit {
   colsTemplate: any[];
   templates: Array<TemplateObject>;
-  clonedTemplates: { [s: string]: TemplateObject; } = {};
+  //clonedTemplates: { [s: string]: TemplateObject; } = {};
 
   //for restrictions footer and dialog
   employee: EmployeeNote = new EmployeeNote();
@@ -35,14 +40,15 @@ export class SchedulerComponent implements OnInit {
   displayDialog: boolean = false;
 
   displayJobDialog: boolean = false;
-  jobAdd: string = '';
+  jobAdd: JobObject;
+  allJobs: Array<JobObject>;
 
-
-  constructor(public router: Router, private httpService: HttpClient, private messageService: MessageService, private schedulerService: SchedulerService) { }
+  constructor(public router: Router, private messageService: MessageService, private schedulerService: SchedulerService, private employeeService: EmployeeService) { }
 
   ngOnInit() {
     this.getCurrentTemplate();
     this.initalizeTemplateTable();
+    this.getJobs();
 
     console.log('scheduler has been loaded');
   }
@@ -63,61 +69,64 @@ export class SchedulerComponent implements OnInit {
         if (res) {
           this.templates = res as Array<TemplateObject>;
         } else {
-          //TODO: add toast for no info found
-          console.log("no data found");
+          this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Scheduler Template data could not be loaded.' });
         }
       });
   }
 
+  getJobs() {
+    this.employeeService.getJobs().subscribe(
+      res => {
+        if (res) {
+          this.allJobs = res as Array<JobObject>;
+        } else {
+          this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'No job data found.' });
+        }
+      }
+    )
+  }
+
   onAddJob() {
     this.displayJobDialog = true;
+    this.jobAdd = new JobObject();
   }
 
-  onHideAddJob() {
-    this.jobAdd = '';
-  }
-
-  onSaveJob() {
+  onSaveAddJob() {
     let newJob: TemplateObject = new TemplateObject;
 
-    if (this.jobAdd && this.jobAdd !== '') {
-      newJob.jobName = this.jobAdd;
+    if (this.jobAdd && this.jobAdd.jobId) {
+      newJob.jobName = this.jobAdd.jobName;
+      newJob.departmentName = '';
+      newJob.jobId = this.jobAdd.jobId
       newJob.shift1 = 0;
       newJob.shift2 = 0;
       newJob.shift3 = 0;
 
       this.templates.push(newJob);
-
-      newJob = null;
       this.displayJobDialog = false;
     } else {
-      //TODO: implement message service stating no job name
+      this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Please select a job.' });
     }
   }
 
   onRemoveJob() {
-    if (this.jobAdd && this.jobAdd !== '') {
-      //TODO: implement remove job
+    let temp: Array<TemplateObject>;
 
-      this.jobAdd = '';
-      this.displayJobDialog = false;
+    if (this.jobAdd && this.jobAdd.jobId) {
+      //make sure job exist to be removed
+      temp = this.templates.filter(t => t.jobName === this.jobAdd.jobName);
+      if (temp && temp.length > 0) {
+        let filtered: Array<TemplateObject>;
+        filtered = this.templates.filter(t => t.jobName !== this.jobAdd.jobName);
+        this.templates = filtered;
+
+        this.displayJobDialog = false;
+      } else {
+        this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'The job could not be found in the template.' });
+      }
     } else {
-      //TODO: implement message service stating no job name
+      this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Please select a job.' });
     }
-  }
-
-  onRowEditInit(template: TemplateObject) {
-    this.clonedTemplates[template.jobName] = { ...template };
-  }
-
-  onRowEditSave(template: TemplateObject) {
-    delete this.clonedTemplates[template.jobName];
-    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Car is updated' });
-  }
-
-  onRowEditCancel(template: TemplateObject, index: number) {
-    this.templates[index] = this.clonedTemplates[template.jobName];
-    delete this.clonedTemplates[template.jobName];
   }
 
   showDialogToAdd() {
@@ -125,6 +134,7 @@ export class SchedulerComponent implements OnInit {
     this.displayDialog = true;
   }
 
+  //when save is clicked for adding vacation/restriction
   save() {
     if (this.employee) {
       if (this.checkFields()) {
@@ -173,10 +183,20 @@ export class SchedulerComponent implements OnInit {
     this.displayDialog = false;
   }
 
-  //TODO: implement whatever mike expects on how to run scheduler?
+  //TODO: insertNewTemplate called. if that works then send app to history table to generate the schedule
   onRunScheduler() {
     //NOTE: can pass data through the service
-    this.schedulerService.setData(5);
-    this.router.navigate(['/history']);
+    this.schedulerService.insertNewTemplates(this.templates).subscribe(
+      res => {
+        if (res) {
+          console.log(res);
+          this.schedulerService.setIsFromScheduler(true);
+          this.router.navigate(['/history']);
+        } else {
+          console.log('no no');
+          console.log(res);
+        }
+      }
+    );
   }
 }

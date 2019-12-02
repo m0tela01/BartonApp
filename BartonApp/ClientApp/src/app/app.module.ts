@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms'
 
 import { ButtonModule } from 'primeng/button';
+import { DropdownModule } from 'primeng/dropdown';
+import { ToastModule } from 'primeng/toast';
 import { TableModule } from 'primeng/table';
 
 //for scheduler component
@@ -32,7 +34,9 @@ import { HttpClientModule } from '@angular/common/http';
     BrowserModule,
 
     ButtonModule,
+    DropdownModule,
     TableModule,
+    ToastModule,
 
     CalendarModule,
     DialogModule,

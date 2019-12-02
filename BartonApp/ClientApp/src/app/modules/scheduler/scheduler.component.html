@@ -1,4 +1,3 @@
-<!--This table seems more ideal-->
 <p-table [value]="templates">
   <ng-template pTemplate="header">
     <tr>
@@ -55,8 +54,8 @@
       </div>
     </div>
     <div style="text-align:center">
-      <button type="button" pButton icon="fa fa-plus" (click)="onAddJob()" label="Add/Remove Job"></button>
-      <button type="button" pButton icon="fa fa-plus" (click)="showDialogToAdd()" label="Add Vacation/Restriction"></button>
+      <button type="button" pButton icon="pi pi-plus" (click)="onAddJob()" label="Add/Remove Job"></button>
+      <button type="button" pButton icon="pi pi-plus" (click)="showDialogToAdd()" label="Add Vacation/Restriction"></button>
     </div>
   </ng-template>
 </p-table>
@@ -104,21 +103,16 @@
   </p-footer>
 </p-dialog>
 
-<p-dialog header="Add/Remove Job" [(visible)]="displayJobDialog" (onHide)="onHideAddJob()" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '300px'}" [contentStyle]="{'overflow':'visible'}" [closable]="true">
+<p-dialog header="Add/Remove Job" [(visible)]="displayJobDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '300px'}" [contentStyle]="{'overflow':'visible'}" [closable]="true">
   <div class="ui-g ui-fluid" *ngIf="employee">
     <div class="ui-g-12">
-      <div class="ui-g-4">
-        <label for="job">Job</label>
-      </div>
-      <div class="ui-g-8">
-        <input pInputText id="job" [(ngModel)]="jobAdd" />
-      </div>
+      <p-dropdown [options]="allJobs" [(ngModel)]="jobAdd" placeholder="Select a Job" optionLabel="jobName"></p-dropdown>
     </div>
   </div>
   <p-footer>
     <div class="ui-dialog-buttonpane ui-helper-clearfix">
-      <button type="button" pButton icon="fa fa-check" (click)="onSaveJob()" label="Save"></button>
-      <button type="button" pButton icon="fa fa-check" (click)="onRemoveJob()" label="Remove"></button>
+      <button type="button" pButton icon="pi pi-plus" (click)="onSaveAddJob()" label="Add"></button>
+      <button type="button" pButton icon="pi pi-plus" class="ui-button-danger" (click)="onRemoveJob()" label="Remove"></button>
     </div>
   </p-footer>
 </p-dialog>
@@ -129,3 +123,4 @@
   </button>
 </div>
 
+<p-toast position="top-center" life="500"></p-toast>
