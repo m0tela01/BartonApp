@@ -3,9 +3,10 @@
   <ng-template pTemplate="caption">
     <div>
       <!--TODO: how to get button on left and right-->
-      <button type="button" pButton icon="pi pi-plus" (click)="onShowAddDialog()" label=" Add New Employee" style="display: inline-block"></button>
-      <div  style="margin-left: 20%;margin-right: 20%;display: inline-block;font-size: 20px;">Employees Table</div>
-      <button type="button" pButton icon="pi pi-minus" class="ui-button-danger" (click)="onShowDeleteDialog()" label=" Delete Employee"  style="display: inline-block"></button>
+      <button type="button" pButton icon="pi pi-plus" (click)="onShowAddJobDialog()" label=" Add New Job" style="display: inline-block"></button>
+      <button type="button" pButton icon="pi pi-plus" (click)="onShowAddDialog()" label=" Add New Employee" style="margin-left: 20%;margin-right: 20%;display: inline-block"></button>
+      <!--<div style="margin-left: 20%;margin-right: 20%;display: inline-block;font-size: 20px;">Employees Table</div>-->
+      <button type="button" pButton icon="pi pi-minus" class="ui-button-danger" (click)="onShowDeleteDialog()" label=" Delete Employee" style="display: inline-block"></button>
     </div>
   </ng-template>
   <ng-template pTemplate="header">
@@ -94,7 +95,7 @@
   </ng-template>
 </p-table>
 
-<p-dialog header="Add New Employee" [(visible)]="displayDialog" (onHide)="onHideDialog()" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '40%'}"  [contentStyle]="{'overflow':'visible'}">
+<p-dialog header="Add New Employee" [(visible)]="displayDialog" (onHide)="onHideDialog()" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '40%'}" [contentStyle]="{'overflow':'visible'}">
   <div class="ui-g ui-fluid" *ngIf="newEmployee" style="text-align: center">
     <div class="ui-g-12">
       <div class="ui-g-4">
@@ -158,12 +159,27 @@
     </div>
     <div class="ui-g-12">
       <div class="ui-g-4" style="text-align: center">
+      </div>
+      <div class="ui-g-4" style="text-align: center">
         <button type="button" pButton (click)="onConfirmDeletion()" label="Find"></button>
+      </div>
+      <div class="ui-g-4" style="text-align: center">
       </div>
     </div>
   </div>
-  <div class="ui-g-12" *ngIf="confirmDeletion" style="text-align: center; font-size: 20px; color: red;">
-    {{deletionDialogMessage}}
+  <div *ngIf="confirmDeletion">
+    <div class="ui-g-12" style="text-align: center; font-size: 20px; color: red;">
+      Seniority Number: {{deleteEmployee.seniorityNumber}}
+    </div>
+    <div class="ui-g-12" style="text-align: center; font-size: 20px; color: red;">
+      Clock Number: {{deleteEmployee.clockNumber}}
+    </div>
+    <div class="ui-g-12" style="text-align: center; font-size: 20px; color: red;">
+      Name: {{deleteEmployee.employeeName}}
+    </div>
+    <div class="ui-g-12" style="text-align: center; font-size: 20px; color: red;">
+      Job Name: {{deleteEmployee.jobName}}
+    </div>
   </div>
   <p-footer>
     <div class="ui-dialog-buttonpane ui-helper-clearfix" style="display: inline-block; text-align: center">
@@ -171,6 +187,25 @@
     </div>
     <div class="ui-dialog-buttonpane ui-helper-clearfix" style="display: inline-block; text-align: center">
       <button type="button" pButton class="ui-button-danger" (click)="onDeleteEmployee()" label="Delete" [disabled]="!confirmDeletion"></button>
+    </div>
+  </p-footer>
+</p-dialog>
+
+<!--add new job-->
+<p-dialog header="Add Job" [(visible)]="addJobDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '50%'}">
+  <div class="ui-g ui-fluid" style="text-align: center">
+    <div class="ui-g-12">
+      <div class="ui-g-4">
+        <label for="addJobName">New Job Name: </label>
+      </div>
+      <div class="ui-g-8">
+        <input pInputText id="addJobName" [(ngModel)]="addJobName" />
+      </div>
+    </div>
+  </div>
+  <p-footer style="text-align:center">
+    <div class="ui-dialog-buttonpane ui-helper-clearfix" style="display: inline-block; text-align: center">
+      <button type="button" pButton (click)="onAddJob()" label="Add Job"></button>
     </div>
   </p-footer>
 </p-dialog>

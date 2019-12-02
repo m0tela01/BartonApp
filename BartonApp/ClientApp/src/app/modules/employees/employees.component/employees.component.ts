@@ -27,15 +27,17 @@ export class EmployeesComponent implements OnInit {
 
   jobs: Array<JobObject>;
 
+  addJobDialog: boolean = false;
+  addJobName: string = '';
+  
   newEmployee: EmployeeObject = new EmployeeObject();
   selectedJob: JobObject;
   displayDialog: boolean = false;
 
-  deletionDialog: boolean = false; // when employee is being deleted
-  confirmDeletion: boolean = false; // confirm which employee will be deleted
+  deletionDialog: boolean = false; // dialog to find and delete employee
+  confirmDeletion: boolean = false; // dialog to confirm which employee will be deleted
   deleteClockNumber: number = null;
   deleteEmployee: EmployeeObject;
-  deletionDialogMessage: string = '';
 
   constructor(public router: Router, private employeeService: EmployeeService, private messageService: MessageService) { }
 
@@ -101,6 +103,41 @@ export class EmployeesComponent implements OnInit {
   onRowEditCancel(employee: EmployeeObject, index: number) {
     this.employees[index] = this.clonedEmployees[employee.clockNumber];
     delete this.clonedEmployees[employee.clockNumber];
+  }
+
+  onShowAddJobDialog() {
+    this.addJobDialog = true;
+    this.addJobName = ''
+  }
+
+  onAddJob() {
+    let temp: Array<JobObject>;
+    let newJob: JobObject = new JobObject();
+
+    //verify fields exist
+    if (this.addJobName && this.addJobName != '') {
+      //verify job name doesn't already exist
+      temp = this.jobs.filter(job => job.jobName == this.addJobName);
+      if (temp && temp.length > 0) {
+        this.messageService.add({ severity: 'error', summary: 'Failure', detail: 'The job name already exist.' });
+      } else {
+        newJob.jobName = this.addJobName;
+        newJob.jobId = this.jobs.length + 1;
+
+        this.employeeService.insertJob(newJob).subscribe(
+          res => {
+            if (res) {
+              this.getAllEmployees();
+              this.messageService.add({ severity: 'success', summary: 'Success', detail: 'The job was added.' });
+            } else {
+              this.messageService.add({ severity: 'error', summary: 'Failure', detail: 'The job failed while attempting to be added.' });
+            }
+          }
+        )
+      }
+    } else {
+      this.messageService.add({ severity: 'error', summary: 'Failure', detail: 'Please enter a job name.' });
+    }
   }
 
   //TODO: Create post for new employee
@@ -175,10 +212,15 @@ export class EmployeesComponent implements OnInit {
 
   onConfirmDeletion() {
     this.deleteEmployee = new EmployeeObject();
-    if (this.employees.filter(emp => emp.clockNumber === this.deleteClockNumber).length > 0) {
+    let temp = this.employees.filter(emp => emp.clockNumber == this.deleteClockNumber);
+
+    console.log(this.employees);
+    console.log(this.deleteClockNumber);
+    console.log(temp);
+
+    if (temp && temp.length > 0) {
       // then the employee exist and show employee on screen
-      this.deleteEmployee = this.employees.filter(emp => emp.clockNumber === this.deleteClockNumber)[0];
-      this.deletionDialogMessage = 'Seniority Number: ' + this.deleteEmployee.seniorityNumber.toString + ' | Clock Number: ' + this.deleteEmployee.clockNumber.toString + ' | Name: ' + this.deleteEmployee.employeeName + ' | Job Name: ' + this.deleteEmployee.jobName;
+      this.deleteEmployee = temp[0];
       this.confirmDeletion = true;
     } else {
       // give user a notice that user does not exist
@@ -197,9 +239,22 @@ export class EmployeesComponent implements OnInit {
   onDeleteEmployee() {
     //TODO: SEND POST TO DELETE EMPLOYEE
     //TODO: Get reload table
+    this.employeeService.deleteEmployee(this.deleteEmployee)
+      .subscribe(
+        response => {
+          if (response) {
+            this.getAllEmployees();
+            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Employee was deleted.' });
+          } else {
+            this.messageService.add({ severity: 'error', summary: 'Failure', detail: 'Employee could not be deleted.' });
+          }
+        }
+      );
+
     this.deleteClockNumber = null;
     this.deleteEmployee = new EmployeeObject();
     this.deletionDialog = false;
+    this.confirmDeletion = false;
   }
 }
 

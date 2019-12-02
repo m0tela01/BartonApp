@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\app\core\models\JobObject.ts" />
     <None Remove="ClientApp\src\app\core\models\ScheduleHistoryObject.ts" />
     <None Remove="ClientApp\src\app\core\services\employee.service.ts" />
   </ItemGroup>
@@ -34,6 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\core\models\JobObject.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\core\models\ScheduleHistoryObject.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\core\services\employee.service.ts" />
   </ItemGroup>
