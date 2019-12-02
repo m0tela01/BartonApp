@@ -6,6 +6,7 @@ namespace Barton1792DB.DBO
 {
     public class Template
     {
+        public int JobId { get; set; }
         public string JobName { get; set; }
         public string DepartmentName { get; set; }
         public int Shift1 { get; set; }

@@ -23,6 +23,13 @@ namespace BartonApp.Controllers
             return CurrentEmployeeData;
         }
 
+        [HttpGet("GetJobs")]
+        public ActionResult<List<Job>> GetJobs()
+        {
+            List<Job> CurrentJobs = readers.GetJobs(new List<Job>());
+            return CurrentJobs;
+        }
+
         [HttpGet("GetCurrentSchedule")]
         public ActionResult<List<Schedule>> GetCurrentSchedule()
         {
@@ -60,12 +67,11 @@ namespace BartonApp.Controllers
         }
         #endregion Get
 
-
         #region Post
 
         #region Insert
         [HttpPost("InsertNewTemplates")]
-        public bool InsertNewTemplates(List<string> postTemplates)
+        public bool InsertNewTemplates([FromBody]List<Template> postTemplates)
         {
             try
             {
@@ -74,38 +80,106 @@ namespace BartonApp.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
+                return false;
             }
-            return false;
+        }
+        [HttpPost("InsertScheduleTemplate")]
+        public bool InsertScheduleTemplate([FromBody]Template postTemplate)
+        {
+            try
+            {
+                return writers.InsertScheduleTemplate(postTemplate);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return false;
+            }
+        }
+        [HttpPost("InsertEmployee")]
+        public bool InsertEmployee([FromBody]Employee postEmployee)
+        {
+            try
+            {
+                return writers.InsertEmployee(postEmployee);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return false;
+            }
+        }
+        [HttpPost("InsertJob")]
+        public bool InsertJob([FromBody] Job postJob)
+        {
+            try
+            {
+                return BartonSchedulerWeekday.InsertNewJob(postJob);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return false;
+            }
         }
         #endregion Insert
 
-        #region Update
-        [HttpPost("UpdateEmployeeById")]
-        public bool UpdateEmployeById(string postEmployee)
+        #region Delete
+        [HttpPost("DeleteEmployee")]
+        public bool DeleteEmployeeById([FromBody]Employee postEmployee)
         {
             try
             {
-                return writers.UpdateEmployeeById(new Employee(), postEmployee);
+                return writers.DeleteEmployeeById(postEmployee);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
+                return false;
             }
-            return false;
+        }
+        [HttpPost("DeleteJobFromSchedulerTemplateById")]
+        public bool DeleteJobFromSchedulerTemplateById([FromBody]Template postTemplate)
+        {
+            try
+            {
+                return writers.DeleteJobFromSchedulerTemplateById(postTemplate);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return false;
+            }
+        }
+        #endregion Delete
+
+        #region Update
+        [HttpPost("UpdateEmployeeById")]
+        public bool UpdateEmployeById([FromBody]Employee postEmployee)
+        {
+            try
+            {
+                return BartonSchedulerWeekday.UpdateEmployeeById(postEmployee);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return false;
+            }
         }
 
         [HttpPost("UpdateTemplateByJobId")]
-        public bool UpdateTemplateByJobId(string postTemplate)
+        public bool UpdateTemplateByJobId([FromBody]Template postTemplate)
         {
             try
             {
-                return writers.UpdateTemplateByJobId(new Template(), postTemplate);
+                return writers.UpdateTemplateByJobId(postTemplate);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
+                return false;
             }
-            return false;
         }
         #endregion Update
 

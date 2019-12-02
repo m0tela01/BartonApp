@@ -56,13 +56,32 @@ export class EmployeesComponent implements OnInit {
   // invoked after edit is confirmed
   onRowEditSave(employee: EmployeeObject) {
     //TODO: Post a save to db
+    //this.employeeService.updateEmployeeById(employee)
+    //  .subscribe(data =>
+    //    console.log("Succeeded, result = " + data),
+    //    (err) => console.error("Failed! " + err)
+    //  );
+    //delete this.clonedEmployees[employee.clockNumber];
+    //this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Employee is updated' });
+    this.updateEmployee(employee);
+  }
+
+  updateEmployee(employee: EmployeeObject) {
     this.employeeService.updateEmployeeById(employee)
-      .subscribe(data =>
-        console.log("Succeeded, result = " + data),
-        (err) => console.error("Failed! " + err)
+      .subscribe(
+        response => {
+          console.log("update and get");
+
+          if (response) {
+            this.getAllEmployees();
+
+            delete this.clonedEmployees[employee.clockNumber];
+            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Employee is updated' });
+          } else {
+            this.messageService.add({ severity: 'error', summary: 'Failure', detail: 'Employee could not be updated' });
+          }
+        }
       );
-    delete this.clonedEmployees[employee.clockNumber];
-    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Employee is updated' });
   }
 
   onRowEditCancel(employee: EmployeeObject, index: number) {
@@ -76,16 +95,18 @@ export class EmployeesComponent implements OnInit {
     this.displayDialog = true;
   }
 
+ 
   onAddNewEmployee() {
     if (this.newEmployee && this.employeeObjectCheck()) {
       //TODO: Create post to add new employee
-      this.employeeService.addNewEmployee(this.newEmployee)
+      //this.employeeService.addNewEmployee(this.newEmployee)
       this.newEmployee = null;
       this.displayDialog = false;
     } else {
       this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Please fill out the the dialog' });
     }
   }
+
 
   //TODO: verify all fields are there (MAY NOT BE NEEDED)
   employeeObjectCheck() {

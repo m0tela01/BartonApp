@@ -7,6 +7,7 @@ export class EmployeeObject {
   jobName: string;
   absence: string;
   restrictions: string;
+  jobId: number;
   //departmentName: string;
   //prebuiltHours: number;
   //weekendOTHours: number;
@@ -22,11 +23,10 @@ export class EmployeeObject {
     this.jobName = this.jobName ? this.jobName : null;
     this.absence = this.absence ? this.absence : null;
     this.restrictions = this.restrictions ? this.restrictions : null;
+    this.jobId = this.jobId ? this.jobId : null;
     //this.departmentName = this.departmentName ? this.departmentName : null;
     //this.prebuiltHours = this.prebuiltHours ? this.prebuiltHours : null;
     //this.weekendOTHours = this.weekendOTHours ? this.weekendOTHours: null;
     //this.totalHours = this.totalHours ? this.totalHours : null;
   }
 }
-
-

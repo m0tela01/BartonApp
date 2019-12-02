@@ -72,8 +72,8 @@ namespace Barton1792DB.BO
                                 schedule.SeniorityNumber = employees[i].SeniorityNumber;
                                 schedule.ClockNumber = employees[i].ClockNumber;
                                 schedule.EmployeeName = employees[i].EmployeeName;
-                                schedule.DepartmentName = employees[i].DepartmentName;
                                 schedule.ShiftPreference = employees[i].ShiftPreference;
+                                //schedule.DepartmentName = employees[i].DepartmentName;
                             // Give them what they want trial 1
                             tryagain:
                                 if (employees[i].ShiftPreference == 1)
@@ -176,22 +176,56 @@ namespace Barton1792DB.BO
                 return null;
             }
         }
-
-        //public static bool Insert
-        public static bool InsertNewTemplates(List<string> postTemplates)
+        public static bool InsertNewTemplates(List<Template> postTemplates)
         {
             try
             {
                 List<Template> NewTemplates = new List<Template>();
                 writers.ClearScheduleTemplateBeforeInsert();
-                writers.InsertCurrentScheduleTemplate(NewTemplates, postTemplates);
-                return true;
+                return writers.InsertCurrentScheduleTemplate(postTemplates);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
             }
             return false;
+        }
+        public static bool UpdateEmployeeById(Employee postEmployee)
+        {
+            Employee employee = new Employee();
+            try
+            {
+                writers.UpdateEmployeeById(postEmployee);
+                //to update employee ids
+                //List<Employee> employees = readers.GetEmployees(new List<Employee>());
+                //bool NeedToUpdateEmployees = employee.CheckSeniorityNumber(employees);
+                //if (NeedToUpdateEmployees == true)
+                //{
+                //    bool DidUpdate = writers.UpdateEmployeesById(employees);
+                //}
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return false;
+            }
+        }
+        public static bool InsertNewJob(Job job)
+        {
+            Readers readers = new Readers();
+            try
+            {
+                job.JobId = readers.GetJobCount() + 1;
+                //job = JsonConvert.DeserializeObject<Job>(postJob);
+                writers.InsertNewJob(job);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return false;
+            }
         }
     }
 }

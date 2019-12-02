@@ -20,12 +20,14 @@ namespace Barton1792DB.DAO
         private string ProceduresFolder => Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Procedures\\";
 
         private string GetEmployeesSql => "GetEmployeeData";
+        private string GetJobsSql => "GetJobs";
         private string GetTemplateSql => "GetTemplate";
         private string GetCurrentScheduleSql => "GetCurrentSchedule";
         private string GetScheduleHistoryDatesSql => "GetScheduleHistoryDates";
         private string GetScheduleHistoryByScheduleDateSql => "GetScheduleHistoryByScheduleDate";
 
         private string GetEmployeeByIdSql => "GetEmployeeById";
+        private string GetJobCountSql => "GetJobCount";
 
 
         #region Create Objects
@@ -37,13 +39,14 @@ namespace Barton1792DB.DAO
                 SeniorityNumber = int.Parse(rdr["senioritynumber"].ToString()),
                 ShiftPreference = int.Parse(rdr["shiftpref"].ToString()),
                 EmployeeName = rdr["empname"].ToString(),
-                SeniorityDate = DateTime.Parse(rdr["senioritydate"].ToString()),
+                //SeniorityDate = DateTime.Parse(rdr["senioritydate"].ToString()),
                 //PrebuiltHours = int.Parse(rdr["prebuilthours"].ToString()),
                 //WeekendOTHours = int.Parse(rdr["weekendothours"].ToString()),
                 //TotalHours = int.Parse(rdr["totalhours"].ToString()),
                 JobName = rdr["jobname"].ToString(),
                 Absence = rdr["absence"].ToString(),
                 Restrictions = rdr["restrictions"].ToString(),
+                JobId = int.Parse(rdr["jobid"].ToString()),
                 //DepartmentName = rdr["departmentname"].ToString()
             };
             return emp;
@@ -68,7 +71,8 @@ namespace Barton1792DB.DAO
         {
             Template temp = new Template()
             {
-                DepartmentName = rdr["departmentname"].ToString(),
+                JobId = int.Parse(rdr["jobid"].ToString()),
+                //DepartmentName = rdr["departmentname"].ToString(),
                 JobName = rdr["jobname"].ToString(),
                 Shift1 = int.Parse(rdr["s1"].ToString()),
                 Shift2 = int.Parse(rdr["s2"].ToString()),
@@ -84,10 +88,18 @@ namespace Barton1792DB.DAO
             };
             return historyDate;
         }
+        public Job CreateJob(MySqlDataReader rdr)
+        {
+            Job job = new Job()
+            {
+                JobId = int.Parse(rdr["jobid"].ToString()),
+                JobName = rdr["jobname"].ToString()
+            };
+            return job;
+        }
         #endregion Create Objects
 
         #region Readers
-        //Need scalar - GetEmployee(Employee employee)
         #region Scalars
         /// <summary>
         /// Get employee by their id (clocknumber).
@@ -121,6 +133,33 @@ namespace Barton1792DB.DAO
             }
             return employee;
         }
+        public int GetJobCount()
+        {
+            int jobCount = 0;
+            using (MySqlConnection conn = new MySqlConnection(BSConnectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(GetJobCountSql, conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        MySqlDataReader rdr = cmd.ExecuteReader();
+                        if (rdr.Read())
+                        {
+                            jobCount = int.Parse(rdr["jobsCount"].ToString());
+                        }
+                        rdr.Close();
+                    }
+                    conn.Close();
+                }
+                catch (MySqlException ex)
+                {
+                    Console.WriteLine(ex);
+                }
+            }
+            return jobCount;
+        }
         #endregion Scalars
 
         /// <summary>
@@ -153,6 +192,37 @@ namespace Barton1792DB.DAO
                 }
             }
             return Employees;
+        }
+        /// <summary>
+        /// Get jobs table as list of jobs.
+        /// </summary>
+        /// <param name="Jobs"></param>
+        /// <returns></returns>
+        public List<Job> GetJobs(List<Job> Jobs)
+        {
+            using (MySqlConnection conn = new MySqlConnection(BSConnectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(GetJobsSql, conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        MySqlDataReader rdr = cmd.ExecuteReader();
+                        while (rdr.Read())
+                        {
+                            Jobs.Add(CreateJob(rdr));
+                        }
+                        rdr.Close();
+                    }
+                    conn.Close();
+                }
+                catch (MySqlException ex)
+                {
+                    Console.WriteLine(ex);
+                }
+            }
+            return Jobs;
         }
         /// <summary>
         /// Get current schedule table as list of schedules.

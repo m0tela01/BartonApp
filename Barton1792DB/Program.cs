@@ -14,10 +14,16 @@ namespace Barton1792DB
         public static void Main(string[] args)
         {
             Readers reader = new Readers();
-            //List<Employee> CurrentEmployeeData = reader.GetEmployees(new List<Employee>());
+            Writers writer = new Writers();
+            util.print(reader.GetJobCount());
+            string postitem = @"{""seniorityNumber"":1,""clockNumber"":1232,""seniorityDate"":""1977 - 09 - 28T00: 00:00"",""employeeName"":""aLindsay, Lohana1aa"",""shiftPreference"":1,""jobName"":""MECHANIC"",""absence"":""FMLA"",""restrictions"":""none"",""jobId"":1}";
+            //var response = writer.UpdateEmployeeById(new Employee(), postitem);
             List<Employee> CurrentEmployeeData = reader.GetEmployees(new List<Employee>());
-            util.print(CurrentEmployeeData);
-            List<Schedule> saturdaySchedule = BartonSchedulerWeekday.GenerateWeekdaySchedule();
+            //List<Employee> CurrentEmployeeData = reader.GetEmployees(new List<Employee>());
+            //util.print(CurrentEmployeeData);
+            //List<Schedule> saturdaySchedule = BartonSchedulerWeekday.GenerateWeekdaySchedule();
+            List<Template> temps = reader.GetTemplates(new List<Template>());
+
 
             //List<HistoryDate> dates = reader.GetScheduleHistoryDates(new List<HistoryDate>());
             //List<Schedule> schedulesFromDate = reader.GetScheduleHistoryByScheduleDate(new List<Schedule>(), "2019-10-14");

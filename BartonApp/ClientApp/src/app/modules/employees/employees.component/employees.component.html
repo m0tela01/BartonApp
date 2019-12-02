@@ -37,6 +37,7 @@
         </td>
         <td>
           <p-cellEditor>
+            <!-- remove: senoritydate removed from employee-->
             <ng-template pTemplate="input">
               <input pInputText type="text" [(ngModel)]="rowData.seniorityDate" required>
             </ng-template>
@@ -130,6 +131,7 @@
         <label for="seniorityDate">SeniorityDate</label>
       </div>
       <div class="ui-g-8">
+        <!-- remove: senoritydate removed from employee-->
         <input pInputText id="seniorityDate" [(ngModel)]="newEmployee.seniorityDate" />
       </div>
     </div>
@@ -164,7 +166,7 @@
         <label for="departmentName">DepartmentName</label>
       </div>
       <div class="ui-g-8">
-        <!--TODO: Should this be a drop down?-->
+        <!--TODO: Should this be a drop down?--> <!-- remove: departmentname removed from employee-->
         <input pInputText id="departmentName" [(ngModel)]="newEmployee.departmentName" />
       </div>
     </div>
