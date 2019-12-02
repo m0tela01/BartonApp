@@ -1,116 +1,104 @@
-<div>
-  <p-table [value]="employees" dataKey="clockNumber" editMode="row" id="employees" [scrollable]="true">
-    <ng-template pTemplate="caption">
-      <div>
-        <!--TODO: how to get button on left and right-->
-        <button type="button" pButton icon="fa fa-plus" (click)="onShowAddDialog()" label="Add New Employee" style=""></button>
-        <button type="button" pButton icon="fa fa-plus" (click)="onShowDeleteDialog()" label="Delete Employee" style=""></button>
-      </div>
-    </ng-template>
-    <ng-template pTemplate="header">
-      <tr style="color:#E5D082;background: black; font-size: 16px">
-        <th>SeniorityNumber</th>
-        <th>ClockNumber</th>
-        <th>SeniorityDate</th>
-        <th>EmployeeName</th>
-        <th>ShiftPreference</th>
-        <th>JobName</th>
-        <th>Absences</th>
-        <th>Restrictions</th>
-        <th style="width:8em">Edit</th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" style="color: #E5D082; background:darkslategrey; font-size: 16px">
-      <tr [pEditableRow]="rowData" style="text-align: center">
-        <td>
-          <p-cellEditor>
-            <ng-template pTemplate="input">
-              <input pInputText type="text" [(ngModel)]="rowData.seniorityNumber" required>
-            </ng-template>
-            <ng-template pTemplate="output">
-              {{rowData.seniorityNumber}}
-            </ng-template>
-          </p-cellEditor>
-        </td>
-        <td>
-          {{rowData.clockNumber}}
-        </td>
-        <td>
-          <p-cellEditor>
-            <!-- remove: senoritydate removed from employee-->
-            <ng-template pTemplate="input">
-              <input pInputText type="text" [(ngModel)]="rowData.seniorityDate" required>
-            </ng-template>
-            <ng-template pTemplate="output">
-              {{rowData.seniorityDate}}
-            </ng-template>
-          </p-cellEditor>
-        </td>
-        <td>
-          <p-cellEditor>
-            <ng-template pTemplate="input">
-              <input pInputText type="text" [(ngModel)]="rowData.employeeName">
-            </ng-template>
-            <ng-template pTemplate="output">
-              {{rowData.employeeName}}
-            </ng-template>
-          </p-cellEditor>
-        </td>
-        <td>
-          <p-cellEditor>
-            <ng-template pTemplate="input">
-              <input pInputText type="text" [(ngModel)]="rowData.shiftPreference">
-            </ng-template>
-            <ng-template pTemplate="output">
-              {{rowData.shiftPreference}}
-            </ng-template>
-          </p-cellEditor>
-        </td>
-        <td>
-          <p-cellEditor>
-            <ng-template pTemplate="input">
-              <input pInputText type="text" [(ngModel)]="rowData.jobName">
-            </ng-template>
-            <ng-template pTemplate="output">
-              {{rowData.jobName}}
-            </ng-template>
-          </p-cellEditor>
-        </td>
-        <td>
-          <p-cellEditor>
-            <ng-template pTemplate="input">
-              <input pInputText type="text" [(ngModel)]="rowData.absence">
-            </ng-template>
-            <ng-template pTemplate="output">
-              {{rowData.absence}}
-            </ng-template>
-          </p-cellEditor>
-        </td>
-        <td>
-          <p-cellEditor>
-            <ng-template pTemplate="input">
-              <input pInputText type="text" [(ngModel)]="rowData.restrictions">
-            </ng-template>
-            <ng-template pTemplate="output">
-              {{rowData.restrictions}}
-            </ng-template>
-          </p-cellEditor>
-        </td>
-        <td style="text-align:center">
-          <button *ngIf="!editing" pButton type="button" pInitEditableRow icon="pi pi-pencil" class="ui-button-info" (click)="onRowEditInit(rowData)"></button>
-          <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="pi pi-check" class="ui-button-success" style="margin-right: .5em" (click)="onRowEditSave(rowData)"></button>
-          <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="pi pi-times" class="ui-button-danger" (click)="onRowEditCancel(rowData, ri)"></button>
-        </td>
-      </tr>
-    </ng-template>
-  </p-table>
-</div>
+<p-toast position="top-center" life="500"></p-toast>
+<p-table [value]="employees" dataKey="clockNumber" editMode="row" id="employees">
+  <ng-template pTemplate="caption">
+    <div>
+      <!--TODO: how to get button on left and right-->
+      <button type="button" pButton icon="pi pi-plus" (click)="onShowAddDialog()" label=" Add New Employee" style="display: inline-block"></button>
+      <div  style="margin-left: 20%;margin-right: 20%;display: inline-block;font-size: 20px;">Employees Table</div>
+      <button type="button" pButton icon="pi pi-minus" class="ui-button-danger" (click)="onShowDeleteDialog()" label=" Delete Employee"  style="display: inline-block"></button>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="header">
+    <tr>
+      <th>SeniorityNumber</th>
+      <th>ClockNumber</th>
+      <th>EmployeeName</th>
+      <th>ShiftPreference</th>
+      <th>JobName</th>
+      <th>Absences</th>
+      <th>Restrictions</th>
+      <th style="width:8em">Edit</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" style="text-align:center">
+    <tr [pEditableRow]="rowData">
+      <td>
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <input pInputText type="text" [(ngModel)]="rowData.seniorityNumber" required>
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{rowData.seniorityNumber}}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+      <td>
+        {{rowData.clockNumber}}
+      </td>
+      <td>
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <input pInputText type="text" [(ngModel)]="rowData.employeeName">
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{rowData.employeeName}}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+      <td>
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <input pInputText type="text" [(ngModel)]="rowData.shiftPreference">
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{rowData.shiftPreference}}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+      <td>
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <input pInputText type="text" [(ngModel)]="rowData.jobName">
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{rowData.jobName}}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+      <td>
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <input pInputText type="text" [(ngModel)]="rowData.absence">
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{rowData.absence}}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+      <td>
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <input pInputText type="text" [(ngModel)]="rowData.restrictions">
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{rowData.restrictions}}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+      <td style="text-align:center">
+        <button *ngIf="!editing" pButton type="button" pInitEditableRow icon="pi pi-pencil" class="ui-button-info" (click)="onRowEditInit(rowData)"></button>
+        <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="pi pi-check" class="ui-button-success" style="margin-right: .5em" (click)="onRowEditSave(rowData)"></button>
+        <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="pi pi-times" class="ui-button-danger" (click)="onRowEditCancel(rowData, ri)"></button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
 
-<p-dialog header="Add New Employee" [(visible)]="displayDialog" (onHide)="onHideDialog()" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '40%'}">
+<p-dialog header="Add New Employee" [(visible)]="displayDialog" (onHide)="onHideDialog()" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '40%'}"  [contentStyle]="{'overflow':'visible'}">
   <div class="ui-g ui-fluid" *ngIf="newEmployee" style="text-align: center">
     <div class="ui-g-12">
       <div class="ui-g-4">
-        <label for="seniorityNumber">seniorityNumber</label>
+        <label for="seniorityNumber">Seniority Number</label>
       </div>
       <div class="ui-g-8">
         <input pInputText id="seniorityNumber" [(ngModel)]="newEmployee.seniorityNumber" />
@@ -118,26 +106,15 @@
     </div>
     <div class="ui-g-12">
       <div class="ui-g-4">
-        <label for="clockNumber">ClockNumber</label>
+        <label for="clockNumber">Clock Number</label>
       </div>
       <div class="ui-g-8">
         <input pInputText id="clockNumber" [(ngModel)]="newEmployee.clockNumber" />
       </div>
     </div>
-    <!--TODO: Should this one exist?-->
-    <!--TODO: if so then this needs to be a calendar-->
     <div class="ui-g-12">
       <div class="ui-g-4">
-        <label for="seniorityDate">SeniorityDate</label>
-      </div>
-      <div class="ui-g-8">
-        <!-- remove: senoritydate removed from employee-->
-        <input pInputText id="seniorityDate" [(ngModel)]="newEmployee.seniorityDate" />
-      </div>
-    </div>
-    <div class="ui-g-12">
-      <div class="ui-g-4">
-        <label for="employeeName">employeeName</label>
+        <label for="employeeName">Employee Name</label>
       </div>
       <div class="ui-g-8">
         <input pInputText id="employeeName" [(ngModel)]="newEmployee.employeeName" />
@@ -145,7 +122,7 @@
     </div>
     <div class="ui-g-12">
       <div class="ui-g-4">
-        <label for="shiftPreference">shiftPreference</label>
+        <label for="shiftPreference">Shift Preference</label>
       </div>
       <div class="ui-g-8">
         <!--TODO: Should this be a drop down?-->
@@ -154,20 +131,12 @@
     </div>
     <div class="ui-g-12">
       <div class="ui-g-4">
-        <label for="jobName">jobName</label>
+        <label for="jobName">Job Name</label>
       </div>
       <div class="ui-g-8">
         <!--TODO: Should this be a drop down?-->
-        <input pInputText id="jobName" [(ngModel)]="newEmployee.jobName" />
-      </div>
-    </div>
-    <div class="ui-g-12">
-      <div class="ui-g-4">
-        <label for="departmentName">DepartmentName</label>
-      </div>
-      <div class="ui-g-8">
-        <!--TODO: Should this be a drop down?--> <!-- remove: departmentname removed from employee-->
-        <input pInputText id="departmentName" [(ngModel)]="newEmployee.departmentName" />
+        <p-dropdown id="jobName" [options]="jobs" [(ngModel)]="selectedJob" placeholder="" optionLabel="jobName"></p-dropdown>
+        <!--<input pInputText id="jobName" [(ngModel)]="newEmployee.jobName" />-->
       </div>
     </div>
   </div>
@@ -179,29 +148,31 @@
 </p-dialog>
 
 <!--delete employee dialog and confirmation table-->
-<p-dialog header="Delete Employee" [(visible)]="deletionDialog" [closable]="false" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '40%'}">
+<p-dialog header="Delete Employee" [(visible)]="deletionDialog" [closable]="false" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '50%'}">
   <div class="ui-g ui-fluid" *ngIf="!confirmDeletion" style="text-align: center">
     <div class="ui-g-12">
-      <div class="ui-g-4">
+      <div class="ui-g-8">
         <label for="clockNumber">Clock Number of employee to be deleted: </label>
       </div>
-      <div class="ui-g-8">
+      <div class="ui-g-4">
         <input pInputText id="clockNumber" [(ngModel)]="deleteClockNumber" />
       </div>
-      <div class="ui-g-8">
-        <button type="button" pButton icon="ui-button-danger" (click)="onConfirmDeletion()" label="Find"></button>
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-4" style="text-align: center">
+        <button type="button" pButton (click)="onConfirmDeletion()" label="Find"></button>
       </div>
     </div>
   </div>
-  <div class="ui-g ui-fluid" *ngIf="confirmDeletion" style="text-align: center">
-    testtt
+  <div class="ui-g-12" *ngIf="confirmDeletion" style="text-align: center; font-size: 20px; color: red;">
+    {{deletionDialogMessage}}
   </div>
   <p-footer>
     <div class="ui-dialog-buttonpane ui-helper-clearfix" style="display: inline-block; text-align: center">
-      <button type="button" pButton icon="ui-button-warning" (click)="onCancelDelete()" label="Cancel"></button>
+      <button type="button" pButton class="ui-button-warning" (click)="onCancelDelete()" label="Cancel"></button>
     </div>
     <div class="ui-dialog-buttonpane ui-helper-clearfix" style="display: inline-block; text-align: center">
-      <button type="button" pButton icon="ui-button-danger" (click)="onDeleteEmployee()" label="Delete" [disabled]="!confirmDeletion"></button>
+      <button type="button" pButton class="ui-button-danger" (click)="onDeleteEmployee()" label="Delete" [disabled]="!confirmDeletion"></button>
     </div>
   </p-footer>
 </p-dialog>

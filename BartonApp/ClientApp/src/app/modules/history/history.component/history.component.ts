@@ -32,28 +32,23 @@ export class HistoryComponent implements OnInit {
 
   colsSchedule: any[];
 
-  constructor(private httpService: HttpClient, private _schedulerService: SchedulerService) { }
+  constructor(private httpService: HttpClient, private schedulerService: SchedulerService) { }
 
   // do we want to by default display the most recent schedule ?
   ngOnInit() {
     this.getCurrentSchedules();
     console.log('history has been loaded');
+    console.log(this.schedulerService.getData());
   }
 
   initalizeScheduleTable() {
     this.colsSchedule = [
-      //{ field: 'seniorityNumber', header: 'Seniority Number' },
-      //{ field: 'clockNumber', header: 'Clock Number' },
       { field: 'employeeName', header: 'Employee Name' },
       { field: 'jobName', header: 'Job Name' },
-      //{ field: 'departmentName', header: 'Department Name' },
       { field: 'shift', header: 'Scheduled Shift' },
-      { field: 'restrictions', header: 'Restrictions' },
-      //{ field: 'shiftPreference', header: 'Prefered Shift' },
-      //{ field: 'scheduleDate', header: 'Schedule Date' }
+      { field: 'restrictions', header: 'Restrictions' }
     ];
   }
-
 
   //getCurrentSchedules() {
   //  this.httpService.get('http://localhost:8888/api/BartonData/GetCurrentSchedule').subscribe(
@@ -67,7 +62,7 @@ export class HistoryComponent implements OnInit {
 
 
   private async getCurrentSchedules() {
-    this._schedulerService.getCurrentSchedule().subscribe(
+    this.schedulerService.getCurrentSchedule().subscribe(
       res => {
         if (res) {
           this.schedules = res as Array<ScheduleObject>;

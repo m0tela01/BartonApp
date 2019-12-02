@@ -42,9 +42,9 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/scheduler']);
   }
 
+  //TODO: work on this
   onPreviousSchedule() {
-    //the second part is a variable that can be passed. We can pass a date or ID
-    this.router.navigate(['/history', 12]);
+    this.router.navigate(['/history']);
   }
 
   intializeScheduleHistoryTable() {

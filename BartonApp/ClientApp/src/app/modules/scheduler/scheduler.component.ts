@@ -172,4 +172,11 @@ export class SchedulerComponent implements OnInit {
     this.employee = null;
     this.displayDialog = false;
   }
+
+  //TODO: implement whatever mike expects on how to run scheduler?
+  onRunScheduler() {
+    //NOTE: can pass data through the service
+    this.schedulerService.setData(5);
+    this.router.navigate(['/history']);
+  }
 }
