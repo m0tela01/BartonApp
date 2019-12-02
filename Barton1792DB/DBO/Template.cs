@@ -8,6 +8,7 @@ namespace Barton1792DB.DBO
     {
         public int JobId { get; set; }
         public string JobName { get; set; }
+        public int DepartmentId { get; set; }
         public string DepartmentName { get; set; }
         public int Shift1 { get; set; }
         public int Shift2 { get; set; }

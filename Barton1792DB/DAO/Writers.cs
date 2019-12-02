@@ -14,7 +14,7 @@ namespace Barton1792DB.DAO
         private string ClearScheduleHistorySql => "ClearScheduleHistory";
         private string ClearScheduleTemplateBeforeInsertCurrentTemplateSql => "ClearScheduleTemplateBeforeInsertCurrentTemplate";
         private string InsertCurrentScheduleSql => "InsertCurrentSchedule";
-        private string InsertCurrentScheduleTemplateSql => "InsertCurrentScheduleTemplate"; //vector
+        //private string InsertCurrentScheduleTemplateSql => "InsertCurrentScheduleTemplate"; //vector
         private string UpdateCurrentScheduleTemplateSql => "UpdateCurrentScheduleTemplate";
         private string InsertEmployeeSql => "InsertEmployee"; //scalar
         private string InsertScheduleTemplateSql => "InsertScheduleTemplate";
@@ -230,12 +230,12 @@ namespace Barton1792DB.DAO
                     //MySqlTransaction trans = conn.BeginTransaction();
                     foreach (var item in templates)
                     {
-                        using (MySqlCommand cmd = new MySqlCommand(InsertCurrentScheduleTemplateSql, conn))
+                        using (MySqlCommand cmd = new MySqlCommand(InsertScheduleTemplateSql, conn))
                         {
                             //cmd.Transaction = trans;
                             cmd.CommandType = CommandType.StoredProcedure;
-                            cmd.Parameters.Add(new MySqlParameter("@jobName", item.JobName));
-                            cmd.Parameters.Add(new MySqlParameter("@departmentName", item.DepartmentName));
+                            cmd.Parameters.Add(new MySqlParameter("@uJobID", item.JobId));
+                            cmd.Parameters.Add(new MySqlParameter("@uDeptID", item.DepartmentId));
                             cmd.Parameters.Add(new MySqlParameter("@shift1", item.Shift1));
                             cmd.Parameters.Add(new MySqlParameter("@shift2", item.Shift2));
                             cmd.Parameters.Add(new MySqlParameter("@shift3", item.Shift3));
@@ -268,7 +268,7 @@ namespace Barton1792DB.DAO
                         //cmd.Transaction = trans;
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.Add(new MySqlParameter("@uJobID", tempalte.JobId));
-                        cmd.Parameters.Add(new MySqlParameter("@JobName", tempalte.JobName));
+                        cmd.Parameters.Add(new MySqlParameter("@uDeptID", tempalte.DepartmentId));
                         cmd.Parameters.Add(new MySqlParameter("@Shift1", tempalte.Shift1));
                         cmd.Parameters.Add(new MySqlParameter("@Shift2", tempalte.Shift2));
                         cmd.Parameters.Add(new MySqlParameter("@Shift3", tempalte.Shift3));
