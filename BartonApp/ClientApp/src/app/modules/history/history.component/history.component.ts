@@ -89,7 +89,6 @@ export class HistoryComponent implements OnInit {
 
   formatData(res: Array<ScheduleObject>) {
     this.schedules = res
-
     //sort job names and shift
     this.schedules.sort(function (a, b) {
       return a.jobName.localeCompare(b.jobName);

@@ -56,7 +56,7 @@ namespace Barton1792DB.DAO
             Schedule sch = new Schedule()
             {
                 //SeniorityNumber = int.Parse(rdr["senioritynumber"].ToString()),
-                //ClockNumber = int.Parse(rdr["clocknumber"].ToString()),
+                ClockNumber = int.Parse(rdr["clocknumber"].ToString()),
                 EmployeeName = rdr["empname"].ToString(),
                 JobName = rdr["jobname"].ToString(),
                 //DepartmentName = rdr["departmentname"].ToString(),
@@ -66,6 +66,18 @@ namespace Barton1792DB.DAO
                 //ScheduleDate = DateTime.Parse(rdr["scheduledate"].ToString())
             };
             return sch;
+        }
+        public ScheduleExcel CreateScheduleExcel(MySqlDataReader rdr)
+        {
+            ScheduleExcel schEx = new ScheduleExcel()
+            {
+                ClockNumber = int.Parse(rdr["clocknumber"].ToString()),
+                EmployeeName = rdr["empname"].ToString(),
+                JobName = rdr["jobname"].ToString(),
+                Shift = int.Parse(rdr["shift"].ToString()),
+                Restrictions = rdr["restrictions"].ToString(),
+            };
+            return schEx;
         }
         public Template CreateTemplate(MySqlDataReader rdr)
         {
@@ -243,6 +255,37 @@ namespace Barton1792DB.DAO
                         while (rdr.Read())
                         {
                             Schedules.Add(CreateSchedule(rdr));
+                        }
+                        rdr.Close();
+                    }
+                    conn.Close();
+                }
+                catch (MySqlException ex)
+                {
+                    Console.WriteLine(ex);
+                }
+            }
+            return Schedules;
+        }
+        /// <summary>
+        /// Get current schedule table as list of schedules.
+        /// </summary>
+        /// <param name="Schedules"></param>
+        /// <returns></returns>
+        public List<ScheduleExcel> GetSchedulesForExcel(List<ScheduleExcel> Schedules)
+        {
+            using (MySqlConnection conn = new MySqlConnection(BSConnectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(GetCurrentScheduleSql, conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        MySqlDataReader rdr = cmd.ExecuteReader();
+                        while (rdr.Read())
+                        {
+                            Schedules.Add(CreateScheduleExcel(rdr));
                         }
                         rdr.Close();
                     }

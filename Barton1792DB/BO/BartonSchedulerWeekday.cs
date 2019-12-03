@@ -62,7 +62,8 @@ namespace Barton1792DB.BO
                                 schedule.ClockNumber = employees[i].ClockNumber;
                                 schedule.EmployeeName = employees[i].EmployeeName;
                                 schedule.ShiftPreference = employees[i].ShiftPreference;
-                                //schedule.DepartmentName = employees[i].DepartmentName;
+                                schedule.Restrictions = employees[i].Restrictions;
+                            //schedule.DepartmentName = employees[i].DepartmentName;
                             // Give them what they want trial 1
                             tryagain:
                                 if (employees[i].ShiftPreference == 1)

@@ -29,14 +29,23 @@ namespace BartonApp.Controllers
             List<Job> CurrentJobs = readers.GetJobs(new List<Job>());
             return CurrentJobs;
         }
+        
 
         [HttpGet("GetCurrentSchedule")]
-        public ActionResult<List<Schedule>> GetCurrentSchedule()
+        public ActionResult<List<ScheduleExcel>> GetCurrentSchedule()
         {
             //BartonSchedulerWeekday.GenerateWeekdaySchedule();
-            List<Schedule> CurrentSchedule = readers.GetSchedules(new List<Schedule>());
+            List<ScheduleExcel> CurrentSchedule = readers.GetSchedulesForExcel(new List<ScheduleExcel>());
             return CurrentSchedule;
         }
+
+        //[HttpGet("GetCurrentSchedule")]
+        //public ActionResult<List<Schedule>> GetCurrentSchedule()
+        //{
+        //    //BartonSchedulerWeekday.GenerateWeekdaySchedule();
+        //    List<Schedule> CurrentSchedule = readers.GetSchedules(new List<Schedule>());
+        //    return CurrentSchedule;
+        //}
 
         [HttpGet("GetCurrentTemplate")]
         public ActionResult<List<Template>> GetCurrentTemplate()
