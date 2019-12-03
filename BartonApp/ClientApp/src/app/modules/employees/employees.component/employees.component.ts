@@ -52,7 +52,7 @@ export class EmployeesComponent implements OnInit {
       res => {
         if (res) {
           this.employees = res as Array<EmployeeObject>;
-          console.log(this.employees[0].jobName);    //debugging - sanity check: remove
+          console.log(this.employees[0].jobName);
         } else {
           this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'No employee data found.' });
         }
@@ -72,16 +72,19 @@ export class EmployeesComponent implements OnInit {
     )
   }
 
-  //TODO: How can I update seniorityNumber?
+  //TODO: How can I update seniorityNumber? --> try an invisible column in the object like jobid
   onRowEditInit(employee: EmployeeObject) {
     this.clonedEmployees[employee.clockNumber] = { ...employee };
   }
 
-  // invoked after edit is confirmed
+  // Allows edited changes to be saved in the UI as an EmployeeObject. Takes an employee object as the one to be saved.
+  // Invoked after edit is confirmed.
   onRowEditSave(employee: EmployeeObject) {
     this.updateEmployee(employee);
   }
 
+  // Updates employee takes an employee object as a parameter. Retrives updated employees table if update was successful.
+  // Used in onRowEditSave.
   updateEmployee(employee: EmployeeObject) {
     this.employeeService.updateEmployeeById(employee)
       .subscribe(
@@ -100,6 +103,8 @@ export class EmployeesComponent implements OnInit {
       );
   }
 
+  // Allows edited changes to be discarded in the UI. Takes an employee object which is being edited.
+  // Invoked if edit is not confirmed.
   onRowEditCancel(employee: EmployeeObject, index: number) {
     this.employees[index] = this.clonedEmployees[employee.clockNumber];
     delete this.clonedEmployees[employee.clockNumber];
