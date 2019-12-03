@@ -45,29 +45,18 @@ namespace Barton1792DB.BO
                     {
                         bool employeeCanWork = string.IsNullOrEmpty(employees[i].Absence.Trim());   //if there is no absence they can work
                         schedule = new Schedule();
-                        //Need Some kind of field for absent talk about this
-                        //if (employees[i].AbsentFlag == 1)
-                        //if (employees[i].SeniorityNumber == -99)
-                        //{
-                        //    //Employee has some kind of absent status - NOTELIGIIBLETOSCHEDULE
-                        //    schedule.ScheduleDate = nextMonday;
-                        //    schedule.SeniorityNumber = employees[i].SeniorityNumber;
-                        //    schedule.ClockNumber = employees[i].ClockNumber;
-                        //    schedule.EmployeeName = employees[i].EmployeeName;
-                        //    schedule.DepartmentName = employees[i].DepartmentName;
-                        //    schedule.ShiftPreference = employees[i].ShiftPreference;
-                        //    schedule.Shift = NOTELIGIIBLETOSCHEDULE;
-                        //    schedule.JobName = employees[i].JobName;
-                        //}
-                        //else
                         if (employeeCanWork)
                         {
                             if (employees[i].JobName == templates[j].JobName)
                             {
+                                // if there is no shift preference force them to have shift 1 as preference
+                                if (string.IsNullOrEmpty(employees[i].ShiftPreference.ToString()) || employees[i].ShiftPreference == 0)
+                                {
+                                    employees[i].ShiftPreference = 1;
+                                }
                                 bool preferedShift1 = false;
                                 //bool preferedShift2 = false;
                                 bool preferedShift3 = false;
-                                //Schedule schedule = new Schedule();
                                 schedule.ScheduleDate = nextMonday;
                                 schedule.SeniorityNumber = employees[i].SeniorityNumber;
                                 schedule.ClockNumber = employees[i].ClockNumber;
