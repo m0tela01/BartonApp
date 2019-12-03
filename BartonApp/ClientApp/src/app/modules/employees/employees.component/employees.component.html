@@ -1,5 +1,5 @@
 <p-toast position="top-center" life="500"></p-toast>
-<p-table [value]="employees" dataKey="clockNumber" editMode="row" id="employees">
+<p-table [value]="employees" dataKey="clockNumber" editMode="row" id="employees" [style]="{margin:'28px'}">
   <ng-template pTemplate="caption">
     <div>
       <!--TODO: how to get button on left and right-->
@@ -135,7 +135,7 @@
         <label for="jobName">Job Name</label>
       </div>
       <div class="ui-g-8">
-        <p-dropdown id="jobName" [options]="jobs" [(ngModel)]="selectedJob" placeholder="" optionLabel="jobName"></p-dropdown>
+        <p-dropdown id="jobName" [options]="jobs" [(ngModel)]="selectedJob" placeholder="Select a Job" optionLabel="jobName"></p-dropdown>
       </div>
     </div>
   </div>
@@ -147,7 +147,7 @@
 </p-dialog>
 
 <!--delete employee dialog and confirmation table-->
-<p-dialog header="Delete Employee" [(visible)]="deletionDialog" [closable]="false" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '50%'}">
+<p-dialog header="Delete Employee" [(visible)]="deletionDialog" [closable]="false" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '40%'}">
   <div class="ui-g ui-fluid" *ngIf="!confirmDeletion" style="text-align: center">
     <div class="ui-g-12">
       <div class="ui-g-8">
@@ -182,17 +182,15 @@
     </div>
   </div>
   <p-footer>
-    <div class="ui-dialog-buttonpane ui-helper-clearfix" style="display: inline-block; text-align: center">
-      <button type="button" pButton class="ui-button-warning" (click)="onCancelDelete()" label="Cancel"></button>
-    </div>
-    <div class="ui-dialog-buttonpane ui-helper-clearfix" style="display: inline-block; text-align: center">
-      <button type="button" pButton class="ui-button-danger" (click)="onDeleteEmployee()" label="Delete" [disabled]="!confirmDeletion"></button>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix" style="text-align: center">
+      <button type="button" pButton class="ui-button-warning" (click)="onCancelDelete()" label="Cancel" style="margin-right:5%"></button>
+      <button type="button" pButton class="ui-button-danger" (click)="onDeleteEmployee()" label="Delete" [disabled]="!confirmDeletion" style="margin-left:5%"></button>
     </div>
   </p-footer>
 </p-dialog>
 
 <!--add new job-->
-<p-dialog header="Add Job" [(visible)]="addJobDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '50%'}">
+<p-dialog header="Add Job" [(visible)]="addJobDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '40%'}">
   <div class="ui-g ui-fluid" style="text-align: center">
     <div class="ui-g-12">
       <div class="ui-g-4">
@@ -203,9 +201,9 @@
       </div>
     </div>
   </div>
-  <p-footer style="text-align:center">
-    <div class="ui-dialog-buttonpane ui-helper-clearfix" style="display: inline-block; text-align: center">
-      <button type="button" pButton (click)="onAddJob()" label="Add Job"></button>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix" style="text-align: center">
+      <button type="button" pButton icon="pi pi-plus" (click)="onAddJob()" label="Add Job"></button>
     </div>
   </p-footer>
 </p-dialog>

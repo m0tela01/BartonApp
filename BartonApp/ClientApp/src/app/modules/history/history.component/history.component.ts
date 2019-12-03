@@ -38,10 +38,13 @@ export class HistoryComponent implements OnInit {
 
   constructor(private messageService: MessageService, private schedulerService: SchedulerService) { }
 
-  // do we want to by default display the most recent schedule ?
   ngOnInit() {
-    this.getCurrentSchedules();
-    this.getScheduleHistoryDates();
+    //if the scheduler component invoked this page then create a new schedule
+    if (this.schedulerService.getIsFromScheduler()) {
+      this.generateWeekdaySchedule();
+    } else { //otherwise grab current schedule
+      this.getCurrentSchedules();
+    }
     console.log('history has been loaded');
     console.log(this.schedulerService.getIsFromScheduler());
   }
@@ -54,15 +57,18 @@ export class HistoryComponent implements OnInit {
       { field: 'restrictions', header: 'Restrictions' }
     ];
   }
-
-  private async getScheduleHistoryDates() {
-    this.schedulerService.getScheduleHistoryDates().subscribe(
+  
+  private async generateWeekdaySchedule() {
+    console.log('starting to generate');
+    this.schedulerService.generateWeekdaySchedule().subscribe(
       res => {
+        console.log('got the data back from generate sched');
         if (res) {
-          this.previousSchedules = res as Array<HistoryObject>;
-          console.log(this.previousSchedules);
+          console.log(res);
+          this.formatData(res as Array<ScheduleObject>);
         } else {
-          this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Could not retreive previous schedules.' });
+          //TODO: put in toast or something to say nothing found
+          console.log('whoops');
         }
       }
     )
@@ -72,27 +78,31 @@ export class HistoryComponent implements OnInit {
     this.schedulerService.getCurrentSchedule().subscribe(
       res => {
         if (res) {
-          this.schedules = res as Array<ScheduleObject>;
-
-          //sort job names and shift
-          this.schedules.sort(function (a, b) {
-            return a.jobName.localeCompare(b.jobName);
-          });
-          this.schedules.sort(function (a, b) { return a.shift - b.shift });
-
-          //turn entire schedule into 3 separate schedules
-          this.separateSchedules();
-
-          //run the rowgroup method to create each table
-          this.rowGroupMetadata1 = this.updateRowGroupMetaData(this.scheduleShift1);
-          this.rowGroupMetadata2 = this.updateRowGroupMetaData(this.scheduleShift2);
-          this.rowGroupMetadata3 = this.updateRowGroupMetaData(this.scheduleShift3);
+          this.formatData(res as Array<ScheduleObject>);
         } else {
           //TODO: put in toast or something to say nothing found
           console.log('whoops');
         }
       }
     )
+  }
+
+  formatData(res: Array<ScheduleObject>) {
+    this.schedules = res
+
+    //sort job names and shift
+    this.schedules.sort(function (a, b) {
+      return a.jobName.localeCompare(b.jobName);
+    });
+    this.schedules.sort(function (a, b) { return a.shift - b.shift });
+
+    //turn entire schedule into 3 separate schedules
+    this.separateSchedules();
+
+    //run the rowgroup method to create each table
+    this.rowGroupMetadata1 = this.updateRowGroupMetaData(this.scheduleShift1);
+    this.rowGroupMetadata2 = this.updateRowGroupMetaData(this.scheduleShift2);
+    this.rowGroupMetadata3 = this.updateRowGroupMetaData(this.scheduleShift3);
   }
 
   onSort(tableNumber: number) {

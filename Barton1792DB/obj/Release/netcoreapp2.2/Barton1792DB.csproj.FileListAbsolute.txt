@@ -74,3 +74,4 @@ C:\Users\Telahun\Documents\School\CECS596\JJBartonApp\BartonApp\Barton1792DB\obj
 C:\Users\Telahun\Documents\School\CECS596\JJBartonApp\BartonApp\Barton1792DB\obj\Release\netcoreapp2.2\Barton1792DB.dll
 C:\Users\Telahun\Documents\School\CECS596\JJBartonApp\BartonApp\Barton1792DB\obj\Release\netcoreapp2.2\Barton1792DB.pdb
 C:\Users\Telahun\Documents\School\CECS596\JJBartonApp\BartonApp\Barton1792DB\obj\Release\netcoreapp2.2\Barton1792DB.csprojAssemblyReference.cache
+C:\Users\Jake Wolf\Desktop\Fall 2019\Capstone\BartonApp\Barton1792DB\obj\Release\netcoreapp2.2\Barton1792DB.csprojAssemblyReference.cache

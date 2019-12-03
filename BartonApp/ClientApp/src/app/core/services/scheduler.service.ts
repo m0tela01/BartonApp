@@ -36,9 +36,14 @@ export class SchedulerService extends ServiceBase {
     return this.get('GetCurrentSchedule');
   }
 
+  generateWeekdaySchedule(): Observable<ScheduleObject[]> {
+    return this.get('GenerateWeekdaySchedule');
+  }
+
   getScheduleHistoryDates(): Observable<any> {
     return this.get('GetScheduleHistoryDates');
   }
+
 
   // #EndRegion Gets
 

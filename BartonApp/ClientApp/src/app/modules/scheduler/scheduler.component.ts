@@ -16,9 +16,9 @@ import { EmployeeService } from '../../core/services/employee.service';
 
 export class EmployeeNote {
   clockNumber: number;
-  reason: string;
   dateRanges: Date[];
   dateRangeString: string;
+  isEligible: boolean;
   note: string;
 }
 
@@ -162,14 +162,14 @@ export class SchedulerComponent implements OnInit {
       isValid = false;
       this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Please fill out the Clock Number' });
     }
-    if (!this.employee.reason) {
-      isValid = false;
-      this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Please fill out the Reason' });
-    }
     if (!this.employee.dateRanges) {
       isValid = false;
       this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Please fill out the Date Range' });
     }
+    //if (!this.employee.reason) {
+    //  isValid = false;
+    //  this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Please fill out the Reason' });
+    //}
     if (!this.employee.note) {
       isValid = false;
       this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Please fill out the Note' });
@@ -185,7 +185,6 @@ export class SchedulerComponent implements OnInit {
 
   //TODO: insertNewTemplate called. if that works then send app to history table to generate the schedule
   onRunScheduler() {
-    //NOTE: can pass data through the service
     this.schedulerService.insertNewTemplates(this.templates).subscribe(
       res => {
         if (res) {
@@ -193,8 +192,7 @@ export class SchedulerComponent implements OnInit {
           this.schedulerService.setIsFromScheduler(true);
           this.router.navigate(['/history']);
         } else {
-          console.log('no no');
-          console.log(res);
+          this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Insert Templates failed.' });
         }
       }
     );

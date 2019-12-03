@@ -1,6 +1,6 @@
-<p-table [value]="templates">
+<p-table [value]="templates" [style]="{margin:'28px'}">
   <ng-template pTemplate="header">
-    <tr>
+    <tr style="font-size:16px">
       <th>Job</th>
       <th>Shift 1</th>
       <th>Shift 2</th>
@@ -8,7 +8,7 @@
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-rowData>
-    <tr>
+    <tr style="text-align:center">
       <td>
         {{rowData.jobName}}
       </td>
@@ -54,8 +54,8 @@
       </div>
     </div>
     <div style="text-align:center">
-      <button type="button" pButton icon="pi pi-plus" (click)="onAddJob()" label="Add/Remove Job"></button>
-      <button type="button" pButton icon="pi pi-plus" (click)="showDialogToAdd()" label="Add Vacation/Restriction"></button>
+      <button type="button" pButton icon="pi pi-plus" (click)="onAddJob()" label="Add/Remove Job" style="margin-right: 10%"></button>
+      <button type="button" pButton icon="pi pi-plus" (click)="showDialogToAdd()" label="Add Vacation/Restriction" style="margin-left: 10%"></button>
     </div>
   </ng-template>
 </p-table>
@@ -97,8 +97,8 @@
     </div>
   </div>
   <p-footer>
-    <div class="ui-dialog-buttonpane ui-helper-clearfix">
-      <button type="button" pButton icon="fa fa-check" (click)="save()" label="Save"></button>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix" style="text-align:center">
+      <button type="button" pButton icon="pi pi-check" (click)="save()" label="Save"></button>
     </div>
   </p-footer>
 </p-dialog>
@@ -110,14 +110,14 @@
     </div>
   </div>
   <p-footer>
-    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+    <div class="ui-dialog-buttonpane ui-helper-clearfix" style="text-align:center">
       <button type="button" pButton icon="pi pi-plus" (click)="onSaveAddJob()" label="Add"></button>
-      <button type="button" pButton icon="pi pi-plus" class="ui-button-danger" (click)="onRemoveJob()" label="Remove"></button>
+      <button type="button" pButton icon="pi pi-minus" class="ui-button-danger" (click)="onRemoveJob()" label="Remove"></button>
     </div>
   </p-footer>
 </p-dialog>
 
-<div>
+<div style="text-align:center;">
   <button class="button" id="runScheduler" (click)="onRunScheduler()">
     <span>Run Scheduler </span>
   </button>

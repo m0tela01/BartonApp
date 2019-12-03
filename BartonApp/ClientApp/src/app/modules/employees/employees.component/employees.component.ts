@@ -19,7 +19,6 @@ import { EmployeeService } from '../../../core/services/employee.service';
   styleUrls: ['./employees.component.css'],
   providers: [MessageService]
 })
-
 export class EmployeesComponent implements OnInit {
   cols: any[];
   employees: Array<EmployeeObject>;
