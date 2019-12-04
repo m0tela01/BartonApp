@@ -14,7 +14,6 @@ namespace Barton1792DB.DAO
         private string ClearScheduleHistorySql => "ClearScheduleHistory";
         private string ClearScheduleTemplateBeforeInsertCurrentTemplateSql => "ClearScheduleTemplateBeforeInsertCurrentTemplate";
         private string InsertCurrentScheduleSql => "InsertCurrentSchedule";
-        //private string InsertCurrentScheduleTemplateSql => "InsertCurrentScheduleTemplate"; //vector
         private string UpdateCurrentScheduleTemplateSql => "UpdateCurrentScheduleTemplate";
         private string InsertEmployeeSql => "InsertEmployee"; //scalar
         private string InsertScheduleTemplateSql => "InsertScheduleTemplate";
