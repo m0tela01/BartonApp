@@ -10,24 +10,28 @@ namespace Barton1792DB.DAO
     public class Writers
     {
         private string BSConnectionString = CreateDB.BSConnectionString;
+
+        #region Procedure Names
         private string ClearEmployeeNotesSql => "ClearEmployeeNotes";
         private string ClearScheduleBeforeInsertCurrentScheduleSql => "ClearScheduleBeforeInsertCurrentSchedule";
         private string ClearScheduleHistorySql => "ClearScheduleHistory";
         private string ClearScheduleTemplateBeforeInsertCurrentTemplateSql => "ClearScheduleTemplateBeforeInsertCurrentTemplate";
+
         private string InsertCurrentScheduleSql => "InsertCurrentSchedule";
         private string InsertEmployeeSql => "InsertEmployee"; //scalar
         private string InsertEmployeeNoteSql => "InsertEmployeeNote";
         private string InsertNewJobSql => "InsertJob";
-        private string InsertScheduleTemplateSql => "InsertScheduleTemplate";
-        private string InsertCurrentTemplateSql => "InsertCurrentTemplate"; //scalar
+        private string InsertOldScheduleToHistorySql => "InsertOldScheduleToHistory";
         private string InsertPreviousScheduleToScheduleHistorySql => "InsertPreviousScheduleToScheduleHistory";
-        private string InsertOldScheduleToHistorySql => "InsertOldScheduleToHistory"; // should delete?
-        private string UpdateCurrentScheduleTemplateSql => "UpdateCurrentScheduleTemplate";
+        private string InsertScheduleTemplateSql => "InsertScheduleTemplate";
+
         private string UpdateEmployeeByIdSql => "UpdateEmployeeById";
         private string UpdateTemplateByJobIdSql => "UpdateTemplateByJobId";
-        private string DeleteEmployeeByIdSql => "DeleteEmployeeById";
-        private string DeleteJobByIdSql => "DeleteJobById";
 
+        private string DeleteEmployeeByIdSql => "DeleteEmployeeById";
+        private string DeleteJobByIdSql => "DeleteJobFromSchedulerTemplateById";
+
+        #endregion Procedure Names
 
         #region Clear
         /// <summary>
@@ -536,6 +540,7 @@ namespace Barton1792DB.DAO
             return false;
         }
         #endregion Update
+        
         #region Make Generics
         /// <summary>
         /// For easy Insert, Delete, Update

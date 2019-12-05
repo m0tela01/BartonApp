@@ -15,7 +15,7 @@ namespace Barton1792DB.BO
         public static Readers readers = new Readers();
         public static Writers writers = new Writers();
 
-        public static List<Schedule> GenerateWeekdaySchedule()
+        public static bool GenerateWeekdaySchedule()
         {
             try
             {
@@ -26,10 +26,6 @@ namespace Barton1792DB.BO
 
                 Dictionary<int, EmployeeNote> notes = employeeNotes.ToDictionary(note => note.ClockNumber);
 
-                if (true)
-                {
-                    Console.WriteLine(employeeNotes);
-                }
                 /// Sponsor does not care for a history table after discussion.
                 //Insert the data from the previous scheduling run to the history table
                 //writers.InsertPreviousScheduleToScheduleHistory();
@@ -41,7 +37,7 @@ namespace Barton1792DB.BO
                 int daysUntilTuesday = ((int)DayOfWeek.Monday - (int)today.DayOfWeek + 7) % 7;
                 DateTime nextMonday = today.AddDays(daysUntilTuesday);
 
-                List<Schedule> schedules = new List<Schedule>();    // For insert
+                List<Schedule> schedules = new List<Schedule>();
                 Schedule schedule;
                 // this data is ordered by senority number, job, and shiftpreference
                 // put business logic here for scheduling
@@ -164,6 +160,10 @@ namespace Barton1792DB.BO
                                 }
                             }
                         }
+                        else
+                        {
+                            break;
+                        }
                         if (!string.IsNullOrEmpty(schedule.JobName) && employeeCanWork == true)
                         {
                             break;
@@ -175,17 +175,23 @@ namespace Barton1792DB.BO
                 //writers.InsertPreviousScheduleToScheduleHistory();
                 //write current schedule to schedulte table
                 writers.InsertCurrentSchedule(schedules);
-                return schedules;
+                return true;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                return null;
+                return false;
             }
+        }
+        public static FullSchedule GetFullSchedule(FullSchedule fullSchedule)
+        {
+            fullSchedule.EmployeeNotes = readers.GetEmployeeNotes(new List<EmployeeNote>());
+            fullSchedule.Schedules = readers.GetSchedulesForExcel(new List<ScheduleExcel>());
+            return fullSchedule;
         }
         public static bool InsertNewEmployeeNotes(List<EmployeeNote> postEmployeeNotes)
         {
-            writers.ClearScheduleTemplateBeforeInsert();
+            writers.ClearEmployeeNotes();
             bool didClearNotes = writers.ClearEmployeeNotes();
             // clears the employee notes on insert of a new template
             if (didClearNotes)
@@ -213,15 +219,40 @@ namespace Barton1792DB.BO
             Employee employee = new Employee();
             try
             {
-                writers.UpdateEmployeeById(postEmployee);
                 //to update employee ids
-                //List<Employee> employees = readers.GetEmployees(new List<Employee>());
-                //bool NeedToUpdateEmployees = employee.CheckSeniorityNumber(employees);
-                //if (NeedToUpdateEmployees == true)
-                //{
-                //    bool DidUpdate = writers.UpdateEmployeesById(employees);
-                //}
-                return true;
+                writers.UpdateEmployeeById(postEmployee);
+                List<Employee> employees = readers.GetEmployees(new List<Employee>());
+                return employee.CheckSeniorityNumber(employees);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return false;
+            }
+        }
+        public static bool InsertEmployee(Employee postEmployee)
+        {
+            Employee employee = new Employee();
+            try
+            {
+                writers.InsertEmployee(postEmployee);
+                List<Employee> employees = readers.GetEmployees(new List<Employee>());
+                return employee.CheckSeniorityNumber(employees);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return false;
+            }
+        }
+        public static bool DeleteEmployeeById(Employee postEmployee)
+        {
+            Employee employee = new Employee();
+            try
+            {
+                writers.DeleteEmployeeById(postEmployee);
+                List<Employee> employees = readers.GetEmployees(new List<Employee>());
+                return employee.CheckSeniorityNumber(employees);
             }
             catch (Exception ex)
             {

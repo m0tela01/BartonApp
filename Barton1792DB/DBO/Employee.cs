@@ -22,19 +22,31 @@ namespace Barton1792DB.DBO
 
         public bool CheckSeniorityNumber(List<Employee> employees)
         {
-            bool ChangedSeniorityNumber = false;
-            int counter = 1;
-            foreach (var item in employees)
+            try
             {
-                if (item.SeniorityNumber != counter)
+                DAO.Writers writer = new DAO.Writers();
+                bool ChangedSeniorityNumber = false;
+                int counter = 1;
+                foreach (var item in employees)
                 {
-                    item.SeniorityNumber = counter;
-                    ChangedSeniorityNumber = true;
+                    if (item.SeniorityNumber != counter)
+                    {
+                        item.SeniorityNumber = counter;
+                        ChangedSeniorityNumber = true;
+                    }
+                    counter += 1;
                 }
-                counter += 1;
+                if (ChangedSeniorityNumber)
+                {
+                    writer.UpdateEmployeesById(employees);
+                }
+                return true;
             }
-            return ChangedSeniorityNumber;
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return false;
+            }
         }
-
     }
 }

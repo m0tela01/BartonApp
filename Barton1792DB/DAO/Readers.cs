@@ -19,15 +19,15 @@ namespace Barton1792DB.DAO
         private string DataFolder => Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\DataFiles\\";
         private string ProceduresFolder => Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Procedures\\";
 
-        private string GetEmployeesSql => "GetEmployeeData";
-        private string GetJobsSql => "GetJobs";
-        private string GetTemplateSql => "GetTemplate";
         private string GetCurrentScheduleSql => "GetCurrentSchedule";
-        private string GetScheduleHistoryDatesSql => "GetScheduleHistoryDates";
-        private string GetScheduleHistoryByScheduleDateSql => "GetScheduleHistoryByScheduleDate";
-        private string GetEmployeeNotesSql => "GetEmployeeNotes";
         private string GetEmployeeByIdSql => "GetEmployeeById";
+        private string GetEmployeesSql => "GetEmployeeData";
+        private string GetEmployeeNotesSql => "GetEmployeeNotes";
         private string GetJobCountSql => "GetJobCount";
+        private string GetJobsSql => "GetJobs";
+        private string GetScheduleHistoryByScheduleDateSql => "GetScheduleHistoryByScheduleDate";
+        private string GetScheduleHistoryDatesSql => "GetScheduleHistoryDates";
+        private string GetTemplateSql => "GetTemplate";
 
 
         #region Create Objects
@@ -56,6 +56,8 @@ namespace Barton1792DB.DAO
             EmployeeNote enote = new EmployeeNote()
             {
                 ClockNumber = int.Parse(rdr["clocknumber"].ToString()),
+                EmployeeName = rdr["empname"].ToString(),
+                Shift = int.Parse(rdr["shift"].ToString()),
                 DateRange = rdr["daterange"].ToString(),
                 Eligible = Boolean.Parse(rdr["eligible"].ToString()),
                 Notes = rdr["note"].ToString()

@@ -22,6 +22,12 @@ namespace BartonApp.Controllers
             List<Employee> CurrentEmployeeData = readers.GetEmployees(new List<Employee>());
             return CurrentEmployeeData;
         }
+        [HttpGet("GetEmployeeNotes")]
+        public ActionResult<List<EmployeeNote>> GetEmployeeNotes()
+        {
+            List<EmployeeNote> employeeNotes = readers.GetEmployeeNotes(new List<EmployeeNote>());
+            return employeeNotes;
+        }
 
         [HttpGet("GetJobs")]
         public ActionResult<List<Job>> GetJobs()
@@ -29,7 +35,7 @@ namespace BartonApp.Controllers
             List<Job> CurrentJobs = readers.GetJobs(new List<Job>());
             return CurrentJobs;
         }
-        
+
 
         [HttpGet("GetCurrentSchedule")]
         public ActionResult<List<ScheduleExcel>> GetCurrentSchedule()
@@ -69,11 +75,25 @@ namespace BartonApp.Controllers
         }
 
         [HttpGet("GenerateWeekdaySchedule")] // could be void
-        public ActionResult<List<Schedule>> GenerateWeekdaySchedule()
+        public ActionResult<bool> GenerateWeekdaySchedule()
         {
-            List<Schedule> GeneratedSchedule = BartonSchedulerWeekday.GenerateWeekdaySchedule();
-            return GeneratedSchedule;
+            try
+            {
+                return BartonSchedulerWeekday.GenerateWeekdaySchedule();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return false;
+            }
         }
+        [HttpGet("GetFullSchedule")] // could be void
+        public ActionResult<FullSchedule> GetFullSchedule()
+        {
+            FullSchedule fullSchedule = BartonSchedulerWeekday.GetFullSchedule(new FullSchedule());
+            return fullSchedule;
+        }
+        
         #endregion Get
 
         #region Post
@@ -123,7 +143,7 @@ namespace BartonApp.Controllers
         {
             try
             {
-                return writers.InsertEmployee(postEmployee);
+                return BartonSchedulerWeekday.InsertEmployee(postEmployee);
             }
             catch (Exception ex)
             {
@@ -165,7 +185,7 @@ namespace BartonApp.Controllers
         {
             try
             {
-                return writers.DeleteEmployeeById(postEmployee);
+                return BartonSchedulerWeekday.DeleteEmployeeById(postEmployee);
             }
             catch (Exception ex)
             {
