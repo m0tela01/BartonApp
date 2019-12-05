@@ -25,7 +25,7 @@ namespace Barton1792DB.DAO
         private string GetCurrentScheduleSql => "GetCurrentSchedule";
         private string GetScheduleHistoryDatesSql => "GetScheduleHistoryDates";
         private string GetScheduleHistoryByScheduleDateSql => "GetScheduleHistoryByScheduleDate";
-
+        private string GetEmployeeNotesSql => "GetEmployeeNotes";
         private string GetEmployeeByIdSql => "GetEmployeeById";
         private string GetJobCountSql => "GetJobCount";
 
@@ -50,6 +50,17 @@ namespace Barton1792DB.DAO
                 //DepartmentName = rdr["departmentname"].ToString()
             };
             return emp;
+        }
+        public EmployeeNote CreateEmployeeNote(MySqlDataReader rdr)
+        {
+            EmployeeNote enote = new EmployeeNote()
+            {
+                ClockNumber = int.Parse(rdr["clocknumber"].ToString()),
+                DateRange = rdr["daterange"].ToString(),
+                Eligible = Boolean.Parse(rdr["eligible"].ToString()),
+                Notes = rdr["note"].ToString()
+            };
+            return enote;
         }
         public Schedule CreateSchedule(MySqlDataReader rdr)
         {
@@ -193,6 +204,37 @@ namespace Barton1792DB.DAO
                         while (rdr.Read())
                         {
                             Employees.Add(CreateEmployee(rdr));
+                        }
+                        rdr.Close();
+                    }
+                    conn.Close();
+                }
+                catch (MySqlException ex)
+                {
+                    Console.WriteLine(ex);
+                }
+            }
+            return Employees;
+        }
+        /// <summary>
+        /// Get employee notes table as list of employee notes.
+        /// </summary>
+        /// <param name="Employees"></param>
+        /// <returns></returns>
+        public List<EmployeeNote> GetEmployeeNotes(List<EmployeeNote> Employees)
+        {
+            using (MySqlConnection conn = new MySqlConnection(BSConnectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(GetEmployeeNotesSql, conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        MySqlDataReader rdr = cmd.ExecuteReader();
+                        while (rdr.Read())
+                        {
+                            Employees.Add(CreateEmployeeNote(rdr));
                         }
                         rdr.Close();
                     }

@@ -10,24 +10,50 @@ namespace Barton1792DB.DAO
     public class Writers
     {
         private string BSConnectionString = CreateDB.BSConnectionString;
+        private string ClearEmployeeNotesSql => "ClearEmployeeNotes";
         private string ClearScheduleBeforeInsertCurrentScheduleSql => "ClearScheduleBeforeInsertCurrentSchedule";
         private string ClearScheduleHistorySql => "ClearScheduleHistory";
         private string ClearScheduleTemplateBeforeInsertCurrentTemplateSql => "ClearScheduleTemplateBeforeInsertCurrentTemplate";
         private string InsertCurrentScheduleSql => "InsertCurrentSchedule";
-        private string UpdateCurrentScheduleTemplateSql => "UpdateCurrentScheduleTemplate";
         private string InsertEmployeeSql => "InsertEmployee"; //scalar
+        private string InsertEmployeeNoteSql => "InsertEmployeeNote";
+        private string InsertNewJobSql => "InsertJob";
         private string InsertScheduleTemplateSql => "InsertScheduleTemplate";
         private string InsertCurrentTemplateSql => "InsertCurrentTemplate"; //scalar
         private string InsertPreviousScheduleToScheduleHistorySql => "InsertPreviousScheduleToScheduleHistory";
         private string InsertOldScheduleToHistorySql => "InsertOldScheduleToHistory"; // should delete?
+        private string UpdateCurrentScheduleTemplateSql => "UpdateCurrentScheduleTemplate";
         private string UpdateEmployeeByIdSql => "UpdateEmployeeById";
         private string UpdateTemplateByJobIdSql => "UpdateTemplateByJobId";
-        private string InsertNewJobSql => "InsertJob";
         private string DeleteEmployeeByIdSql => "DeleteEmployeeById";
         private string DeleteJobByIdSql => "DeleteJobById";
 
 
         #region Clear
+        /// <summary>
+        /// Clear employee notes when a new template is inserted.
+        /// </summary>
+        public bool ClearEmployeeNotes()
+        {
+            using (MySqlConnection conn = new MySqlConnection(BSConnectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(ClearEmployeeNotesSql, conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.ExecuteNonQuery();
+                    }
+                    return true;
+                }
+                catch (MySqlException ex)
+                {
+                    Console.WriteLine(ex);
+                    return false;
+                }
+            }
+        }
         /// <summary>
         /// Clear the schedule history if history is to big.
         /// </summary>
@@ -116,6 +142,41 @@ namespace Barton1792DB.DAO
                 catch (MySqlException ex)
                 {
                     Console.WriteLine(ex);
+                }
+            }
+        }
+        /// <summary>
+        /// Insert the new set of notes about employees.
+        /// </summary>
+        /// <param name="EmployeeNotes"></param>
+        /// <returns></returns>
+        public bool InsertEmployeeNotes(List<EmployeeNote> EmployeeNotes)
+        {
+            using (MySqlConnection conn = new MySqlConnection(BSConnectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    //MySqlTransaction trans = conn.BeginTransaction();
+                    foreach (var item in EmployeeNotes)
+                    {
+                        using (MySqlCommand cmd = new MySqlCommand(InsertEmployeeNoteSql, conn))
+                        {
+                            //cmd.Transaction = trans;
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.Add(new MySqlParameter("@empId", item.ClockNumber));
+                            cmd.Parameters.Add(new MySqlParameter("@dates", item.DateRange));
+                            cmd.Parameters.Add(new MySqlParameter("@eligibility", item.Eligible));
+                            cmd.Parameters.Add(new MySqlParameter("@enotes", item.Notes));
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                    return true;
+                }
+                catch (MySqlException ex)
+                {
+                    Console.WriteLine(ex);
+                    return false;
                 }
             }
         }

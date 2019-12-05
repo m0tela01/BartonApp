@@ -79,6 +79,19 @@ namespace BartonApp.Controllers
         #region Post
 
         #region Insert
+        [HttpPost("InsertEmployeeNotes")]
+        public bool InsertEmployeeNotes([FromBody]List<EmployeeNote> postEmployeeNotes)
+        {
+            try
+            {
+                return BartonSchedulerWeekday.InsertNewEmployeeNotes(postEmployeeNotes);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return false;
+            }
+        }
         [HttpPost("InsertNewTemplates")]
         public bool InsertNewTemplates([FromBody]List<Template> postTemplates)
         {
@@ -134,6 +147,19 @@ namespace BartonApp.Controllers
         #endregion Insert
 
         #region Delete
+        [HttpPost("DeleteEmployeeNotes")]
+        public bool DeleteEmployeeNotes()
+        {
+            try
+            {
+                return writers.ClearEmployeeNotes();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return false;
+            }
+        }
         [HttpPost("DeleteEmployee")]
         public bool DeleteEmployeeById([FromBody]Employee postEmployee)
         {

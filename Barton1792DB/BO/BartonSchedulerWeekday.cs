@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Barton1792DB.DAO;
+using System.Linq;
 
 namespace Barton1792DB.BO
 {
@@ -21,10 +22,17 @@ namespace Barton1792DB.BO
                 //Get data to generate schedule
                 List<Employee> employees = readers.GetEmployees(new List<Employee>());
                 List<Template> templates = readers.GetTemplates(new List<Template>());
-                //Check if the database is getting to large and delete some of the history table here. Todo: make trigger not api.
+                List<EmployeeNote> employeeNotes = readers.GetEmployeeNotes(new List<EmployeeNote>());
 
+                Dictionary<int, EmployeeNote> notes = employeeNotes.ToDictionary(note => note.ClockNumber);
+
+                if (true)
+                {
+                    Console.WriteLine(employeeNotes);
+                }
+                /// Sponsor does not care for a history table after discussion.
                 //Insert the data from the previous scheduling run to the history table
-                writers.InsertPreviousScheduleToScheduleHistory();
+                //writers.InsertPreviousScheduleToScheduleHistory();
                 //Clear the previous schedule for the contents of the schedule table
                 writers.ClearScheduleBeforeInsert();
 
@@ -43,19 +51,27 @@ namespace Barton1792DB.BO
                 {
                     for (int j = 0; j < templates.Count; j++)
                     {
-                        bool employeeCanWork = string.IsNullOrEmpty(employees[i].Absence.Trim());   //if there is no absence they can work
+                        bool employeeCanWork = true;
+                        if (notes.ContainsKey(employees[i].ClockNumber))
+                        {
+                            if (notes[employees[i].ClockNumber].Eligible == false)
+                            {
+                                employeeCanWork = false;
+                            }
+                        }
+                        //employeeCanWork = string.IsNullOrEmpty(employees[i].Absence.Trim());   //if there is no absence they can work
                         schedule = new Schedule();
                         if (employeeCanWork)
                         {
                             if (employees[i].JobName == templates[j].JobName)
                             {
                                 // if there is no shift preference force them to have shift 1 as preference
-                                if (string.IsNullOrEmpty(employees[i].ShiftPreference.ToString()) || employees[i].ShiftPreference == 0)
+                                if ((string.IsNullOrEmpty(employees[i].ShiftPreference.ToString()) || employees[i].ShiftPreference == 0) && employees[i].JobName.ToUpper() != "LABOR")
                                 {
                                     employees[i].ShiftPreference = 1;
                                 }
+                                int originalShiftPreference = employees[i].ShiftPreference;
                                 bool preferedShift1 = false;
-                                //bool preferedShift2 = false;
                                 bool preferedShift3 = false;
                                 schedule.ScheduleDate = nextMonday;
                                 schedule.SeniorityNumber = employees[i].SeniorityNumber;
@@ -139,7 +155,7 @@ namespace Barton1792DB.BO
                                     //jobid - 17, jobname - LABOR,   deptid - 6
                                     Console.WriteLine("No shifts available for: " + employees[i].JobName + " going to labor.");
                                     schedule.JobName = LABOR;
-                                    schedule.Shift = employees[i].ShiftPreference;
+                                    schedule.Shift = originalShiftPreference;
                                     schedules.Add(schedule);
                                 }
                                 else
@@ -154,8 +170,9 @@ namespace Barton1792DB.BO
                         }
                     }
                 }
-                //write current schedule to history table? 
-                writers.InsertPreviousScheduleToScheduleHistory();
+                //write current schedule to history table
+                /// Sponsor does not care for a history table after discussion.
+                //writers.InsertPreviousScheduleToScheduleHistory();
                 //write current schedule to schedulte table
                 writers.InsertCurrentSchedule(schedules);
                 return schedules;
@@ -166,11 +183,22 @@ namespace Barton1792DB.BO
                 return null;
             }
         }
+        public static bool InsertNewEmployeeNotes(List<EmployeeNote> postEmployeeNotes)
+        {
+            writers.ClearScheduleTemplateBeforeInsert();
+            bool didClearNotes = writers.ClearEmployeeNotes();
+            // clears the employee notes on insert of a new template
+            if (didClearNotes)
+            {
+                // makeing way for the new set of notes to be used 
+                return writers.InsertEmployeeNotes(postEmployeeNotes);
+            }
+            return false;
+        }
         public static bool InsertNewTemplates(List<Template> postTemplates)
         {
             try
             {
-                List<Template> NewTemplates = new List<Template>();
                 writers.ClearScheduleTemplateBeforeInsert();
                 return writers.InsertCurrentScheduleTemplate(postTemplates);
             }
@@ -207,7 +235,6 @@ namespace Barton1792DB.BO
             try
             {
                 job.JobId = readers.GetJobCount() + 1;
-                //job = JsonConvert.DeserializeObject<Job>(postJob);
                 writers.InsertNewJob(job);
                 return true;
             }
