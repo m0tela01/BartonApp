@@ -139,6 +139,7 @@ export class SchedulerComponent implements OnInit {
         //need a string version to show in footer
         this.employeeNote.setDateRange(this.dateRanges);
 
+        console.log(this.employeeNote);
         this.vacations.push(this.employeeNote);
         this.employeeNote = null;
         this.dateRanges = [new Date()];
@@ -181,6 +182,7 @@ export class SchedulerComponent implements OnInit {
     this.schedulerService.insertNewTemplates(this.templates).subscribe(
       res => {
         if (res) {
+          console.log(this.vacations);
           //then insert employeeNotes
           //in the future this should be refactored to be two separate async calls
           this.schedulerService.insertEmployeeNotes(this.vacations).subscribe(

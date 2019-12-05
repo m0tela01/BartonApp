@@ -47,7 +47,7 @@
   <ng-template pTemplate="summary" let-rowData>
     <div *ngIf="vacations && vacations.length > 0" style="margin-bottom: 8px">
       <div *ngFor="let employee of vacations">
-        Clock Number: {{employee.clockNumber}}  |  Will be scheduled: {{employee.isEligible}}  ||  Date Range: {{employee.dateRange}}
+        Clock Number: {{employee.clockNumber}}  |  Will be scheduled: {{employee.isEligible}}  |  Date Range: {{employee.dateRange}}
       </div>
     </div>
     <div style="text-align:center;">

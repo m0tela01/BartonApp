@@ -3,21 +3,16 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { TableModule } from 'primeng/table';
+import { MessageService } from 'primeng/api';
 
 import { HttpClient } from '@angular/common/http'
+
+import { SchedulerService } from '../../../core/services/scheduler.service';
+
 import { HistoryObject } from '../../../core/models/HistoryObject';
 import { ScheduleObject } from '../../../core/models/ScheduleObject';
-import { SchedulerService } from '../../../core/services/scheduler.service';
-import { MessageService } from 'primeng/api';
 import { EmployeeNoteObject } from '../../../core/models/EmployeeNoteObject';
 import { FullScheduleObject } from '../../../core/models/FullScheduleObject';
-
-
-export class HistoryObj {
-  jobName: string;
-  employeeName: string;
-  shift: number;
-}
 
 @Component({
   selector: 'app-history',
@@ -26,9 +21,9 @@ export class HistoryObj {
   providers: [MessageService]
 })
 export class HistoryComponent implements OnInit {
-  fullSchedule: FullScheduleObject;
-  schedules: Array<ScheduleObject>;
-  vacations: Array<EmployeeNoteObject>;
+  fullSchedule: FullScheduleObject = new FullScheduleObject;
+  schedules: Array<ScheduleObject> = [];
+  vacations: Array<EmployeeNoteObject> = [];
 
   scheduleShift1: Array<ScheduleObject> = [];
   rowGroupMetadata1: any = {};
@@ -42,22 +37,17 @@ export class HistoryComponent implements OnInit {
   vacations3: Array<EmployeeNoteObject> = [];
   vacationNotScheduled: Array<EmployeeNoteObject> = [];
 
-  colsSchedule: any[];
+  //tells me if there is anything in the vacation array to be utilized
+  isVacation1: boolean = false;
+  isVacation2: boolean = false;
+  isVacation3: boolean = false;
+  isVacationNotScheduled: boolean = false;
 
   constructor(private messageService: MessageService, private schedulerService: SchedulerService) { }
 
   ngOnInit() {
     this.getCurrentSchedules();
     console.log('history has been loaded');
-  }
-
-  initalizeScheduleTable() {
-    this.colsSchedule = [
-      { field: 'employeeName', header: 'Employee Name' },
-      { field: 'jobName', header: 'Job Name' },
-      { field: 'shift', header: 'Scheduled Shift' },
-      { field: 'restrictions', header: 'Restrictions' }
-    ];
   }
 
   private async getCurrentSchedules() {
@@ -81,7 +71,7 @@ export class HistoryComponent implements OnInit {
 
   formatData(fullSchedule: FullScheduleObject) {
     this.schedules = fullSchedule.schedules;
-    this.vacations = fullSchedule.vacations ? fullSchedule.vacations : [];
+    this.vacations = fullSchedule.employeeNotes ? fullSchedule.employeeNotes : [];
 
     //sort job names and shift
     this.schedules.sort(function (a, b) {
@@ -166,45 +156,65 @@ export class HistoryComponent implements OnInit {
 
   separateVacations() {
     this.vacations.forEach(s => {
-      switch (s.shift) {
-        case 1: {
-          this.vacations1.push(s)
-          break;
+      if (s.isEligible == true) {
+        switch (s.shift) {
+          case 1: {
+            this.vacations1.push(s)
+            break;
+          }
+          case 2: {
+            this.vacations2.push(s)
+            break;
+          }
+          case 3: {
+            this.vacations3.push(s)
+            break;
+          }
         }
-        case 2: {
-          this.vacations2.push(s)
-          break;
-        }
-        case 3: {
-          this.vacations3.push(s)
-          break;
-        }
-        default: {
-          this.vacationNotScheduled.push(s);
-        }
+      } else {
+        this.vacationNotScheduled.push(s);
       }
     });
+    if (this.vacations1 && this.vacations1.length > 0) {
+      this.isVacation1 = true;
+    }
+    if (this.vacations2 && this.vacations2.length > 0) {
+      this.isVacation2 = true;
+    }
+    if (this.vacations3 && this.vacations3.length > 0) {
+      this.isVacation3 = true;
+    }
+    if (this.vacationNotScheduled && this.vacationNotScheduled.length > 0) {
+      this.isVacationNotScheduled = true;
+    }
   }
 
   //set up sheet before sending it on it's way
-  exportExcel(shift: number) {
+  exportExcel() {
     import("xlsx").then(xlsx => {
       let workbook: any;
       let fileName: string;
 
-      //set up each workbook by which selection the user makes
-      //TODO: trim down object to what's only necessary
-      switch (shift) {
-        case 0: {
-          fileName = "FullSchedule_";
-          const worksheet1 = xlsx.utils.json_to_sheet(this.scheduleShift1);
-          const worksheet2 = xlsx.utils.json_to_sheet(this.scheduleShift2);
-          const worksheet3 = xlsx.utils.json_to_sheet(this.scheduleShift3);
+      //set up each workbook 
+      fileName = "FullSchedule_";
+      const worksheet1 = xlsx.utils.json_to_sheet(this.scheduleShift1);
+      const worksheet2 = xlsx.utils.json_to_sheet(this.scheduleShift2);
+      const worksheet3 = xlsx.utils.json_to_sheet(this.scheduleShift3);
 
-          workbook = { Sheets: { 'Shift 1': worksheet1, 'Shift 2': worksheet2, 'Shift 3': worksheet3 }, SheetNames: ['Shift 1', 'Shift 2', 'Shift 3'] };
-          break;
-        }
+      if (this.vacations && this.vacations.length > 0) {
+        const vacayWorksheet1 = xlsx.utils.json_to_sheet(this.vacations1);
+        const vacayWorksheet2 = xlsx.utils.json_to_sheet(this.vacations2);
+        const vacayWorksheet3 = xlsx.utils.json_to_sheet(this.vacations3);
+        const notScheduledWorksheet3 = xlsx.utils.json_to_sheet(this.vacationNotScheduled);
+
+        workbook = {
+          Sheets: { 'Shift 1': worksheet1, 'Shift 2': worksheet2, 'Shift 3': worksheet3, 'Vacations 1': vacayWorksheet1, 'Vacations 2': vacayWorksheet2, 'Vacations 3': vacayWorksheet3, 'Not Scheduled': notScheduledWorksheet3 },
+          SheetNames: ['Shift 1', 'Shift 2', 'Shift 3', 'Vacations 1', 'Vacations 2', 'Vacations 3', 'Not Scheduled']
+        };
+      } else {
+        workbook = { Sheets: { 'Shift 1': worksheet1, 'Shift 2': worksheet2, 'Shift 3': worksheet3 }, SheetNames: ['Shift 1', 'Shift 2', 'Shift 3'] };
       }
+
       //put each worksheet into the entire workbook using an array
       const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
       this.saveAsExcelFile(excelBuffer, fileName);

@@ -19,7 +19,7 @@ export class EmployeeNoteObject {
   setDateRange(dateRanges: Date[]) {
     let tmpStr: string = dateRanges[0] ? dateRanges[0].toLocaleDateString() : '';
     if (dateRanges[1]) {
-      this.dateRange = tmpStr.concat(' ', dateRanges[1].toLocaleDateString());
+      this.dateRange = tmpStr.concat(' - ', dateRanges[1].toLocaleDateString());
     } else {
       this.dateRange = tmpStr;
     }

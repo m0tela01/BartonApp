@@ -1,5 +1,5 @@
 <div style="text-align:center">
-  <button id="excelButton" type="button" pButton icon="pi pi-file-excel" iconPos="left" label="Export All Shifts Into One Excel" (click)="exportExcel(0)" style="margin-right: 0.5em;" class="ui-button-success"></button>
+  <button id="excelButton" type="button" pButton icon="pi pi-file-excel" iconPos="left" label="Export All Shifts Into One Excel" (click)="exportExcel()" style="margin-right: 0.5em;" class="ui-button-success"></button>
 </div>
 
 <div style="margin-left:15%; margin-right:15%; text-align:center">
@@ -21,8 +21,11 @@
         <td>{{rowData.restrictions}}</td>
       </tr>
     </ng-template>
-    <ng-template pTemplate="summary">
-      <p-table [value]="vacations1">
+    <ng-template pTemplate="summary" style="background-color:black">
+      <p-table [value]="vacations1" *ngIf="isVacation1">
+        <ng-template pTemplate="caption">
+          Vacations
+        </ng-template>
         <ng-template pTemplate="header">
           <tr>
             <th>Employee Name</th>
@@ -62,7 +65,10 @@
       </tr>
     </ng-template>
     <ng-template pTemplate="summary">
-      <p-table [value]="vacations2">
+      <p-table [value]="vacations2" *ngIf="isVacation2">
+        <ng-template pTemplate="caption">
+          Vacations
+        </ng-template>
         <ng-template pTemplate="header">
           <tr>
             <th>Employee Name</th>
@@ -102,7 +108,10 @@
       </tr>
     </ng-template>
     <ng-template pTemplate="summary">
-      <p-table [value]="vacations3">
+      <p-table [value]="vacations3" *ngIf="isVacation3">
+        <ng-template pTemplate="caption">
+          Vacations
+        </ng-template>
         <ng-template pTemplate="header">
           <tr>
             <th>Employee Name</th>
@@ -118,6 +127,29 @@
           </tr>
         </ng-template>
       </p-table>
+    </ng-template>
+  </p-table>
+</div>
+
+<div style="margin-left:15%; margin-right:15%; margin-top:3%; margin-bottom:3%; text-align:center" *ngIf="isVacationNotScheduled">
+  <h1 style="color: #e5d082;">Not Scheduled</h1>
+  <p-table [value]="vacationNotScheduled">
+    <ng-template pTemplate="caption">
+      Vacations
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Employee Name</th>
+        <th>Date Range</th>
+        <th>Note</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-vacationNotScheduled>
+      <tr>
+        <td>{{vacationNotScheduled.employeeName}}</td>
+        <td>{{vacationNotScheduled.dateRange}}</td>
+        <td>{{vacationNotScheduled.note}}</td>
+      </tr>
     </ng-template>
   </p-table>
 </div>

@@ -3,10 +3,10 @@ import { EmployeeNoteObject } from "./EmployeeNoteObject";
 
 export class FullScheduleObject {
   schedules: ScheduleObject[];
-  vacations: EmployeeNoteObject[];
+  employeeNotes: EmployeeNoteObject[];
 
   constructor() {
     this.schedules = this.schedules ? this.schedules : [];
-    this.vacations = this.vacations ? this.vacations : [];
+    this.employeeNotes = this.employeeNotes ? this.employeeNotes : [];
   }
 }
