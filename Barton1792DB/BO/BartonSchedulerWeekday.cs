@@ -10,7 +10,7 @@ namespace Barton1792DB.BO
     public static class BartonSchedulerWeekday
     {
         private static int NOTELIGIIBLETOSCHEDULE => -1;
-        private static string LABOR => "Labor";
+        private static string LABOR => "LABOR";
 
         public static Readers readers = new Readers();
         public static Writers writers = new Writers();
@@ -50,7 +50,7 @@ namespace Barton1792DB.BO
                         bool employeeCanWork = true;
                         if (notes.ContainsKey(employees[i].ClockNumber))
                         {
-                            if (notes[employees[i].ClockNumber].Eligible == false)
+                            if (notes[employees[i].ClockNumber].IsEligible == false)
                             {
                                 employeeCanWork = false;
                             }

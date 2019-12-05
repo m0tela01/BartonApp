@@ -11,8 +11,8 @@ namespace Barton1792DB.DBO
         public string EmployeeName { get; set; }
         public int Shift { get; set; }
         public string DateRange { get; set; }
-        public bool Eligible { get; set; }
-        public string Notes { get; set; }
+        public bool IsEligible { get; set; }
+        public string Note { get; set; }
 
         public DateTime ParseDate(string dateAsString)
         {

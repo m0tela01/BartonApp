@@ -15,13 +15,13 @@ namespace Barton1792DB
         {
             Readers reader = new Readers();
             Writers writer = new Writers();
-            util.print(reader.GetJobCount());
+            //util.print(reader.GetJobCount());
             string postitem = @"{""seniorityNumber"":1,""clockNumber"":1232,""seniorityDate"":""1977 - 09 - 28T00: 00:00"",""employeeName"":""aLindsay, Lohana1aa"",""shiftPreference"":1,""jobName"":""MECHANIC"",""absence"":""FMLA"",""restrictions"":""none"",""jobId"":1}";
             //var response = writer.UpdateEmployeeById(new Employee(), postitem);
             List<Employee> CurrentEmployeeData = reader.GetEmployees(new List<Employee>());
             //List<Employee> CurrentEmployeeData = reader.GetEmployees(new List<Employee>());
             //util.print(CurrentEmployeeData);
-            //List<Schedule> saturdaySchedule = BartonSchedulerWeekday.GenerateWeekdaySchedule();
+            bool didschedule = BartonSchedulerWeekday.GenerateWeekdaySchedule();
             List<Template> temps = reader.GetTemplates(new List<Template>());
 
 

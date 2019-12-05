@@ -170,8 +170,8 @@ namespace Barton1792DB.DAO
                             cmd.CommandType = CommandType.StoredProcedure;
                             cmd.Parameters.Add(new MySqlParameter("@empId", item.ClockNumber));
                             cmd.Parameters.Add(new MySqlParameter("@dates", item.DateRange));
-                            cmd.Parameters.Add(new MySqlParameter("@eligibility", item.Eligible));
-                            cmd.Parameters.Add(new MySqlParameter("@enotes", item.Notes));
+                            cmd.Parameters.Add(new MySqlParameter("@eligibility", Convert.ToInt32(item.IsEligible)));
+                            cmd.Parameters.Add(new MySqlParameter("@enotes", item.Note));
                             cmd.ExecuteNonQuery();
                         }
                     }

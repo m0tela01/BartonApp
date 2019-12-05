@@ -57,10 +57,10 @@ namespace Barton1792DB.DAO
             {
                 ClockNumber = int.Parse(rdr["clocknumber"].ToString()),
                 EmployeeName = rdr["empname"].ToString(),
-                Shift = int.Parse(rdr["shift"].ToString()),
+                Shift = int.Parse(rdr["shiftpref"].ToString()),
                 DateRange = rdr["daterange"].ToString(),
-                Eligible = Boolean.Parse(rdr["eligible"].ToString()),
-                Notes = rdr["note"].ToString()
+                IsEligible = Convert.ToBoolean(int.Parse(rdr["eligible"].ToString())),
+                Note = rdr["note"].ToString()
             };
             return enote;
         }
@@ -221,9 +221,9 @@ namespace Barton1792DB.DAO
         /// <summary>
         /// Get employee notes table as list of employee notes.
         /// </summary>
-        /// <param name="Employees"></param>
+        /// <param name="EmployeeNotes"></param>
         /// <returns></returns>
-        public List<EmployeeNote> GetEmployeeNotes(List<EmployeeNote> Employees)
+        public List<EmployeeNote> GetEmployeeNotes(List<EmployeeNote> EmployeeNotes)
         {
             using (MySqlConnection conn = new MySqlConnection(BSConnectionString))
             {
@@ -236,7 +236,7 @@ namespace Barton1792DB.DAO
                         MySqlDataReader rdr = cmd.ExecuteReader();
                         while (rdr.Read())
                         {
-                            Employees.Add(CreateEmployeeNote(rdr));
+                            EmployeeNotes.Add(CreateEmployeeNote(rdr));
                         }
                         rdr.Close();
                     }
@@ -247,7 +247,7 @@ namespace Barton1792DB.DAO
                     Console.WriteLine(ex);
                 }
             }
-            return Employees;
+            return EmployeeNotes;
         }
         /// <summary>
         /// Get jobs table as list of jobs.
