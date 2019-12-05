@@ -35,7 +35,7 @@ export class SchedulerComponent implements OnInit {
   jobAdd: JobObject;
   allJobs: Array<JobObject>;
 
-  dateRanges: Date[];
+  dateRanges: Date[] = [new Date()];
 
   constructor(public router: Router, private messageService: MessageService, private schedulerService: SchedulerService, private employeeService: EmployeeService) { }
 
@@ -61,6 +61,7 @@ export class SchedulerComponent implements OnInit {
     this.schedulerService.getCurrentTemplate().subscribe(
       res => {
         if (res) {
+          console.log(res)
           this.templates = res as Array<TemplateObject>;
         } else {
           this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Scheduler Template data could not be loaded.' });
@@ -72,6 +73,7 @@ export class SchedulerComponent implements OnInit {
     this.employeeService.getJobs().subscribe(
       res => {
         if (res) {
+          console.log(res)
           this.allJobs = res as Array<JobObject>;
         } else {
           this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'No job data found.' });
@@ -126,7 +128,7 @@ export class SchedulerComponent implements OnInit {
   //Showing Add Vacation Dialog
   showDialogToAdd() {
     this.employeeNote = new EmployeeNoteObject();
-    this.dateRanges = [];
+    this.dateRanges = [new Date()];
     this.displayDialog = true;
   }
 
@@ -139,7 +141,7 @@ export class SchedulerComponent implements OnInit {
 
         this.vacations.push(this.employeeNote);
         this.employeeNote = null;
-        this.dateRanges = [];
+        this.dateRanges = [new Date()];
         this.displayDialog = false;
       }
     } else {

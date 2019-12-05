@@ -6,25 +6,15 @@ import { EmployeeObject } from '../../core/models/EmployeeObject';
 import { ScheduleObject } from '../models/ScheduleObject';
 import { TemplateObject } from '../models/TemplateObject';
 import { EmployeeNoteObject } from '../models/EmployeeNoteObject';
+import { FullScheduleObject } from '../models/FullScheduleObject';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SchedulerService extends ServiceBase {
-  //can tell if going to history page from scheduler
-  private isFromScheduler: boolean = false;
 
   constructor(private _httpClient: HttpClient) {
     super(_httpClient);
-  }
-
-  //methods to set and 
-  setIsFromScheduler(value: boolean) {
-    this.isFromScheduler = value;
-  }
-
-  getIsFromScheduler() {
-    return this.isFromScheduler;
   }
 
   // #Region Gets
@@ -33,18 +23,22 @@ export class SchedulerService extends ServiceBase {
   }
 
   //Get Current Schedule when history page opens
-  getCurrentSchedule(): Observable<ScheduleObject[]> {
+  getCurrentSchedule(): Observable<FullScheduleObject> {
     return this.get('GetCurrentSchedule');
   }
 
-  generateWeekdaySchedule(): Observable<ScheduleObject[]> {
+  //Get Current Schedule when history page opens
+  getFullSchedule(): Observable<FullScheduleObject> {
+    return this.get('GetFullSchedule');
+  }
+
+  generateWeekdaySchedule(): Observable<boolean> {
     return this.get('GenerateWeekdaySchedule');
   }
 
   getScheduleHistoryDates(): Observable<any> {
     return this.get('GetScheduleHistoryDates');
   }
-
 
   // #EndRegion Gets
 

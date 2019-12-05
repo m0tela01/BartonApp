@@ -2,7 +2,6 @@
   <button id="excelButton" type="button" pButton icon="pi pi-file-excel" iconPos="left" label="Export All Shifts Into One Excel" (click)="exportExcel(0)" style="margin-right: 0.5em;" class="ui-button-success"></button>
 </div>
 
-
 <div style="margin-left:15%; margin-right:15%; text-align:center">
   <h1 style="color: #e5d082;">Shift 1</h1>
   <p-table #dt [columns]="scheduleShift1" [value]="scheduleShift1" sortField="jobName" sortMode="single" (onSort)="onSort(1)">
@@ -22,17 +21,30 @@
         <td>{{rowData.restrictions}}</td>
       </tr>
     </ng-template>
+    <ng-template pTemplate="summary">
+      <p-table [value]="vacations1">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Employee Name</th>
+            <th>Date Range</th>
+            <th>Note</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-vacations1>
+          <tr>
+            <td>{{vacations1.employeeName}}</td>
+            <td>{{vacations1.dateRange}}</td>
+            <td>{{vacations1.note}}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </ng-template>
   </p-table>
 </div>
 
 <div style="margin-left:15%; margin-right:15%; margin-top:3%; text-align:center">
   <h1 style="color: #e5d082;">Shift 2 </h1>
   <p-table #dt1 [columns]="scheduleShift2" [value]="scheduleShift2" sortField="jobName" sortMode="single" (onSort)="onSort(2)">
-    <!--<ng-template pTemplate="caption">
-      <div class="ui-helper-clearfix">
-        <button type="button" pButton icon="pi pi-file-excel" iconPos="left" label="Export Shift to Excel" (click)="exportExcel(2)" style="margin-right: 0.5em;" class="ui-button-success"></button>
-      </div>
-    </ng-template>-->
     <ng-template pTemplate="header">
       <tr style="font-size:16px">
         <th>Job</th>
@@ -48,6 +60,24 @@
         <td>{{rowData.employeeName}}</td>
         <td>{{rowData.restrictions}}</td>
       </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      <p-table [value]="vacations2">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Employee Name</th>
+            <th>Date Range</th>
+            <th>Note</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-vacations2>
+          <tr>
+            <td>{{vacations2.employeeName}}</td>
+            <td>{{vacations2.dateRange}}</td>
+            <td>{{vacations2.note}}</td>
+          </tr>
+        </ng-template>
+      </p-table>
     </ng-template>
   </p-table>
 </div>
@@ -71,5 +101,25 @@
         <td>{{rowData.restrictions}}</td>
       </tr>
     </ng-template>
+    <ng-template pTemplate="summary">
+      <p-table [value]="vacations3">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Employee Name</th>
+            <th>Date Range</th>
+            <th>Note</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-vacations3>
+          <tr>
+            <td>{{vacations3.employeeName}}</td>
+            <td>{{vacations3.dateRange}}</td>
+            <td>{{vacations3.note}}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </ng-template>
   </p-table>
 </div>
+
+<p-toast position="top-center" life="500"></p-toast>

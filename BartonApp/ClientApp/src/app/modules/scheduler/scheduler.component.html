@@ -45,21 +45,19 @@
     </tr>
   </ng-template>
   <ng-template pTemplate="summary" let-rowData>
-    <div *ngIf="vacations && vacations.length > 0">
+    <div *ngIf="vacations && vacations.length > 0" style="margin-bottom: 8px">
       <div *ngFor="let employee of vacations">
-        Clock Number: {{employee.clockNumber}}
-        Will be scheduled: {{employee.isEligible}}
-        Date Range: {{employee.dateRangeString}}
+        Clock Number: {{employee.clockNumber}}  |  Will be scheduled: {{employee.isEligible}}  ||  Date Range: {{employee.dateRange}}
       </div>
     </div>
-    <div style="text-align:center">
+    <div style="text-align:center;">
       <button type="button" pButton icon="pi pi-plus" (click)="onAddJob()" label="Add/Remove Job" style="margin-right: 10%"></button>
       <button type="button" pButton icon="pi pi-plus" (click)="showDialogToAdd()" label="Add Vacation" style="margin-left: 10%"></button>
     </div>
   </ng-template>
 </p-table>
 
-<p-dialog header="Add Vacation" [(visible)]="displayDialog" (onHide)="onExitDialog()" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '300px'}" [contentStyle]="{'overflow':'visible'}" [closable]="true">
+<p-dialog header="Add Vacation" [(visible)]="displayDialog" (onHide)="onExitDialog()" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '500px'}" [contentStyle]="{'overflow':'visible'}" [closable]="true">
   <div class="ui-g ui-fluid" *ngIf="employeeNote">
     <div class="ui-g-12">
       <div class="ui-g-4">
@@ -94,7 +92,7 @@
 </p-dialog>
 
 <p-dialog header="Add/Remove Job" [(visible)]="displayJobDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '300px'}" [contentStyle]="{'overflow':'visible'}" [closable]="true">
-  <div class="ui-g ui-fluid" *ngIf="employee">
+  <div class="ui-g ui-fluid">
     <div class="ui-g-12">
       <p-dropdown [options]="allJobs" [(ngModel)]="jobAdd" placeholder="Select a Job" optionLabel="jobName"></p-dropdown>
     </div>

@@ -28,7 +28,7 @@ export class HistoryObj {
 export class HistoryComponent implements OnInit {
   fullSchedule: FullScheduleObject;
   schedules: Array<ScheduleObject>;
-  previousSchedules: Array<HistoryObject>;
+  vacations: Array<EmployeeNoteObject>;
 
   scheduleShift1: Array<ScheduleObject> = [];
   rowGroupMetadata1: any = {};
@@ -37,6 +37,11 @@ export class HistoryComponent implements OnInit {
   scheduleShift3: Array<ScheduleObject> = [];
   rowGroupMetadata3: any = {};
 
+  vacations1: Array<EmployeeNoteObject> = [];
+  vacations2: Array<EmployeeNoteObject> = [];
+  vacations3: Array<EmployeeNoteObject> = [];
+  vacationNotScheduled: Array<EmployeeNoteObject> = [];
+
   colsSchedule: any[];
 
   constructor(private messageService: MessageService, private schedulerService: SchedulerService) { }
@@ -44,7 +49,6 @@ export class HistoryComponent implements OnInit {
   ngOnInit() {
     this.getCurrentSchedules();
     console.log('history has been loaded');
-    console.log(this.schedulerService.getIsFromScheduler());
   }
 
   initalizeScheduleTable() {
@@ -57,22 +61,28 @@ export class HistoryComponent implements OnInit {
   }
 
   private async getCurrentSchedules() {
-    this.schedulerService.getCurrentSchedule().subscribe(
+    this.schedulerService.getFullSchedule().subscribe(
       res => {
         if (res) {
           console.log(res);
           this.fullSchedule = res as FullScheduleObject;
-          this.formatData(res as Array<ScheduleObject>);
+
+          if (this.fullSchedule.schedules && this.fullSchedule.schedules.length > 0) {
+            this.formatData(this.fullSchedule);
+          } else {
+            this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Failed to retreive the current schedule.' });
+          }
         } else {
-          //TODO: put in toast or something to say nothing found
-          console.log('whoops');
+          this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Failed to retreive the full schedule.' });
         }
       }
     )
   }
 
-  formatData(res: Array<ScheduleObject>) {
-    this.schedules = res
+  formatData(fullSchedule: FullScheduleObject) {
+    this.schedules = fullSchedule.schedules;
+    this.vacations = fullSchedule.vacations ? fullSchedule.vacations : [];
+
     //sort job names and shift
     this.schedules.sort(function (a, b) {
       return a.jobName.localeCompare(b.jobName);
@@ -81,6 +91,12 @@ export class HistoryComponent implements OnInit {
 
     //turn entire schedule into 3 separate schedules
     this.separateSchedules();
+
+    if (this.vacations && this.vacations.length > 0) {
+      this.separateVacations();
+    } else {
+      this.messageService.add({ severity: 'warn', summary: 'Warning', detail: 'No vacations were found.' });
+    }
 
     //run the rowgroup method to create each table
     this.rowGroupMetadata1 = this.updateRowGroupMetaData(this.scheduleShift1);
@@ -148,6 +164,28 @@ export class HistoryComponent implements OnInit {
     });
   }
 
+  separateVacations() {
+    this.vacations.forEach(s => {
+      switch (s.shift) {
+        case 1: {
+          this.vacations1.push(s)
+          break;
+        }
+        case 2: {
+          this.vacations2.push(s)
+          break;
+        }
+        case 3: {
+          this.vacations3.push(s)
+          break;
+        }
+        default: {
+          this.vacationNotScheduled.push(s);
+        }
+      }
+    });
+  }
+
   //set up sheet before sending it on it's way
   exportExcel(shift: number) {
     import("xlsx").then(xlsx => {
@@ -157,24 +195,6 @@ export class HistoryComponent implements OnInit {
       //set up each workbook by which selection the user makes
       //TODO: trim down object to what's only necessary
       switch (shift) {
-        //case 1: {
-        //  fileName = "Shift1_Schedule_";
-        //  const worksheet1 = xlsx.utils.json_to_sheet(this.scheduleShift1);
-        //  workbook = { Sheets: { 'Shift 1': worksheet1 }, SheetNames: ['Shift 1'] };
-        //  break;
-        //}
-        //case 2: {
-        //  fileName = "Shift2_Schedule_";
-        //  const worksheet2 = xlsx.utils.json_to_sheet(this.scheduleShift2);
-        //  workbook = { Sheets: { 'Shift 2': worksheet2 }, SheetNames: ['Shift 2'] };
-        //  break;
-        //}
-        //case 3: {
-        //  fileName = "Shift3_Schedule_";
-        //  const worksheet3 = xlsx.utils.json_to_sheet(this.scheduleShift3);
-        //  workbook = { Sheets: { 'Shift 3': worksheet3 }, SheetNames: ['Shift 3'] };
-        //  break;
-        //}
         case 0: {
           fileName = "FullSchedule_";
           const worksheet1 = xlsx.utils.json_to_sheet(this.scheduleShift1);

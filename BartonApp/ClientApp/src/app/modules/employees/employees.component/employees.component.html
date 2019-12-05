@@ -16,7 +16,6 @@
       <th>EmployeeName</th>
       <th>ShiftPreference</th>
       <th>JobName</th>
-      <th>Absences</th>
       <th>Restrictions</th>
       <th style="width:8em">Edit</th>
     </tr>
@@ -63,16 +62,6 @@
           </ng-template>
           <ng-template pTemplate="output">
             {{rowData.jobName}}
-          </ng-template>
-        </p-cellEditor>
-      </td>
-      <td>
-        <p-cellEditor>
-          <ng-template pTemplate="input">
-            <input pInputText type="text" [(ngModel)]="rowData.absence">
-          </ng-template>
-          <ng-template pTemplate="output">
-            {{rowData.absence}}
           </ng-template>
         </p-cellEditor>
       </td>

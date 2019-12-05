@@ -1,11 +1,15 @@
 export class EmployeeNoteObject {
   clockNumber: number;
+  employeeName: string;
+  shift: number;
   dateRange: string;
   isEligible: boolean;
   note: string;
 
   constructor() {
     this.clockNumber = this.clockNumber ? this.clockNumber : null;
+    this.employeeName = this.employeeName ? this.employeeName : '';
+    this.shift = this.shift ? this.shift : 0;
     this.dateRange = this.dateRange ? this.dateRange : null;
     this.isEligible = this.isEligible ? this.isEligible : true; //by default they can be scheduled
     this.note = this.note ? this.note : '';
