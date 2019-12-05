@@ -45,38 +45,28 @@
     </tr>
   </ng-template>
   <ng-template pTemplate="summary" let-rowData>
-    <div *ngIf="restrictions && restrictions.length > 0">
-      <div *ngFor="let employee of restrictions">
+    <div *ngIf="vacations && vacations.length > 0">
+      <div *ngFor="let employee of vacations">
         Clock Number: {{employee.clockNumber}}
-        Reason: {{employee.reason}}
+        Will be scheduled: {{employee.isEligible}}
         Date Range: {{employee.dateRangeString}}
-        Note: {{employee.note}}
       </div>
     </div>
     <div style="text-align:center">
       <button type="button" pButton icon="pi pi-plus" (click)="onAddJob()" label="Add/Remove Job" style="margin-right: 10%"></button>
-      <button type="button" pButton icon="pi pi-plus" (click)="showDialogToAdd()" label="Add Vacation/Restriction" style="margin-left: 10%"></button>
+      <button type="button" pButton icon="pi pi-plus" (click)="showDialogToAdd()" label="Add Vacation" style="margin-left: 10%"></button>
     </div>
   </ng-template>
 </p-table>
 
-<p-dialog header="Add Vacation/Restriction" [(visible)]="displayDialog" (onHide)="onExitDialog()" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '300px'}" [contentStyle]="{'overflow':'visible'}" [closable]="true">
-  <div class="ui-g ui-fluid" *ngIf="employee">
+<p-dialog header="Add Vacation" [(visible)]="displayDialog" (onHide)="onExitDialog()" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '300px'}" [contentStyle]="{'overflow':'visible'}" [closable]="true">
+  <div class="ui-g ui-fluid" *ngIf="employeeNote">
     <div class="ui-g-12">
       <div class="ui-g-4">
         <label for="clockNumber">Clock Number</label>
       </div>
       <div class="ui-g-8">
-        <input pInputText id="clockNumber" [(ngModel)]="employee.clockNumber" />
-      </div>
-    </div>
-    <div class="ui-g-12">
-      <div class="ui-g-4">
-        <label for="reason">Reason</label>
-      </div>
-      <div class="ui-g-8">
-        <!--TODO: Should this be a drop down?-->
-        <input pInputText id="reason" [(ngModel)]="employee.reason" />
+        <input pInputText id="clockNumber" [(ngModel)]="employeeNote.clockNumber" />
       </div>
     </div>
     <div class="ui-g-12">
@@ -84,15 +74,15 @@
         <label for="dateRanges">Date Range</label>
       </div>
       <div class="ui-g-8">
-        <p-calendar id="dateRanges" [(ngModel)]="employee.dateRanges" selectionMode="range" [readonlyInput]="true"></p-calendar>
+        <p-calendar id="dateRanges" [(ngModel)]="dateRanges" selectionMode="range" [readonlyInput]="true"></p-calendar>
       </div>
     </div>
     <div class="ui-g-12">
-      <div class="ui-g-4">
-        <label for="note">Note</label>
-      </div>
       <div class="ui-g-8">
-        <input pInputText id="note" [(ngModel)]="employee.note" />
+        <label for="isEligible">This person can be scheduled</label>
+      </div>
+      <div class="ui-g-4">
+        <p-checkbox id="isEligible" [(ngModel)]="employeeNote.isEligible" binary="true"></p-checkbox>
       </div>
     </div>
   </div>

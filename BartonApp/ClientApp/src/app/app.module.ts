@@ -9,6 +9,7 @@ import { TableModule } from 'primeng/table';
 
 //for scheduler component
 import { CalendarModule } from 'primeng/calendar';
+import { CheckboxModule } from 'primeng/checkbox';
 import { DialogModule } from 'primeng/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -39,6 +40,7 @@ import { HttpClientModule } from '@angular/common/http';
     ToastModule,
 
     CalendarModule,
+    CheckboxModule,
     DialogModule,
     BrowserAnimationsModule,
 

@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { EmployeeObject } from '../../core/models/EmployeeObject';
 import { ScheduleObject } from '../models/ScheduleObject';
 import { TemplateObject } from '../models/TemplateObject';
+import { EmployeeNoteObject } from '../models/EmployeeNoteObject';
 
 @Injectable({
   providedIn: 'root'
@@ -50,8 +51,11 @@ export class SchedulerService extends ServiceBase {
   // #Region Posts
 
   insertNewTemplates(templates: TemplateObject[]): Observable<any> {
-    console.log(templates);
     return this.post('InsertNewTemplates', templates);
+  }
+
+  insertEmployeeNotes(employeeNotes: EmployeeNoteObject[]): Observable<any> {
+    return this.post('InsertEmployeeNotes', employeeNotes);
   }
 
   // #EndRegion Posts

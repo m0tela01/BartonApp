@@ -9,6 +9,8 @@ import { HistoryObject } from '../../../core/models/HistoryObject';
 import { ScheduleObject } from '../../../core/models/ScheduleObject';
 import { SchedulerService } from '../../../core/services/scheduler.service';
 import { MessageService } from 'primeng/api';
+import { EmployeeNoteObject } from '../../../core/models/EmployeeNoteObject';
+import { FullScheduleObject } from '../../../core/models/FullScheduleObject';
 
 
 export class HistoryObj {
@@ -24,6 +26,7 @@ export class HistoryObj {
   providers: [MessageService]
 })
 export class HistoryComponent implements OnInit {
+  fullSchedule: FullScheduleObject;
   schedules: Array<ScheduleObject>;
   previousSchedules: Array<HistoryObject>;
 
@@ -39,12 +42,7 @@ export class HistoryComponent implements OnInit {
   constructor(private messageService: MessageService, private schedulerService: SchedulerService) { }
 
   ngOnInit() {
-    //if the scheduler component invoked this page then create a new schedule
-    if (this.schedulerService.getIsFromScheduler()) {
-      this.generateWeekdaySchedule();
-    } else { //otherwise grab current schedule
-      this.getCurrentSchedules();
-    }
+    this.getCurrentSchedules();
     console.log('history has been loaded');
     console.log(this.schedulerService.getIsFromScheduler());
   }
@@ -57,27 +55,13 @@ export class HistoryComponent implements OnInit {
       { field: 'restrictions', header: 'Restrictions' }
     ];
   }
-  
-  private async generateWeekdaySchedule() {
-    console.log('starting to generate');
-    this.schedulerService.generateWeekdaySchedule().subscribe(
-      res => {
-        console.log('got the data back from generate sched');
-        if (res) {
-          console.log(res);
-          this.formatData(res as Array<ScheduleObject>);
-        } else {
-          //TODO: put in toast or something to say nothing found
-          console.log('whoops');
-        }
-      }
-    )
-  }
 
   private async getCurrentSchedules() {
     this.schedulerService.getCurrentSchedule().subscribe(
       res => {
         if (res) {
+          console.log(res);
+          this.fullSchedule = res as FullScheduleObject;
           this.formatData(res as Array<ScheduleObject>);
         } else {
           //TODO: put in toast or something to say nothing found
