@@ -1,9 +1,12 @@
+<!--export to excel button-->
 <div style="text-align:center">
   <button id="excelButton" type="button" pButton icon="pi pi-file-excel" iconPos="left" label="Export All Shifts Into One Excel" (click)="exportExcel()" style="margin-right: 0.5em;" class="ui-button-success"></button>
 </div>
 
+<!--first set of tables for shift 1-->
 <div style="margin-left:15%; margin-right:15%; text-align:center">
   <h1 style="color: #e5d082;">Shift 1</h1>
+  <!--table with all scheduled employees in shift 1-->
   <p-table #dt [columns]="scheduleShift1" [value]="scheduleShift1" sortField="jobName" sortMode="single" (onSort)="onSort(1)">
     <ng-template pTemplate="header" style="text-align:center">
       <tr style="font-size:16px">
@@ -21,6 +24,7 @@
         <td>{{rowData.restrictions}}</td>
       </tr>
     </ng-template>
+    <!--vacation table shown only if employees are on vacation for this shift-->
     <ng-template pTemplate="summary" style="background-color:black">
       <p-table [value]="vacations1" *ngIf="isVacation1">
         <ng-template pTemplate="caption">
@@ -45,8 +49,10 @@
   </p-table>
 </div>
 
+<!--first set of tables for shift 2-->
 <div style="margin-left:15%; margin-right:15%; margin-top:3%; text-align:center">
   <h1 style="color: #e5d082;">Shift 2 </h1>
+  <!--table with all scheduled employees in shift 2-->
   <p-table #dt1 [columns]="scheduleShift2" [value]="scheduleShift2" sortField="jobName" sortMode="single" (onSort)="onSort(2)">
     <ng-template pTemplate="header">
       <tr style="font-size:16px">
@@ -64,6 +70,7 @@
         <td>{{rowData.restrictions}}</td>
       </tr>
     </ng-template>
+    <!--vacation table shown only if employees are on vacation for this shift-->
     <ng-template pTemplate="summary">
       <p-table [value]="vacations2" *ngIf="isVacation2">
         <ng-template pTemplate="caption">
@@ -88,8 +95,10 @@
   </p-table>
 </div>
 
+<!--first set of tables for shift 3-->
 <div style="margin-left:15%; margin-right:15%; margin-top:3%; text-align:center">
   <h1 style="color: #e5d082;">Shift 3 </h1>
+  <!--table with all scheduled employees in shift 3-->
   <p-table #dt3 [columns]="scheduleShift3" [value]="scheduleShift3" sortField="jobName" sortMode="single" (onSort)="onSort(3)">
     <ng-template pTemplate="header">
       <tr style="font-size:16px">
@@ -107,6 +116,7 @@
         <td>{{rowData.restrictions}}</td>
       </tr>
     </ng-template>
+    <!--vacation table shown only if employees are on vacation for this shift-->
     <ng-template pTemplate="summary">
       <p-table [value]="vacations3" *ngIf="isVacation3">
         <ng-template pTemplate="caption">
@@ -131,6 +141,7 @@
   </p-table>
 </div>
 
+<!--vacation table for employees that are not scheduled-->
 <div style="margin-left:15%; margin-right:15%; margin-top:3%; margin-bottom:3%; text-align:center" *ngIf="isVacationNotScheduled">
   <h1 style="color: #e5d082;">Not Scheduled</h1>
   <p-table [value]="vacationNotScheduled">

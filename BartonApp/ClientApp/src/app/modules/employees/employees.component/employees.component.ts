@@ -2,11 +2,7 @@ import { Component, OnInit, Inject, NgZone } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http'
 
-import { TableModule } from 'primeng/table';
 import { MessageService } from 'primeng/api';
-
-import { registerLocaleData } from '@angular/common';
-import { Observable } from 'rxjs';
 
 import { EmployeeObject } from '../../../core/models/EmployeeObject';
 import { JobObject } from '../../../core/models/JobObject';
@@ -26,13 +22,16 @@ export class EmployeesComponent implements OnInit {
 
   jobs: Array<JobObject>;
 
+  //add job dialog variables
   addJobDialog: boolean = false;
   addJobName: string = '';
-  
+
+  //add new employee dialog variables
   newEmployee: EmployeeObject = new EmployeeObject();
   selectedJob: JobObject;
   displayDialog: boolean = false;
 
+  //delete employee dialog variables
   deletionDialog: boolean = false; // dialog to find and delete employee
   confirmDeletion: boolean = false; // dialog to confirm which employee will be deleted
   deleteClockNumber: number = null;
@@ -80,6 +79,8 @@ export class EmployeesComponent implements OnInit {
   // Invoked after edit is confirmed.
   onRowEditSave(employee: EmployeeObject) {
     this.updateEmployee(employee);
+    //refresh employees
+    this.getAllEmployees();
   }
 
   // Updates employee takes an employee object as a parameter. Retrives updated employees table if update was successful.
@@ -109,11 +110,13 @@ export class EmployeesComponent implements OnInit {
     delete this.clonedEmployees[employee.clockNumber];
   }
 
+  //shows the add job dialog
   onShowAddJobDialog() {
     this.addJobDialog = true;
     this.addJobName = ''
   }
 
+  //add job to job table 
   onAddJob() {
     let temp: Array<JobObject>;
     let newJob: JobObject = new JobObject();
@@ -144,7 +147,8 @@ export class EmployeesComponent implements OnInit {
     }
   }
 
-  //TODO: Create post for new employee
+  //shows the add new employeeObject
+  //initialize all data in the dialog
   onShowAddDialog() {
     this.newEmployee = new EmployeeObject();
     this.newEmployee.seniorityNumber = this.employees.length + 1;
@@ -152,31 +156,33 @@ export class EmployeesComponent implements OnInit {
     this.displayDialog = true;
   }
 
+  //adds new employee to the employee table
   onAddNewEmployee() {
+    //verify new employee is ready to be added
     if (this.newEmployee && this.employeeObjectCheck()) {
       this.employeeService.insertEmployee(this.newEmployee)
         .subscribe(
-          response => {
-            console.log("add and get");
-            console.log(response);
-
-            if (response) {
+          res => {
+            if (res) {
               this.getAllEmployees();
               this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Employee was added.' });
+
+              //once employee is added: refresh table, remove dialog contents, close dialog
+              this.getAllEmployees;
+              this.newEmployee = null;
+              this.selectedJob = null;
+              this.displayDialog = false;
             } else {
               this.messageService.add({ severity: 'error', summary: 'Failure', detail: 'Employee could not be added.' });
             }
           }
         );
-      this.newEmployee = null;
-      this.selectedJob = null;
-      this.displayDialog = false;
     } else {
       this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Please fill out the the dialog' });
     }
   }
 
-  //TODO: verify all fields are there (MAY NOT BE NEEDED)
+  //verify all fields are there
   employeeObjectCheck() {
     let isValid: boolean = true;
     this.newEmployee.absence = this.newEmployee.absence ? this.newEmployee.absence : '';
@@ -187,18 +193,30 @@ export class EmployeesComponent implements OnInit {
       this.newEmployee.jobId = this.selectedJob.jobId;
       this.newEmployee.jobName = this.selectedJob.jobName;
     } else {
+      this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Please select a job for the employee.' });
       isValid = false;
     }
 
     if (!this.newEmployee.clockNumber) {
+      this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Please select a clock number for the employee.' });
       isValid = false
-    } else if (!this.newEmployee.employeeName) {
+    }
+    if (!this.newEmployee.employeeName) {
+      this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Please select a employee name for the employee.' });
       isValid = false
-    } else if (!this.newEmployee.seniorityNumber) {
+    }
+    if (!this.newEmployee.seniorityNumber) {
+      this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Please enter a seniority number for the employee.' });
       isValid = false
-    } else if (!this.newEmployee.shiftPreference) {
+    }
+    if (!this.newEmployee.shiftPreference) {
+      this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Please select a job for the employee.' });
       isValid = false
-    } 
+    } else if (this.newEmployee.shiftPreference == 0 || this.newEmployee.shiftPreference > 3) {
+      //no actual error was discussed, but this could break the algorithm
+      this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Employee is being assigned a shift preference other than 1, 2, or 3' });
+      isValid = false
+    }
 
     return isValid;
   }
@@ -241,17 +259,15 @@ export class EmployeesComponent implements OnInit {
 
   //delete button inside the deletion dialog to remove employee from table
   onDeleteEmployee() {
-    //TODO: SEND POST TO DELETE EMPLOYEE
-    //TODO: Get reload table
     this.employeeService.deleteEmployee(this.deleteEmployee)
       .subscribe(
         response => {
           if (response) {
-            this.getAllEmployees();
             this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Employee was deleted.' });
           } else {
             this.messageService.add({ severity: 'error', summary: 'Failure', detail: 'Employee could not be deleted.' });
           }
+          this.getAllEmployees();
         }
       );
 
@@ -260,5 +276,6 @@ export class EmployeesComponent implements OnInit {
     this.deletionDialog = false;
     this.confirmDeletion = false;
   }
+  // #EndRegion Delete Employee
 }
 

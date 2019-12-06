@@ -1,15 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
-import { TableModule } from 'primeng/table';
 import { MessageService } from 'primeng/api';
-
-import { HttpClient } from '@angular/common/http'
 
 import { SchedulerService } from '../../../core/services/scheduler.service';
 
-import { HistoryObject } from '../../../core/models/HistoryObject';
 import { ScheduleObject } from '../../../core/models/ScheduleObject';
 import { EmployeeNoteObject } from '../../../core/models/EmployeeNoteObject';
 import { FullScheduleObject } from '../../../core/models/FullScheduleObject';
@@ -21,10 +16,13 @@ import { FullScheduleObject } from '../../../core/models/FullScheduleObject';
   providers: [MessageService]
 })
 export class HistoryComponent implements OnInit {
+  //variables received from api calls
   fullSchedule: FullScheduleObject = new FullScheduleObject;
   schedules: Array<ScheduleObject> = [];
   vacations: Array<EmployeeNoteObject> = [];
 
+  //schedules derived from fullSchedule.schedules
+  //rowGroupMetadata is utilized in the row grouping method for displaying the table
   scheduleShift1: Array<ScheduleObject> = [];
   rowGroupMetadata1: any = {};
   scheduleShift2: Array<ScheduleObject> = [];
@@ -32,12 +30,14 @@ export class HistoryComponent implements OnInit {
   scheduleShift3: Array<ScheduleObject> = [];
   rowGroupMetadata3: any = {};
 
+  //vacations are derived from fullSchedule.vacations
   vacations1: Array<EmployeeNoteObject> = [];
   vacations2: Array<EmployeeNoteObject> = [];
   vacations3: Array<EmployeeNoteObject> = [];
   vacationNotScheduled: Array<EmployeeNoteObject> = [];
 
-  //tells me if there is anything in the vacation array to be utilized
+  //holds values for if there is anything in the vacation array to be utilized
+  //tables are only rendered if data is in the vacation array for that shift
   isVacation1: boolean = false;
   isVacation2: boolean = false;
   isVacation3: boolean = false;
@@ -50,6 +50,8 @@ export class HistoryComponent implements OnInit {
     console.log('history has been loaded');
   }
 
+  //gets the current schedule
+  //utilized everytime page opens due to the schedule being generated on the scheduler page before being routed here
   private async getCurrentSchedules() {
     this.schedulerService.getFullSchedule().subscribe(
       res => {
@@ -69,6 +71,9 @@ export class HistoryComponent implements OnInit {
     )
   }
 
+  //formats the data retrieved from the api
+  //separates schedules, sorts them, and calls row grouping for displaying in markup and excel
+  //separates vacations 
   formatData(fullSchedule: FullScheduleObject) {
     this.schedules = fullSchedule.schedules;
     this.vacations = fullSchedule.employeeNotes ? fullSchedule.employeeNotes : [];
@@ -94,6 +99,7 @@ export class HistoryComponent implements OnInit {
     this.rowGroupMetadata3 = this.updateRowGroupMetaData(this.scheduleShift3);
   }
 
+  //utilized in the table
   onSort(tableNumber: number) {
     switch (tableNumber) {
       case 1: {
@@ -111,6 +117,7 @@ export class HistoryComponent implements OnInit {
     }
   }
 
+  //sorts by jobs for rowGrouping --documentation can be found on rowGroup for primeng
   updateRowGroupMetaData(shiftSchedule: any) {
     let rowGroupMetadata = {};
 
@@ -175,6 +182,7 @@ export class HistoryComponent implements OnInit {
         this.vacationNotScheduled.push(s);
       }
     });
+    //dictates whether the vacation table is shown
     if (this.vacations1 && this.vacations1.length > 0) {
       this.isVacation1 = true;
     }
@@ -189,7 +197,7 @@ export class HistoryComponent implements OnInit {
     }
   }
 
-  //set up sheet before sending it on it's way
+  //set up workbook before saving it
   exportExcel() {
     import("xlsx").then(xlsx => {
       let workbook: any;
@@ -201,6 +209,7 @@ export class HistoryComponent implements OnInit {
       const worksheet2 = xlsx.utils.json_to_sheet(this.scheduleShift2);
       const worksheet3 = xlsx.utils.json_to_sheet(this.scheduleShift3);
 
+      //there are any vacations just give them all because its unnecessary to run through all the possible options
       if (this.vacations && this.vacations.length > 0) {
         const vacayWorksheet1 = xlsx.utils.json_to_sheet(this.vacations1);
         const vacayWorksheet2 = xlsx.utils.json_to_sheet(this.vacations2);
@@ -212,7 +221,10 @@ export class HistoryComponent implements OnInit {
           SheetNames: ['Shift 1', 'Shift 2', 'Shift 3', 'Vacations 1', 'Vacations 2', 'Vacations 3', 'Not Scheduled']
         };
       } else {
-        workbook = { Sheets: { 'Shift 1': worksheet1, 'Shift 2': worksheet2, 'Shift 3': worksheet3 }, SheetNames: ['Shift 1', 'Shift 2', 'Shift 3'] };
+        workbook = {
+          Sheets: { 'Shift 1': worksheet1, 'Shift 2': worksheet2, 'Shift 3': worksheet3 },
+          SheetNames: ['Shift 1', 'Shift 2', 'Shift 3']
+        };
       }
 
       //put each worksheet into the entire workbook using an array
