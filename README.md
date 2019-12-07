@@ -3,9 +3,9 @@ Master Project for Barton Angular App. This project began as a combination of th
 
 
 # Contributors of this project
-Michael Telahun
-Jacob Wolf
-Colin Kellogg
+-- Michael Telahun
+-- Jacob Wolf
+-- Colin Kellogg
 
 
 This was the capstone project for Fall 2019 Computer Science & Computer Engineering at the Univeristy of Louisville.
