@@ -88,6 +88,7 @@ The schedule can be exported as an excel by pressing the `Exports All Shifts Int
 ![image](https://user-images.githubusercontent.com/43968309/70369319-79b76300-1885-11ea-939e-4da0f760c820.png)
 
 This will display each of the shifts in a different sheet, all of the people not scheduled will be put into a sheet called `Vacation #` where the hastag is the shift of their preference. A final sheet includes all of the people who were not scheduled.
+
 ![image](https://user-images.githubusercontent.com/43968309/70369349-e0d51780-1885-11ea-8225-a47bbadc3a47.png)
 ![image](https://user-images.githubusercontent.com/43968309/70369361-03ffc700-1886-11ea-82f7-a5e1fa34f13f.png)
 
