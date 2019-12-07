@@ -42,7 +42,7 @@ export class EmployeesComponent implements OnInit {
   ngOnInit() {
     this.getAllEmployees();
     this.getJobs();
-    console.log('employees has been loaded');
+    //console.log('employees has been loaded');
   }
 
   getAllEmployees() {
@@ -50,7 +50,7 @@ export class EmployeesComponent implements OnInit {
       res => {
         if (res) {
           this.employees = res as Array<EmployeeObject>;
-          console.log(this.employees[0].jobName);
+          //console.log(this.employees[0].jobName);
         } else {
           this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'No employee data found.' });
         }
@@ -62,7 +62,7 @@ export class EmployeesComponent implements OnInit {
       res => {
         if (res) {
           this.jobs = res as Array<JobObject>;
-          console.log(this.jobs);
+          //console.log(this.jobs);
         } else {
           this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'No job data found.' });
         }
@@ -89,7 +89,7 @@ export class EmployeesComponent implements OnInit {
     this.employeeService.updateEmployeeById(employee)
       .subscribe(
         response => {
-          console.log("update and get");
+          //console.log("update and get");
 
           if (response) {
             this.getAllEmployees();

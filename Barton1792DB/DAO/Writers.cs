@@ -33,7 +33,7 @@ namespace Barton1792DB.DAO
 
         #endregion Procedure Names
 
-        #region Clear
+        #region Clear - Truncate
         /// <summary>
         /// Clear employee notes when a new template is inserted.
         /// </summary>
@@ -59,7 +59,7 @@ namespace Barton1792DB.DAO
             }
         }
         /// <summary>
-        /// Clear the schedule history if history is to big.
+        /// Clear the schedule history if history is to big. Not used anymore
         /// </summary>
         public void ClearScheduleHistory()
         {
@@ -124,9 +124,109 @@ namespace Barton1792DB.DAO
                 }
             }
         }
-        #endregion Clear
+        #endregion Clear - Truncate
 
         #region Insert
+        #region Scalars
+        /// <summary>
+        /// Insert a single schedule template.
+        /// </summary>
+        /// <param name="tempalte"></param>
+        public bool InsertScheduleTemplate(Template tempalte)
+        {
+            using (MySqlConnection conn = new MySqlConnection(BSConnectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(InsertScheduleTemplateSql, conn))
+                    {
+                        //cmd.Transaction = trans;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add(new MySqlParameter("@uJobID", tempalte.JobId));
+                        cmd.Parameters.Add(new MySqlParameter("@uDeptID", tempalte.DepartmentId));
+                        cmd.Parameters.Add(new MySqlParameter("@Shift1", tempalte.Shift1));
+                        cmd.Parameters.Add(new MySqlParameter("@Shift2", tempalte.Shift2));
+                        cmd.Parameters.Add(new MySqlParameter("@Shift3", tempalte.Shift3));
+                        cmd.ExecuteNonQuery();
+                    }
+                    return true;
+                }
+                catch (MySqlException ex)
+                {
+                    Console.WriteLine(ex);
+                    return false;
+                }
+            }
+        }
+        /// <summary>
+        /// Inserts a new employee.
+        /// </summary>
+        /// <param name="employee"></param>
+        /// <returns></returns>
+        public bool InsertEmployee(Employee employee)
+        {
+            using (MySqlConnection conn = new MySqlConnection(BSConnectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(InsertEmployeeSql, conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add(new MySqlParameter("@clockNumber", employee.ClockNumber));
+                        cmd.Parameters.Add(new MySqlParameter("@seniorityNumber", employee.SeniorityNumber));
+                        cmd.Parameters.Add(new MySqlParameter("@shiftPref", employee.ShiftPreference));
+                        cmd.Parameters.Add(new MySqlParameter("@empName", employee.EmployeeName));
+                        cmd.Parameters.Add(new MySqlParameter("@absent", employee.Absence));
+                        cmd.Parameters.Add(new MySqlParameter("@restricted", employee.Restrictions));
+                        cmd.Parameters.Add(new MySqlParameter("@jobId", employee.JobId));
+                        cmd.ExecuteNonQuery();
+                    }
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    return false;
+                }
+            }
+        }
+        /// <summary>
+        /// Inserts a new job.
+        /// </summary>
+        /// <param name="job"></param>
+        /// <returns></returns>
+        public bool InsertNewJob(Job job)
+        {
+            Readers readers = new Readers();
+            int jobId = readers.GetJobCount();
+            //job = JsonConvert.DeserializeObject<Job>(postJob);
+            job.JobId = jobId;
+            using (MySqlConnection conn = new MySqlConnection(BSConnectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(InsertNewJobSql, conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add(new MySqlParameter("@jobID", job.JobId));
+                        cmd.Parameters.Add(new MySqlParameter("@jobName", job.JobName));
+                        cmd.ExecuteNonQuery();
+                    }
+                    return true;
+                }
+                catch (MySqlException ex)
+                {
+                    Console.WriteLine(ex);
+                    return false;
+                }
+            }
+        }
+        #endregion Scalars
+
+        #region Collections
         /// <summary>
         /// Insert the last schedule to the history table before inserting the new schedule.
         /// </summary>
@@ -222,62 +322,6 @@ namespace Barton1792DB.DAO
                 }
             }
         }
-        public bool InsertEmployee(Employee employee)
-        {
-            using (MySqlConnection conn = new MySqlConnection(BSConnectionString))
-            {
-                try
-                {
-                    conn.Open();
-                    using (MySqlCommand cmd = new MySqlCommand(InsertEmployeeSql, conn))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.Add(new MySqlParameter("@clockNumber", employee.ClockNumber));
-                        cmd.Parameters.Add(new MySqlParameter("@seniorityNumber", employee.SeniorityNumber));
-                        cmd.Parameters.Add(new MySqlParameter("@shiftPref", employee.ShiftPreference));
-                        cmd.Parameters.Add(new MySqlParameter("@empName", employee.EmployeeName));
-                        cmd.Parameters.Add(new MySqlParameter("@absent", employee.Absence));
-                        cmd.Parameters.Add(new MySqlParameter("@restricted", employee.Restrictions));
-                        cmd.Parameters.Add(new MySqlParameter("@jobId", employee.JobId));
-                        cmd.ExecuteNonQuery();
-                    }
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex);
-                    return false;
-                }
-            }
-        }
-        public bool InsertNewJob(Job job)
-        {
-            Readers readers = new Readers();
-            int jobId = readers.GetJobCount();
-            //job = JsonConvert.DeserializeObject<Job>(postJob);
-            job.JobId = jobId;
-            using (MySqlConnection conn = new MySqlConnection(BSConnectionString))
-            {
-                try
-                {
-                    conn.Open();
-                    using (MySqlCommand cmd = new MySqlCommand(InsertNewJobSql, conn))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.Add(new MySqlParameter("@jobID", job.JobId));
-                        cmd.Parameters.Add(new MySqlParameter("@jobName", job.JobName));
-                        cmd.ExecuteNonQuery();
-                    }
-                    return true;
-                }
-                catch (MySqlException ex)
-                {
-                    Console.WriteLine(ex);
-                    return false;
-                }
-            }
-        }
-
         /// <summary>
         /// Insert the new current template.
         /// </summary>
@@ -317,41 +361,9 @@ namespace Barton1792DB.DAO
             }
         }
         /// <summary>
-        /// Scalar: Insert a schedule template.
-        /// </summary>
-        /// <param name="tempalte"></param>
-        public bool InsertScheduleTemplate(Template tempalte)
-        {
-            using (MySqlConnection conn = new MySqlConnection(BSConnectionString))
-            {
-                try
-                {
-                    conn.Open();
-                    using (MySqlCommand cmd = new MySqlCommand(InsertScheduleTemplateSql, conn))
-                    {
-                        //cmd.Transaction = trans;
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.Add(new MySqlParameter("@uJobID", tempalte.JobId));
-                        cmd.Parameters.Add(new MySqlParameter("@uDeptID", tempalte.DepartmentId));
-                        cmd.Parameters.Add(new MySqlParameter("@Shift1", tempalte.Shift1));
-                        cmd.Parameters.Add(new MySqlParameter("@Shift2", tempalte.Shift2));
-                        cmd.Parameters.Add(new MySqlParameter("@Shift3", tempalte.Shift3));
-                        cmd.ExecuteNonQuery();
-                    }
-                    return true;
-                }
-                catch (MySqlException ex)
-                {
-                    Console.WriteLine(ex);
-                    return false;
-                }
-            }
-        }
-        /// <summary>
         /// Insert the last schedule to the history table before inserting new schedule.
         /// </summary>
         /// <param name="Schedules"></param>
-        // should delete?
         public void InsertOldScheduleToHistory(List<Schedule> Schedules)
         {
             using (MySqlConnection conn = new MySqlConnection(BSConnectionString))
@@ -386,9 +398,15 @@ namespace Barton1792DB.DAO
                 }
             }
         }
+        #endregion Collections
         #endregion Insert
 
         #region Delete
+        /// <summary>
+        /// Delete Employee based on employee ID in posted employee object.
+        /// </summary>
+        /// <param name="employee"></param>
+        /// <returns></returns>
         public bool DeleteEmployeeById(Employee employee)
         {
             try
@@ -411,6 +429,11 @@ namespace Barton1792DB.DAO
             }
             return false;
         }
+        /// <summary>
+        /// Delete job from scheduler template based on job ID in posted template object.
+        /// </summary>
+        /// <param name="template"></param>
+        /// <returns></returns>
         public bool DeleteJobFromSchedulerTemplateById(Template template)
         {
             try
@@ -436,6 +459,11 @@ namespace Barton1792DB.DAO
         #endregion Delete
 
         #region Update
+        /// <summary>
+        /// Update Employee based on employee ID in posed employee object.
+        /// </summary>
+        /// <param name="employee"></param>
+        /// <returns></returns>
         public bool UpdateEmployeeById(Employee employee)
         {
             //Employee.TryParse(postEmployee, out employee);
@@ -471,9 +499,10 @@ namespace Barton1792DB.DAO
             }
             return false;
         }
-
         /// <summary>
         /// Update employees if there is some change to the employee ids (seniority number).
+        /// Must check/change each employee if senioirty number changes.
+        /// Could be trigger.
         /// </summary>
         /// <param name="employees"></param>
         /// <returns></returns>
@@ -509,6 +538,11 @@ namespace Barton1792DB.DAO
             }
             return false;
         }
+        /// <summary>
+        /// Update job based on job ID in posed template object.
+        /// </summary>
+        /// <param name="template"></param>
+        /// <returns></returns>
         public bool UpdateTemplateByJobId(Template template)
         {
             //Template.TryParse(postTemplate, out template);
@@ -540,7 +574,10 @@ namespace Barton1792DB.DAO
             return false;
         }
         #endregion Update
-        
+
+        /// <summary>
+        /// Not used.
+        /// </summary>
         #region Make Generics
         /// <summary>
         /// For easy Insert, Delete, Update

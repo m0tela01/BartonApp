@@ -44,7 +44,7 @@ export class SchedulerComponent implements OnInit {
     this.initalizeTemplateTable();
     this.getJobs();
 
-    console.log('scheduler has been loaded');
+    //console.log('scheduler has been loaded');
   }
 
   initalizeTemplateTable() {
@@ -61,7 +61,7 @@ export class SchedulerComponent implements OnInit {
     this.schedulerService.getCurrentTemplate().subscribe(
       res => {
         if (res) {
-          console.log(res)
+          //console.log(res)
           this.templates = res as Array<TemplateObject>;
         } else {
           this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Scheduler Template data could not be loaded.' });
@@ -73,7 +73,7 @@ export class SchedulerComponent implements OnInit {
     this.employeeService.getJobs().subscribe(
       res => {
         if (res) {
-          console.log(res)
+          //console.log(res)
           this.allJobs = res as Array<JobObject>;
         } else {
           this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'No job data found.' });
@@ -139,7 +139,7 @@ export class SchedulerComponent implements OnInit {
         //need a string version to show in footer
         this.employeeNote.setDateRange(this.dateRanges);
 
-        console.log(this.employeeNote);
+        //console.log(this.employeeNote);
         this.vacations.push(this.employeeNote);
         this.employeeNote = null;
         this.dateRanges = [new Date()];
@@ -182,7 +182,7 @@ export class SchedulerComponent implements OnInit {
     this.schedulerService.insertNewTemplates(this.templates).subscribe(
       res => {
         if (res) {
-          console.log(this.vacations);
+          //console.log(this.vacations);
           //then insert employeeNotes
           //in the future this should be refactored to be two separate async calls
           this.schedulerService.insertEmployeeNotes(this.vacations).subscribe(
@@ -203,7 +203,7 @@ export class SchedulerComponent implements OnInit {
 
   //generate schedule and send to history table
   private generateWeekdaySchedule() {
-    console.log('starting to generate schedule');
+    //console.log('starting to generate schedule');
     this.schedulerService.generateWeekdaySchedule().subscribe(
       res => {
         if (res) {

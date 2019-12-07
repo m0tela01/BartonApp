@@ -6,7 +6,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Barton1792DB.DBO;
-using DVAC;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 
@@ -16,9 +15,8 @@ namespace Barton1792DB.DAO
     {
         private string BSConnectionString = CreateDB.BSConnectionString;
         private IDbConnection conn => new MySqlConnection(BSConnectionString);
-        private string DataFolder => Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\DataFiles\\";
-        private string ProceduresFolder => Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Procedures\\";
 
+        #region Get - Procedure names
         private string GetCurrentScheduleSql => "GetCurrentSchedule";
         private string GetEmployeeByIdSql => "GetEmployeeById";
         private string GetEmployeesSql => "GetEmployeeData";
@@ -28,9 +26,14 @@ namespace Barton1792DB.DAO
         private string GetScheduleHistoryByScheduleDateSql => "GetScheduleHistoryByScheduleDate";
         private string GetScheduleHistoryDatesSql => "GetScheduleHistoryDates";
         private string GetTemplateSql => "GetTemplate";
-
+        #endregion Get - Procedure names
 
         #region Create Objects
+        /// <summary>
+        /// Creates a new employee object. Takes a MySqlDataReader object.
+        /// </summary>
+        /// <param name="rdr"></param>
+        /// <returns></returns>
         public Employee CreateEmployee(MySqlDataReader rdr)
         {
             Employee emp = new Employee()
@@ -51,6 +54,11 @@ namespace Barton1792DB.DAO
             };
             return emp;
         }
+        /// <summary>
+        /// Creates a new employee note object. Takes a MySqlDataReader object.
+        /// </summary>
+        /// <param name="rdr"></param>
+        /// <returns></returns>
         public EmployeeNote CreateEmployeeNote(MySqlDataReader rdr)
         {
             EmployeeNote enote = new EmployeeNote()
@@ -64,6 +72,11 @@ namespace Barton1792DB.DAO
             };
             return enote;
         }
+        /// <summary>
+        /// Creates a new schedule object. Takes a MySqlDataReader object.
+        /// </summary>
+        /// <param name="rdr"></param>
+        /// <returns></returns>
         public Schedule CreateSchedule(MySqlDataReader rdr)
         {
             Schedule sch = new Schedule()
@@ -80,6 +93,11 @@ namespace Barton1792DB.DAO
             };
             return sch;
         }
+        /// <summary>
+        /// Creates a new schedule for excel object. Takes a MySqlDataReader object.
+        /// </summary>
+        /// <param name="rdr"></param>
+        /// <returns></returns>
         public ScheduleExcel CreateScheduleExcel(MySqlDataReader rdr)
         {
             ScheduleExcel schEx = new ScheduleExcel()
@@ -92,6 +110,11 @@ namespace Barton1792DB.DAO
             };
             return schEx;
         }
+        /// <summary>
+        /// Creates a new scheduler template object. Takes a MySqlDataReader object.
+        /// </summary>
+        /// <param name="rdr"></param>
+        /// <returns></returns>
         public Template CreateTemplate(MySqlDataReader rdr)
         {
             Template temp = new Template()
@@ -105,6 +128,11 @@ namespace Barton1792DB.DAO
             };
             return temp;
         }
+        /// <summary>
+        /// Creates a new history date object. Takes a MySqlDataReader object.
+        /// </summary>
+        /// <param name="rdr"></param>
+        /// <returns></returns>
         public HistoryDate CreateHistoryDate(MySqlDataReader rdr)
         {
             HistoryDate historyDate = new HistoryDate()
@@ -113,6 +141,11 @@ namespace Barton1792DB.DAO
             };
             return historyDate;
         }
+        /// <summary>
+        /// Creates a new job object. Takes a MySqlDataReader object.
+        /// </summary>
+        /// <param name="rdr"></param>
+        /// <returns></returns>
         public Job CreateJob(MySqlDataReader rdr)
         {
             Job job = new Job()
@@ -158,6 +191,11 @@ namespace Barton1792DB.DAO
             }
             return employee;
         }
+        /// <summary>
+        /// Gets the number of jobs present for a new job id on insert.
+        /// Could be trigger.
+        /// </summary>
+        /// <returns></returns>
         public int GetJobCount()
         {
             int jobCount = 0;
@@ -187,6 +225,7 @@ namespace Barton1792DB.DAO
         }
         #endregion Scalars
 
+        #region Collections
         /// <summary>
         /// Get employees table as list of employees.
         /// </summary>
@@ -312,7 +351,7 @@ namespace Barton1792DB.DAO
             return Schedules;
         }
         /// <summary>
-        /// Get current schedule table as list of schedules.
+        /// Get current schedule table as list of schedules. Specifically for Excel.
         /// </summary>
         /// <param name="Schedules"></param>
         /// <returns></returns>
@@ -343,7 +382,7 @@ namespace Barton1792DB.DAO
             return Schedules;
         }
         /// <summary>
-        /// Get template as list of templates.
+        /// Get current template table as list of templates.
         /// </summary>
         /// <param name="Templates"></param>
         /// <returns></returns>
@@ -375,6 +414,7 @@ namespace Barton1792DB.DAO
         }
         /// <summary>
         /// Get schedule as list of schedules based on the date of scheduling.
+        /// Was for histories.
         /// </summary>
         /// <param name="Schedules"></param>
         /// <param name="ScheduleDate"></param>
@@ -437,9 +477,11 @@ namespace Barton1792DB.DAO
             }
             return HistoryDates;
         }
-
+        #endregion Collections
         #endregion Readers
-
+        
+        #region Not used.
+        
         #region Converters
         public List<Template> ConvertJsonToTemplates(string response)
         {
@@ -469,11 +511,6 @@ namespace Barton1792DB.DAO
         #endregion Converters
 
         #region Need to make generic readers
-        public Context GetEmployees()
-        {
-            Context c = Context.from_sql_query(conn, "select * from  sazerac.employee");
-            return c;
-        }
         public List<T> GetStuff<T>(List<T> objectType, MySqlCommand cmd)
         {
             using (MySqlDataReader rdr = cmd.ExecuteReader())
@@ -517,5 +554,6 @@ namespace Barton1792DB.DAO
             return objectType;
         }
         #endregion Need to make generic readers
+        #endregion Note used.
     }
 }

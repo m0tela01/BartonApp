@@ -15,6 +15,13 @@ namespace Barton1792DB.BO
         public static Readers readers = new Readers();
         public static Writers writers = new Writers();
 
+        #region Generate Weekday Schedule
+        /// <summary>
+        /// Generates the Barton Weekday Schedule according to the rules given to Ryan Daigle.
+        /// Get employees sorted by seniority and shift. Then place employee in job if jobs available.
+        /// If job is unavailable try remaining shifts. If no shift is available for the job push employee to LABOR.
+        /// </summary>
+        /// <returns></returns>
         public static bool GenerateWeekdaySchedule()
         {
             try
@@ -55,7 +62,6 @@ namespace Barton1792DB.BO
                                 employeeCanWork = false;
                             }
                         }
-                        //employeeCanWork = string.IsNullOrEmpty(employees[i].Absence.Trim());   //if there is no absence they can work
                         schedule = new Schedule();
                         if (employeeCanWork)
                         {
@@ -76,7 +82,7 @@ namespace Barton1792DB.BO
                                 schedule.ShiftPreference = employees[i].ShiftPreference;
                                 schedule.Restrictions = employees[i].Restrictions;
                             //schedule.DepartmentName = employees[i].DepartmentName;
-                            // Give them what they want trial 1
+                            // If the job for a shift is full come back and check the next shift.
                             tryagain:
                                 if (employees[i].ShiftPreference == 1)
                                 {
@@ -183,37 +189,35 @@ namespace Barton1792DB.BO
                 return false;
             }
         }
+        #endregion Generate Weekday Schedule
+
+        #region Get Full Schedule
+        /// <summary>
+        /// Retrieves the employee notes and current schedule for displaying in the history page.
+        /// Sponser wants employee notes and schedule seperated.
+        /// </summary>
+        /// <param name="fullSchedule"></param>
+        /// <returns></returns>
         public static FullSchedule GetFullSchedule(FullSchedule fullSchedule)
         {
             fullSchedule.EmployeeNotes = readers.GetEmployeeNotes(new List<EmployeeNote>());
             fullSchedule.Schedules = readers.GetSchedulesForExcel(new List<ScheduleExcel>());
             return fullSchedule;
         }
-        public static bool InsertNewEmployeeNotes(List<EmployeeNote> postEmployeeNotes)
-        {
-            writers.ClearEmployeeNotes();
-            bool didClearNotes = writers.ClearEmployeeNotes();
-            // clears the employee notes on insert of a new template
-            if (didClearNotes)
-            {
-                // makeing way for the new set of notes to be used 
-                return writers.InsertEmployeeNotes(postEmployeeNotes);
-            }
-            return false;
-        }
-        public static bool InsertNewTemplates(List<Template> postTemplates)
-        {
-            try
-            {
-                writers.ClearScheduleTemplateBeforeInsert();
-                return writers.InsertCurrentScheduleTemplate(postTemplates);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
-            return false;
-        }
+        #endregion Get Full Schedule
+
+        #region Update Employee By ID
+        /// <summary>
+        /// Inserts the new list of posted employee notes before a schedule is generated.
+        /// Removes all existing notes before inserting the new list.
+        /// </summary>
+        /// <param name="postEmployeeNotes"></param>
+        /// <returns></returns>
+        /// <summary>
+        /// Updates an employee based on the posted employeeid in the employee object.
+        /// </summary>
+        /// <param name="postEmployee"></param>
+        /// <returns></returns>
         public static bool UpdateEmployeeById(Employee postEmployee)
         {
             Employee employee = new Employee();
@@ -230,21 +234,14 @@ namespace Barton1792DB.BO
                 return false;
             }
         }
-        public static bool InsertEmployee(Employee postEmployee)
-        {
-            Employee employee = new Employee();
-            try
-            {
-                writers.InsertEmployee(postEmployee);
-                List<Employee> employees = readers.GetEmployees(new List<Employee>());
-                return employee.CheckSeniorityNumber(employees);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-                return false;
-            }
-        }
+        #endregion Update Employee By ID
+        
+        #region Delete Employee By ID
+        /// <summary>
+        /// Deletes a new employee based on the the posted employee object.
+        /// </summary>
+        /// <param name="postEmployee"></param>
+        /// <returns></returns>
         public static bool DeleteEmployeeById(Employee postEmployee)
         {
             Employee employee = new Employee();
@@ -260,6 +257,65 @@ namespace Barton1792DB.BO
                 return false;
             }
         }
+        #endregion Delete Employee By ID
+        
+        #region Insert - New Employee Notes, New Templates, New Employee, New Job
+        public static bool InsertNewEmployeeNotes(List<EmployeeNote> postEmployeeNotes)
+        {
+            writers.ClearEmployeeNotes();
+            bool didClearNotes = writers.ClearEmployeeNotes();
+            // clears the employee notes on insert of a new template
+            if (didClearNotes)
+            {
+                // makeing way for the new set of notes to be used 
+                return writers.InsertEmployeeNotes(postEmployeeNotes);
+            }
+            return false;
+        }
+        /// <summary>
+        /// Inserts the new list of posted schedule templates before the schedule is generated.
+        /// Removes all existing templates before inserting new templates.
+        /// </summary>
+        /// <param name="postTemplates"></param>
+        /// <returns></returns>
+        public static bool InsertNewTemplates(List<Template> postTemplates)
+        {
+            try
+            {
+                writers.ClearScheduleTemplateBeforeInsert();
+                return writers.InsertCurrentScheduleTemplate(postTemplates);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return false;
+        }
+        /// <summary>
+        /// Inserts a new employee based on the the posted employee object.
+        /// </summary>
+        /// <param name="postEmployee"></param>
+        /// <returns></returns>
+        public static bool InsertEmployee(Employee postEmployee)
+        {
+            Employee employee = new Employee();
+            try
+            {
+                writers.InsertEmployee(postEmployee);
+                List<Employee> employees = readers.GetEmployees(new List<Employee>());
+                return employee.CheckSeniorityNumber(employees);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return false;
+            }
+        }
+        /// <summary>
+        /// Inserts a new job based on the the posted job object.
+        /// </summary>
+        /// <param name="job"></param>
+        /// <returns></returns>
         public static bool InsertNewJob(Job job)
         {
             Readers readers = new Readers();
@@ -275,5 +331,6 @@ namespace Barton1792DB.BO
                 return false;
             }
         }
+        #endregion Insert - New Employee Notes, New Templates, New Employee, New Job 
     }
 }

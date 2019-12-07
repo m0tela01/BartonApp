@@ -1,5 +1,4 @@
 ﻿using System;
-using DVAC;
 using System.IO;
 using Barton1792DB.DAO;
 using Barton1792DB.DBO;
@@ -11,6 +10,7 @@ namespace Barton1792DB
     class Program
     {
         //Test for data layer and api.
+        #region Old - from original solution
         public static void Main(string[] args)
         {
             Readers reader = new Readers();
@@ -27,7 +27,7 @@ namespace Barton1792DB
 
             //List<HistoryDate> dates = reader.GetScheduleHistoryDates(new List<HistoryDate>());
             //List<Schedule> schedulesFromDate = reader.GetScheduleHistoryByScheduleDate(new List<Schedule>(), "2019-10-14");
-            util.print("hi");
+            //util.print("hi");
             //util.print(schedulesFromDate[0]);
 
 
@@ -54,5 +54,6 @@ namespace Barton1792DB
             //util.print("HI");
             Console.ReadKey();
         }
+        #endregion Old - from original solution
     }
 }

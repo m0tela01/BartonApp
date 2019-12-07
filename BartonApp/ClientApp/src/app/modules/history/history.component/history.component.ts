@@ -47,7 +47,7 @@ export class HistoryComponent implements OnInit {
 
   ngOnInit() {
     this.getCurrentSchedules();
-    console.log('history has been loaded');
+    //console.log('history has been loaded');
   }
 
   //gets the current schedule
@@ -56,7 +56,7 @@ export class HistoryComponent implements OnInit {
     this.schedulerService.getFullSchedule().subscribe(
       res => {
         if (res) {
-          console.log(res);
+          //console.log(res);
           this.fullSchedule = res as FullScheduleObject;
 
           if (this.fullSchedule.schedules && this.fullSchedule.schedules.length > 0) {

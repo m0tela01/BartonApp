@@ -14,10 +14,4 @@
     <PackageReference Include="System.Text.Encoding.CodePages" Version="4.5.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="DVAC">
-      <HintPath>..\Dependencies\DVAC.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>

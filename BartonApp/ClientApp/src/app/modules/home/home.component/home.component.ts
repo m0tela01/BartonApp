@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { Router, RouterLink } from '@angular/router';
-import { HistoryObject } from '../../../core/models/HistoryObject';
+//import { HistoryObject } from '../../../core/models/HistoryObject';
 import { HttpClient } from '@angular/common/http';
 
 import { SchedulerService } from '../../../core/services/scheduler.service';
@@ -23,17 +23,17 @@ export class HomeComponent implements OnInit {
   
   cols: any[];
   colsHistory: any[];
-  history: Array<HistoryObject>;
+  //history: Array<HistoryObject>;
 
   constructor(public router: Router, private httpService: HttpClient, public schedulerService: SchedulerService) { }
 
   ngOnInit() {
     //this.getPreviousSchedules();
 
-    this.getScheduleHistory();
+    //this.getScheduleHistory();
     this.intializeScheduleHistoryTable();
 
-    console.log('home has been loaded');
+    //console.log('home has been loaded');
   }
 
 
@@ -55,13 +55,13 @@ export class HomeComponent implements OnInit {
   }
 
 
-  getScheduleHistory() {
-    this.httpService.get('http://localhost:8888/api/BartonData/GetScheduleHistoryDates').subscribe(
-      data => {
-        this.history = data as Array<HistoryObject>;
-        console.log(this.history[0].isWeekend);    //debugging - sanity check: remove
-      });
-  }
+  //getScheduleHistory() {
+  //  this.httpService.get('http://localhost:8888/api/BartonData/GetScheduleHistoryDates').subscribe(
+  //    data => {
+  //      this.history = data as Array<HistoryObject>;
+  //      console.log(this.history[0].isWeekend);    //debugging - sanity check: remove
+  //    });
+  //}
 
   //TODO: turn into service call
   //getPreviousSchedules() {
