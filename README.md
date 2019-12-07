@@ -51,7 +51,7 @@ You can also add an absence such as a vacation for a specific clock number. You 
 
 The `Run Scheduler` button will perform all the work for generating the following weeks schedule and when it is complete it will redirect you to the `History Tab`.
 ### Employee Tab
-This tab displays all of the employees. The table is editable so you can edit any of the fields related to an employee. The employee can be edited by pressing the edit button in the edit column.
+This tab displays all of the employees. The table is editable so you can edit any of the fields related to an employee except clock number. The employee can be edited by pressing the edit button in the edit column.
 ![image](https://user-images.githubusercontent.com/43968309/70369057-7ae69100-1881-11ea-97ba-a5b8ebd7297c.png)
 
 To save the changes you can press the `Green` button in the edit column and to discard any changes press the `Red` button. ![image](https://user-images.githubusercontent.com/43968309/70369071-bb460f00-1881-11ea-9f94-a7e391337bea.png)
@@ -68,9 +68,28 @@ You can also add jobs on this page by pressing `Add New Job`. They will be inclu
 
 You can remove an employee by pressing `Delete Employee` and entering their clock number.
 ![image](https://user-images.githubusercontent.com/43968309/70369151-c77e9c00-1882-11ea-8c75-71a6c4f05ff2.png)
+![image](https://user-images.githubusercontent.com/43968309/70369198-90f55100-1883-11ea-9fba-fa91a2e5f2e2.png)
+
 You will need to press `Delete` to permanently remove this employee.
 ![image](https://user-images.githubusercontent.com/43968309/70369167-f3018680-1882-11ea-9acf-97704c274eb9.png)
 
 ### History Tab
+This tab is for viewing the current weekday schedule for the following Monday. It is only generated when the `Run Scheduler` button is pressed on the `Scheduler Tab`. It will always display the most recently generated schedule. The schedule is seperated by each shift.
+![image](https://user-images.githubusercontent.com/43968309/70369259-550ebb80-1884-11ea-8e4e-5855269d1499.png)
+![image](https://user-images.githubusercontent.com/43968309/70369271-7b345b80-1884-11ea-8b0c-2e4aeb529fbf.png)
+![image](https://user-images.githubusercontent.com/43968309/70369278-8ab3a480-1884-11ea-94ff-3ef645d9789c.png)
+
+By default if there are no employee vacations or absences you will see a message like this: ![image](https://user-images.githubusercontent.com/43968309/70369228-ef223400-1883-11ea-8eff-84f01b0ef701.png)
+
+If there are any employees on vacation or absent (employees who have been marked not eligible to work) they will appear in the footer of the shift of their shift preference.
+![image](https://user-images.githubusercontent.com/43968309/70369292-d5cdb780-1884-11ea-8d7c-23fcf4cb70c1.png)
+
+The schedule can be exported as an excel by pressing the `Exports All Shifts Into One Excel`. 
+![image](https://user-images.githubusercontent.com/43968309/70369319-79b76300-1885-11ea-939e-4da0f760c820.png)
+
+This will display each of the shifts in a different sheet, all of the people not scheduled will be put into a sheet called `Vacation #` where the hastag is the shift of their preference. A final sheet includes all of the people who were not scheduled.
+![image](https://user-images.githubusercontent.com/43968309/70369349-e0d51780-1885-11ea-8225-a47bbadc3a47.png)
+![image](https://user-images.githubusercontent.com/43968309/70369361-03ffc700-1886-11ea-82f7-a5e1fa34f13f.png)
+
 _____________________________________________________________________________
 Contact: michael.telahun1@gmail.com
