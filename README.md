@@ -17,16 +17,30 @@ For a full list of deployment details of this application see deploymentReadme.t
 
 _____________________________________________________________________________
 ## Before cloning
-Install MySQL server. 
-
+Install MySQL server. https://dev.mysql.com/downloads/installer/
+Install Internet Information Services from control panel.
+Install Visual Studio. https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=Community&rel=16
+Install Dot Net Core Runtime & Hosting Bundle. https://dotnet.microsoft.com/download/thank-you/dotnet-runtime-3.0.0-windows-hosting-bundle-installer
+Create database - see deploymentReadme.txt
+Create the connection string specific to the machine hosting the database.
 _____________________________________________________________________________
 ## Clone
+Open the control panel and `cd` to the directory you would like to clone the application to.
 ```
 git clone https://github.com/m0tela01/BartonApp.git
 ```
 _____________________________________________________________________________
 ## After cloning
+Set the connection string in the file CreateDB.cs in `\BartonApp\Barton1792DB` for `BSConnectionString => 'The New Connection String'`.
+Republish the application
+Copy contents from BartonApp\AppPublish to the location you want to store the site at.
+Open IIS and configure a new site with the location of the contents from BartonApp\AppPublish
+Set the port for the site is set to `8888`.
+Ensure the application has started under `Manage Website`.
+You should be able to navigate to `http://localhost:8888/` with the application running.
 
+
+Please see deploymentReadme.txt for the full list of deployment details.
 _____________________________________________________________________________
 _____________________________________________________________________________
 
