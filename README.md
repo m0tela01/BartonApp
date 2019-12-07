@@ -1,5 +1,5 @@
 # BartonApp
-Master Project for Barton Angular App. This project began as a combination of the intial repositories for BartonAPI and BartonWebApp.
+Master Project for Barton Angular App. This project began as a combination of the intial repositories for BartonAPI and BartonWebApp. They are excluded for clarity.
 
 
 # Contributors of this project
