@@ -1,6 +1,9 @@
 <!--export to excel button-->
 <div style="text-align:center">
-  <button id="excelButton" type="button" pButton icon="pi pi-file-excel" iconPos="left" label="Export All Shifts Into One Excel" (click)="exportExcel()" style="margin-right: 0.5em;" class="ui-button-success"></button>
+  <button id="excelButton" type="button" pButton icon="pi pi-file-excel" iconPos="left" label="Export All Shifts Into One Excel"
+          (click)="exportExcel()" style="margin-right: 0.5em;" class="ui-button-success" *ngIf="!showSpinner">
+  </button>
+  <p-progressSpinner *ngIf="showSpinner"></p-progressSpinner>
 </div>
 
 <!--first set of tables for shift 1-->

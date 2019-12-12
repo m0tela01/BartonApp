@@ -8,6 +8,7 @@ import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { ToastModule } from 'primeng/toast';
 import { DropdownModule } from 'primeng/dropdown';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 import { EmployeesRoutingModule } from './employees-routing.module';
 import { EmployeesComponent } from './employees.component/employees.component'
@@ -20,6 +21,7 @@ import { EmployeesComponent } from './employees.component/employees.component'
     EmployeesRoutingModule,
     FormsModule,
     ToastModule,
+    ProgressSpinnerModule,
 
     ButtonModule,
     DialogModule,

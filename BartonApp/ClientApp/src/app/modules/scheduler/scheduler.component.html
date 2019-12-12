@@ -86,7 +86,8 @@
   </div>
   <p-footer>
     <div class="ui-dialog-buttonpane ui-helper-clearfix" style="text-align:center">
-      <button type="button" pButton icon="pi pi-check" (click)="save()" label="Save"></button>
+      <button type="button" pButton icon="pi pi-plus" (click)="saveVacation()" label="Add" style="margin-right:5%"></button>
+      <button type="button" pButton icon="pi pi-minus" class="ui-button-danger" (click)="onRemoveVacation()" label="Remove" style="margin-left:5%"></button>
     </div>
   </p-footer>
 </p-dialog>
@@ -106,9 +107,10 @@
 </p-dialog>
 
 <div style="text-align:center;">
-  <button class="button" id="runScheduler" (click)="onRunScheduler()">
+  <button class="button" id="runScheduler" (click)="onRunScheduler()" *ngIf="!showSpinner">
     <span>Run Scheduler </span>
   </button>
+  <p-progressSpinner *ngIf="showSpinner"></p-progressSpinner>
 </div>
 
 <p-toast position="top-center" life="500"></p-toast>

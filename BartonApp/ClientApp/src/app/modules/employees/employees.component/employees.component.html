@@ -1,5 +1,5 @@
 <p-toast position="top-center" life="500"></p-toast>
-<p-table [value]="employees" dataKey="clockNumber" editMode="row" id="employees" [style]="{margin:'28px'}">
+<p-table *ngIf="!showSpinner" [value]="employees" dataKey="clockNumber" editMode="row" id="employees" [style]="{margin:'28px'}">
   <ng-template pTemplate="caption">
     <div>
       <!--TODO: how to get button on left and right-->
@@ -84,6 +84,11 @@
   </ng-template>
 </p-table>
 
+<!--if the employees are not shown then show spinner-->
+<div style="text-align:center;">
+  <p-progressSpinner *ngIf="showSpinner"></p-progressSpinner>
+</div>
+
 <p-dialog header="Add New Employee" [(visible)]="displayDialog" (onHide)="onHideDialog()" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '40%'}" [contentStyle]="{'overflow':'visible'}">
   <div class="ui-g ui-fluid" *ngIf="newEmployee" style="text-align: center">
     <div class="ui-g-12">
@@ -130,7 +135,7 @@
   </div>
   <p-footer>
     <div class="ui-dialog-buttonpane ui-helper-clearfix" style="text-align: center">
-      <button type="button" pButton icon="fa fa-check" (click)="onAddNewEmployee()" label="Add New Employee"></button>
+      <button type="button" pButton icon="pi pi-plus" (click)="onAddNewEmployee()" label="Add New Employee"></button>
     </div>
   </p-footer>
 </p-dialog>

@@ -37,23 +37,25 @@ export class EmployeesComponent implements OnInit {
   deleteClockNumber: number = null;
   deleteEmployee: EmployeeObject;
 
+  showSpinner: boolean = false;
+
   constructor(public router: Router, private employeeService: EmployeeService, private messageService: MessageService) { }
 
   ngOnInit() {
     this.getAllEmployees();
     this.getJobs();
-    //console.log('employees has been loaded');
   }
 
   getAllEmployees() {
+    this.showSpinner = true;
     this.employeeService.getAllEmployees().subscribe(
       res => {
         if (res) {
           this.employees = res as Array<EmployeeObject>;
-          //console.log(this.employees[0].jobName);
         } else {
           this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'No employee data found.' });
         }
+        this.showSpinner = false;
       });
   }
 
@@ -62,7 +64,6 @@ export class EmployeesComponent implements OnInit {
       res => {
         if (res) {
           this.jobs = res as Array<JobObject>;
-          //console.log(this.jobs);
         } else {
           this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'No job data found.' });
         }
@@ -70,7 +71,7 @@ export class EmployeesComponent implements OnInit {
     )
   }
 
-  //TODO: How can I update seniorityNumber? --> try an invisible column in the object like jobid
+  //TODO: How can I update clockNumber? --> try an invisible column in the object like jobid
   onRowEditInit(employee: EmployeeObject) {
     this.clonedEmployees[employee.clockNumber] = { ...employee };
   }
@@ -79,26 +80,22 @@ export class EmployeesComponent implements OnInit {
   // Invoked after edit is confirmed.
   onRowEditSave(employee: EmployeeObject) {
     this.updateEmployee(employee);
-    //refresh employees
-    this.getAllEmployees();
   }
 
   // Updates employee takes an employee object as a parameter. Retrives updated employees table if update was successful.
   // Used in onRowEditSave.
   updateEmployee(employee: EmployeeObject) {
+    this.showSpinner = true;
     this.employeeService.updateEmployeeById(employee)
       .subscribe(
         response => {
-          //console.log("update and get");
-
           if (response) {
-            this.getAllEmployees();
-
             delete this.clonedEmployees[employee.clockNumber];
             this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Employee was updated' });
           } else {
             this.messageService.add({ severity: 'error', summary: 'Failure', detail: 'Employee could not be updated' });
           }
+          this.getAllEmployees();
         }
       );
   }
@@ -118,6 +115,8 @@ export class EmployeesComponent implements OnInit {
 
   //add job to job table 
   onAddJob() {
+    this.showSpinner = true;
+
     let temp: Array<JobObject>;
     let newJob: JobObject = new JobObject();
 
@@ -126,6 +125,7 @@ export class EmployeesComponent implements OnInit {
       //verify job name doesn't already exist
       temp = this.jobs.filter(job => job.jobName == this.addJobName);
       if (temp && temp.length > 0) {
+        this.showSpinner = false;
         this.messageService.add({ severity: 'error', summary: 'Failure', detail: 'The job name already exist.' });
       } else {
         newJob.jobName = this.addJobName;
@@ -135,14 +135,17 @@ export class EmployeesComponent implements OnInit {
           res => {
             if (res) {
               this.getAllEmployees();
+              this.addJobDialog = false;
               this.messageService.add({ severity: 'success', summary: 'Success', detail: 'The job was added.' });
             } else {
+              this.showSpinner = false;
               this.messageService.add({ severity: 'error', summary: 'Failure', detail: 'The job failed while attempting to be added.' });
             }
           }
         )
       }
     } else {
+      this.showSpinner = false;
       this.messageService.add({ severity: 'error', summary: 'Failure', detail: 'Please enter a job name.' });
     }
   }
@@ -158,8 +161,10 @@ export class EmployeesComponent implements OnInit {
 
   //adds new employee to the employee table
   onAddNewEmployee() {
+     this.showSpinner = true;
     //verify new employee is ready to be added
     if (this.newEmployee && this.employeeObjectCheck()) {
+
       this.employeeService.insertEmployee(this.newEmployee)
         .subscribe(
           res => {
@@ -173,11 +178,13 @@ export class EmployeesComponent implements OnInit {
               this.selectedJob = null;
               this.displayDialog = false;
             } else {
+              this.showSpinner = false;
               this.messageService.add({ severity: 'error', summary: 'Failure', detail: 'Employee could not be added.' });
             }
           }
         );
     } else {
+      this.showSpinner = false;
       this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Please fill out the the dialog' });
     }
   }
@@ -259,6 +266,8 @@ export class EmployeesComponent implements OnInit {
 
   //delete button inside the deletion dialog to remove employee from table
   onDeleteEmployee() {
+    this.showSpinner = true;
+
     this.employeeService.deleteEmployee(this.deleteEmployee)
       .subscribe(
         response => {

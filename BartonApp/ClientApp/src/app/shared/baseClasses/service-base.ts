@@ -1,6 +1,4 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http'
-import { environment } from '../../../environments/environment';
-import { environmentProd } from '../../../environments/environment.prod';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 

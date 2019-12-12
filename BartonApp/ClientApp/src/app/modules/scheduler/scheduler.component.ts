@@ -37,14 +37,14 @@ export class SchedulerComponent implements OnInit {
 
   dateRanges: Date[] = [new Date()];
 
+  showSpinner: boolean = false;
+
   constructor(public router: Router, private messageService: MessageService, private schedulerService: SchedulerService, private employeeService: EmployeeService) { }
 
   ngOnInit() {
     this.getCurrentTemplate();
     this.initalizeTemplateTable();
     this.getJobs();
-
-    //console.log('scheduler has been loaded');
   }
 
   initalizeTemplateTable() {
@@ -89,17 +89,24 @@ export class SchedulerComponent implements OnInit {
 
   onSaveAddJob() {
     let newJob: TemplateObject = new TemplateObject;
+    let temp: Array<TemplateObject>;
 
     if (this.jobAdd && this.jobAdd.jobId) {
-      newJob.jobName = this.jobAdd.jobName;
-      newJob.departmentName = '';
-      newJob.jobId = this.jobAdd.jobId
-      newJob.shift1 = 0;
-      newJob.shift2 = 0;
-      newJob.shift3 = 0;
+      //make sure job does not already exist
+      temp = this.templates.filter(t => t.jobName === this.jobAdd.jobName);
+      if (temp && temp.length == 0) {
+        newJob.jobName = this.jobAdd.jobName;
+        newJob.departmentName = '';
+        newJob.jobId = this.jobAdd.jobId
+        newJob.shift1 = 0;
+        newJob.shift2 = 0;
+        newJob.shift3 = 0;
 
-      this.templates.push(newJob);
-      this.displayJobDialog = false;
+        this.templates.push(newJob);
+        this.displayJobDialog = false;
+      } else {
+        this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'The job already exist in the template.' });
+      }
     } else {
       this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Please select a job.' });
     }
@@ -133,7 +140,7 @@ export class SchedulerComponent implements OnInit {
   }
 
   //when save is clicked for adding vacation
-  save() {
+  saveVacation() {
     if (this.employeeNote) {
       if (this.checkFields()) {
         //need a string version to show in footer
@@ -147,6 +154,26 @@ export class SchedulerComponent implements OnInit {
       }
     } else {
       this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Please fill out the dialog' });
+    }
+  }
+
+  onRemoveVacation() {
+    let temp: Array<EmployeeNoteObject>;
+
+    if (this.employeeNote && this.employeeNote.clockNumber) {
+      //make sure employee note exist to be removed
+      temp = this.vacations.filter(v => v.clockNumber === this.employeeNote.clockNumber);
+      if (temp && temp.length > 0) {
+        let filtered: Array<EmployeeNoteObject>;
+        filtered = this.vacations.filter(v => v.clockNumber != this.employeeNote.clockNumber);
+        this.vacations = filtered;
+
+        this.displayDialog = false;
+      } else {
+        this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'The vacation could not be found.' });
+      }
+    } else {
+      this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Please enter a clock number.' });
     }
   }
 
@@ -179,10 +206,11 @@ export class SchedulerComponent implements OnInit {
   //When running the scheduler insertNewTemplate is called
   //if that works then send app to history table to generate the schedule
   onRunScheduler() {
+    this.showSpinner = true;
+
     this.schedulerService.insertNewTemplates(this.templates).subscribe(
       res => {
         if (res) {
-          //console.log(this.vacations);
           //then insert employeeNotes
           //in the future this should be refactored to be two separate async calls
           this.schedulerService.insertEmployeeNotes(this.vacations).subscribe(
@@ -190,11 +218,13 @@ export class SchedulerComponent implements OnInit {
               if (res2) {
                 this.generateWeekdaySchedule();
               } else {
+                this.showSpinner = false;
                 this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Insert Employee Vacations failed.' });
               }
             }
           )
         } else {
+          this.showSpinner = false;
           this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Insert Templates failed.' });
         }
       }
@@ -203,9 +233,9 @@ export class SchedulerComponent implements OnInit {
 
   //generate schedule and send to history table
   private generateWeekdaySchedule() {
-    //console.log('starting to generate schedule');
     this.schedulerService.generateWeekdaySchedule().subscribe(
       res => {
+        this.showSpinner = false;
         if (res) {
           this.router.navigate(['/history']);
         } else {

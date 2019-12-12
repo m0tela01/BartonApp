@@ -11,6 +11,8 @@ import { TableModule } from 'primeng/table';
 import { CalendarModule } from 'primeng/calendar';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DialogModule } from 'primeng/dialog';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component'
@@ -42,6 +44,8 @@ import { HttpClientModule } from '@angular/common/http';
     CalendarModule,
     CheckboxModule,
     DialogModule,
+    ProgressSpinnerModule,
+
     BrowserAnimationsModule,
 
     FormsModule

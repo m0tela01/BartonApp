@@ -43,6 +43,8 @@ export class HistoryComponent implements OnInit {
   isVacation3: boolean = false;
   isVacationNotScheduled: boolean = false;
 
+  showSpinner: boolean = false;
+
   constructor(private messageService: MessageService, private schedulerService: SchedulerService) { }
 
   ngOnInit() {
@@ -199,6 +201,7 @@ export class HistoryComponent implements OnInit {
 
   //set up workbook before saving it
   exportExcel() {
+    this.showSpinner = true;
     import("xlsx").then(xlsx => {
       let workbook: any;
       let fileName: string;
@@ -244,6 +247,7 @@ export class HistoryComponent implements OnInit {
         type: EXCEL_TYPE
       });
       FileSaver.saveAs(data, fileName + dateString + EXCEL_EXTENSION);
+      this.showSpinner = false;
     });
   }
 }
