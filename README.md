@@ -21,7 +21,8 @@ _____________________________________________________________________________
 - Install Internet Information Services from control panel.
 - Install Visual Studio. https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=Community&rel=16
 - Install Dot Net Core Runtime & Hosting Bundle. https://dotnet.microsoft.com/download/thank-you/dotnet-runtime-3.0.0-windows-hosting-bundle-installer
-- Create database - see deploymentReadme.txt
+- Create database - see deploymentREADME.txt
+  - Files in \DBScripts
 - Create the connection string specific to the machine hosting the database.
 _____________________________________________________________________________
 ## Clone
