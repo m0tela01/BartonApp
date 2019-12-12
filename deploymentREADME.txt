@@ -12,8 +12,8 @@
 
 <!-- Database Creation -->
 -- create database in mysql *with the same name in solution* 
--- create tables: file bartonSchedulerCreateTables.sql
--- create procedures: file barttonSchedulerProcedures.sql
+-- create tables: file bartonSchedulerCreateTables.sql in \DBScripts
+-- create procedures: file barttonSchedulerProcedures.sql in \DBScripts
 -- populate tables: run BartonDB project -- need to find alternative if we cant use vs w/ client
 	-- need to generate csv/excel from BartonDB project
 <!---------------------------------------------------------------------------->
